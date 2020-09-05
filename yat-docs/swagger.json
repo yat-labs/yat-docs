@@ -1,0 +1,1069 @@
+{
+  "swagger": "2.0",
+  "definitions": {
+    "CheckoutCartRequest": {
+      "properties": {
+        "method": {
+          "description": "Payment method",
+          "type": "string",
+          "enum": [
+            "Default",
+            "Free"
+          ]
+        },
+        "pubkey": {
+          "description": "Optional: user public key",
+          "type": "string",
+          "example": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f"
+        },
+        "tracking_data": {
+          "description": "Optional: tracking data",
+          "type": "object"
+        }
+      },
+      "required": [
+        "method"
+      ]
+    },
+    "Confirm2Fa": {
+      "properties": {
+        "code": {
+          "description": "Two factor authentication code",
+          "type": "string"
+        },
+        "refresh_token": {
+          "description": "Refresh token obtained from login request",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "refresh_token"
+      ]
+    },
+    "EditRequest": {
+      "properties": {
+        "delete": {
+          "description": "Optional: hashes of records to delete",
+          "type": "array",
+          "items": {
+            "description": "Hash which identifies emoji record.",
+            "type": "string",
+            "format": "binary",
+            "example": "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
+          }
+        },
+        "insert": {
+          "description": "Optional: list of records to add",
+          "type": "array",
+          "items": {
+            "description": "Data record stored in emoji.",
+            "properties": {
+              "data": {
+                "description": "Category data in text format",
+                "type": "string",
+                "example": "127.0.0.1"
+              },
+              "tag": {
+                "description": "Category ID as a hex number",
+                "type": "string",
+                "example": "0x4101"
+              }
+            },
+            "required": [
+              "data",
+              "tag"
+            ]
+          }
+        },
+        "merkle_root": {
+          "description": "Optional: merkle root (use WASM to generate)",
+          "type": "string",
+          "format": "binary",
+          "example": "916ea8882cdbe350ca9cec48680e4bf37d75930d8d033bed57128c0809537336"
+        },
+        "signature": {
+          "description": "Optional: signature (use WASM to generate)",
+          "type": "string",
+          "format": "binary",
+          "example": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+        }
+      }
+    },
+    "LoginRequest": {
+      "properties": {
+        "email": {
+          "description": "Requred: Email",
+          "type": "string"
+        },
+        "g-recaptcha-response": {
+          "description": "Response from google Recaptcha",
+          "type": "string"
+        },
+        "password": {
+          "description": "Requred: Password",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "LookupResponse": {
+      "properties": {
+        "response": {
+          "properties": {
+            "error": {
+              "properties": {
+                "code": {
+                  "description": "Error code",
+                  "type": "string"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "reason"
+              ]
+            },
+            "result": {
+              "description": "Records associated with EmojiID",
+              "type": "array",
+              "items": {
+                "description": "Emoji tags data",
+                "properties": {
+                  "data": {
+                    "description": "Category data in text or hex encoded formats",
+                    "type": "string"
+                  },
+                  "hash": {
+                    "description": "Hash identifies record, can be used to delete records",
+                    "type": "string",
+                    "format": "binary",
+                    "example": "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
+                  },
+                  "tag": {
+                    "description": "Category as a hex string number",
+                    "type": "string",
+                    "example": "0x4001"
+                  }
+                },
+                "required": [
+                  "data",
+                  "hash",
+                  "tag"
+                ]
+              }
+            },
+            "status": {
+              "description": "Response status.\n If true, the requested data will be in the result field, null otherwise",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "status"
+          ]
+        },
+        "views_past_month": {
+          "description": "Number of times emoji viewed during past month",
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "required": [
+        "response",
+        "views_past_month"
+      ]
+    },
+    "MagicLinkLoginRequest": {
+      "properties": {
+        "email": {
+          "description": "Email",
+          "type": "string"
+        },
+        "g-recaptcha-response": {
+          "description": "Response from google Recaptcha",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "MagicLinkLoginResponse": {
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
+      ]
+    },
+    "NewUserInterestParameters": {
+      "properties": {
+        "eid": {
+          "description": "EmojiID to express interest in",
+          "type": "string",
+          "example": "🐱🐲🐳🐴🐵"
+        }
+      },
+      "required": [
+        "eid"
+      ]
+    },
+    "ProxyCallParameters": {
+      "properties": {
+        "data": {
+          "description": "The data to pass through to the proxied service",
+          "type": "string"
+        },
+        "service": {
+          "description": "`ProxyService` type",
+          "type": "string",
+          "enum": [
+            "Microlink",
+            "Echo"
+          ]
+        }
+      },
+      "required": [
+        "service"
+      ]
+    },
+    "ProxyResult": {
+      "properties": {
+        "value": {
+          "description": "The response from the proxied service as a String",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Pubkey": {
+      "description": "Public key",
+      "type": "string",
+      "example": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f"
+    },
+    "RefreshRequest": {
+      "properties": {
+        "refresh_token": {
+          "description": "Refresh token obtained from login request",
+          "type": "string"
+        }
+      },
+      "required": [
+        "refresh_token"
+      ]
+    },
+    "RegisterUserParameters": {
+      "properties": {
+        "email": {
+          "description": "Required: email address",
+          "type": "string"
+        },
+        "first_name": {
+          "description": "Optional: first name",
+          "type": "string"
+        },
+        "g-recaptcha-response": {
+          "description": "Response from google Recaptcha",
+          "type": "string"
+        },
+        "last_name": {
+          "description": "Optional: last name",
+          "type": "string"
+        },
+        "password": {
+          "description": "Optional: password",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ]
+    },
+    "SearchResult": {
+      "properties": {
+        "alternates": {
+          "description": "Alternative Emoji IDs",
+          "type": "array",
+          "items": {
+            "properties": {
+              "available": {
+                "description": "Whether the EID is available for purchase",
+                "type": "boolean"
+              },
+              "discounted_price": {
+                "description": "Pricing in US cents, e.g. 1024 is 10.24 USD.\n Discounted price is 0 if the emoji is not available",
+                "type": "integer",
+                "format": "int64"
+              },
+              "eid": {
+                "description": "Emoji ID in percent url-encoded form",
+                "type": "string",
+                "example": "🐱🐲🐳🐴🐵"
+              },
+              "price": {
+                "description": "Pricing in US cents, e.g. 1024 is 10.24 USD.\n Price is 0 if the emoji is not available",
+                "type": "integer",
+                "format": "int64"
+              },
+              "views_past_month": {
+                "description": "Total lookups using this API, if someone is viewing this EID\n using their own self hosted node, it will not be counted here",
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "required": [
+              "available",
+              "discounted_price",
+              "eid",
+              "price",
+              "views_past_month"
+            ]
+          }
+        },
+        "result": {
+          "description": "The specific Emoji ID that the user requests",
+          "properties": {
+            "available": {
+              "description": "Whether the EID is available for purchase",
+              "type": "boolean"
+            },
+            "discounted_price": {
+              "description": "Pricing in US cents, e.g. 1024 is 10.24 USD.\n Discounted price is 0 if the emoji is not available",
+              "type": "integer",
+              "format": "int64"
+            },
+            "eid": {
+              "description": "Emoji ID in percent url-encoded form",
+              "type": "string",
+              "example": "🐱🐲🐳🐴🐵"
+            },
+            "price": {
+              "description": "Pricing in US cents, e.g. 1024 is 10.24 USD.\n Price is 0 if the emoji is not available",
+              "type": "integer",
+              "format": "int64"
+            },
+            "views_past_month": {
+              "description": "Total lookups using this API, if someone is viewing this EID\n using their own self hosted node, it will not be counted here",
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "required": [
+            "available",
+            "discounted_price",
+            "eid",
+            "price",
+            "views_past_month"
+          ]
+        }
+      },
+      "required": [
+        "alternates",
+        "result"
+      ]
+    },
+    "TokenResponse": {
+      "properties": {
+        "access_token": {
+          "description": "Access token",
+          "type": "string"
+        },
+        "refresh_token": {
+          "description": "Refresh token,  only required for 2FA (???)",
+          "type": "string"
+        },
+        "requires_2fa": {
+          "description": "Whether has 2FA enabled or not"
+        }
+      },
+      "required": [
+        "access_token",
+        "refresh_token"
+      ]
+    },
+    "UpdateCartRequest": {
+      "properties": {
+        "items": {
+          "description": "New items to add to cart",
+          "type": "array",
+          "items": {
+            "description": "Buy emoji",
+            "properties": {
+              "eid": {
+                "description": "EmojiID to buy",
+                "type": "string",
+                "example": "🐱🐲🐳🐴🐵"
+              },
+              "redemption_code": {
+                "description": "Redemption Code if applicable",
+                "type": "string"
+              }
+            },
+            "required": [
+              "eid"
+            ]
+          }
+        },
+        "tracking_data": {
+          "description": "Tracking data",
+          "type": "object"
+        }
+      },
+      "required": [
+        "items"
+      ]
+    }
+  },
+  "paths": {
+    "/auth/2fa": {
+      "post": {
+        "tags": [
+          "User Authentication"
+        ],
+        "summary": " Two factor authentication",
+        "description": "Complete login flow when user requires 2FA. `refresh_token` obtained from a call to `/token` or `/token/refresh` should be used to complete authentication. **Note:** 2FA token has expiration timeout, which is when expired sensitive operations would require authentication via 2fa once again.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TokenResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Confirm2Fa"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/magic_link": {
+      "post": {
+        "tags": [
+          "User Authentication"
+        ],
+        "summary": " Generate magic link for login",
+        "description": "Will generate and send magic link to provided user's email. Assuming the email address corresponds to a valid user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/MagicLinkLoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MagicLinkLoginRequest"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/token": {
+      "post": {
+        "tags": [
+          "User Authentication"
+        ],
+        "summary": " Login via password",
+        "description": "Login via username/password. Will return access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /auth/2fa`.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TokenResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginRequest"
+            }
+          }
+        ]
+      }
+    },
+    "/auth/token/refresh": {
+      "post": {
+        "tags": [
+          "User Authentication"
+        ],
+        "summary": " Refreshes access token",
+        "description": "Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /2fa`",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/TokenResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefreshRequest"
+            }
+          }
+        ]
+      }
+    },
+    "/cart": {
+      "get": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": " Return cart content",
+        "description": "User requires scope `CartShow`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}}
+      },
+      "put": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": " Replace cart items",
+        "description": "User requires scope `CartUpdate`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateCartRequest"
+            }
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": " Update cart items",
+        "description": "Will add new items to the cart. User requires scope `CartUpdate`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateCartRequest"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": " Clean up cart",
+        "description": "User requires scope `CartUpdate`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}}
+      }
+    },
+    "/cart/checkout": {
+      "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": " Checkout cart",
+        "description": "Submit order with provided payment details.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CheckoutCartRequest"
+            }
+          }
+        ]
+      }
+    },
+    "/emoji": {
+      "get": {
+        "tags": [
+          "Emoji"
+        ],
+        "summary": " List emojis",
+        "description": "If no parameters provided will return all emojis of current user. When `user_id` or `organization_id` specified will return emojis owned by specified user or organization, requires Admin or organization power user access. Result is array of emojis `[\"🍗\",\"🌈\"]`",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "description": "Lookup emojis owned by `organization_id`,\n requires organization power user role",
+            "in": "query",
+            "name": "organization_id",
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "description": "Lookup emojis owned by `user_id`,\n requires Admin role",
+            "in": "query",
+            "name": "user_id",
+            "type": "string",
+            "format": "uuid"
+          }
+        ]
+      }
+    },
+    "/emoji/search": {
+      "get": {
+        "tags": [
+          "Emoji"
+        ],
+        "summary": " Search for EmojiID",
+        "description": "Returns price, availability and other information on emoji and its alternates (similar EmojiIDs that are currently available)",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SearchResult"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "description": "Emoji ID in percent url-encoded form",
+            "in": "query",
+            "name": "eid",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "Redemption code",
+            "in": "query",
+            "name": "redemption_code",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/emoji/{eid}": {
+      "get": {
+        "tags": [
+          "Emoji"
+        ],
+        "summary": " Lookup EmojiId",
+        "description": "Will filter and return data from supplied tags, If tags filter is not supplied will return all tags attached. It will also try to get views for the past month, if not available will return -1. This method is called when a user wants to look up an EID's records such as a crypto address or a redirect",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LookupResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "description": "Comma-separated list of tags to display, skip it to display all, e.g. `?tags=0x0001,0x1001`",
+            "in": "query",
+            "name": "tags",
+            "type": "string"
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Emoji"
+        ],
+        "summary": " Edit EmojiId",
+        "description": "Add and remove records in EmojiId, update merkle_root and signature too. Access notes: user expected to own the emoji's pubkey, have Admin role or be power member of organization if pubkey belongs to organization, otherwise operation will fail.",
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EditRequest"
+            }
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "eid",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/proxy": {
+      "post": {
+        "tags": [
+          "Proxy"
+        ],
+        "summary": " Calls a pre-defined proxy service with the provided data",
+        "description": "Returns the response from the proxied service as a string",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ProxyResult"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProxyCallParameters"
+            }
+          }
+        ]
+      }
+    },
+    "/pubkeys": {
+      "get": {
+        "tags": [
+          "Key Management"
+        ],
+        "summary": " Retrieve pubkeys",
+        "description": "Retrieves pubkeys owned by currently authenticated user. This call expects empty body.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Pubkey"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Key Management"
+        ],
+        "summary": " Generate custodial wallet",
+        "description": "Generates custodial wallet with pubkey for currently authenticated user. This call expects empty body.",
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Pubkey"
+            }
+          }
+        }
+      }
+    },
+    "/pubkeys/{pubkey}": {
+      "post": {
+        "tags": [
+          "Key Management"
+        ],
+        "summary": " Add pubkey for current user",
+        "description": "This call expects empty body",
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "in": "path",
+            "name": "pubkey",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/user_interests": {
+      "get": {
+        "tags": [
+          "User Interest"
+        ],
+        "summary": " Returns a paginated list of user interest records associated with the user",
+        "description": "User requires scope `UserInterestRead`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}}
+      },
+      "post": {
+        "tags": [
+          "User Interest"
+        ],
+        "summary": " Create new interest in emoji to be notified when available",
+        "description": "User requires scope `UserInterestWrite`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewUserInterestParameters"
+            }
+          }
+        ]
+      }
+    },
+    "/user_interests/{eid}": {
+      "get": {
+        "tags": [
+          "User Interest"
+        ],
+        "summary": " Given an EmojiId returns information about the user interest if a record exists for this user",
+        "description": "User requires scope `UserInterestRead`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}}
+      },
+      "delete": {
+        "tags": [
+          "User Interest"
+        ],
+        "summary": " Destroys the user interest preventing this eid's notification emails from being sent for this user",
+        "description": "User requires scope `UserInterestDelete`.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}}
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "eid",
+          "required": true,
+          "type": "string"
+        }
+      ]
+    },
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": " Register a User",
+        "description": "Create a user and a custodial wallet",
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUserParameters"
+            }
+          }
+        ]
+      }
+    },
+    "/users/{user_id}/pubkeys": {
+      "get": {
+        "tags": [
+          "Key Management"
+        ],
+        "summary": " Retrieve pubkeys by user_id",
+        "description": "NOTE: user should have scope `UserPubkeyList`",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Pubkey"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ]
+      }
+    },
+    "/users/{user_id}/pubkeys/{pubkey}": {
+      "post": {
+        "tags": [
+          "Key Management"
+        ],
+        "summary": " Add pubkey for user by user_id",
+        "description": "NOTE: user should have scope `UserPubkeyWrite` This call expects empty body",
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {"200": {"description": "OK"}},
+        "parameters": [
+          {
+            "description": "Public key to add",
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "description": "`user_id` to grant public key ownership to",
+            "in": "path",
+            "name": "pubkey",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "in": "header",
+      "description": "When user has 2FA configured: JWT token in `Bearer TOKEN` format which has not expired 2FA timeout",
+      "name": "API"
+    }
+  },
+  "tags": [
+    {
+      "name": "User Authentication",
+      "description": "From a user experience standpoint, we want encourage the use of magic links <br />\n                1. Users request a magic link <br />\n                2. If 2FA is enabled submit proceed to 2FA\n                "
+    },
+    {
+      "name": "Cart",
+      "description": "Cart management endpoints"
+    },
+    {
+      "name": "Emoji",
+      "description": "\n                Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`,\n                this is when a user wants to get records associated with an Emoji ID.\n            "
+    },
+    {
+      "name": "User Interest",
+      "description": "User Interest endpoints. Endpoints for users to express interest in Emoji IDs."
+    },
+    {
+      "name": "Users",
+      "description": "User Management. Only applicable for users with custodial wallets."
+    },
+    {
+      "name": "Key Management",
+      "description": "Manage a user's public keys"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Sample Yat API reference"
+  }
+}

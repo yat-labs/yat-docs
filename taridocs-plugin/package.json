@@ -1,0 +1,17 @@
+{
+  "name": "taridocs-plugin",
+  "version": "1.0.0",
+  "description": "Provides additional functionality to Docusaurus for creating OpenAPI-based documentation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cayle Sharrock <CjS77>",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "rimraf": "^3.0.2",
+    "superagent": "^6.1.0",
+    "widdershins": "^4.0.1"
+  }
+}
