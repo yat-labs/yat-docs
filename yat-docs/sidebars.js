@@ -1,7 +1,7 @@
 module.exports = {
   docs: {
-    'User Guides': ['integration'],
-    'API Documentation': [],
-    'SDK Documentation': []
+    'User Guides': ['guides/integration'],
+    'API Documentation': ['api_reference/api'],
+    'SDK Documentation': ['sdk_docs/sdk_kotlin', 'sdk_docs/sdk_nodejs']
   },
 };

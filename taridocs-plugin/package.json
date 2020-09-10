@@ -12,6 +12,8 @@
     "debug": "^4.1.1",
     "rimraf": "^3.0.2",
     "superagent": "^6.1.0",
+    "traverse": "^0.6.6",
+    "valid-url": "^1.0.9",
     "widdershins": "^4.0.1"
   }
 }

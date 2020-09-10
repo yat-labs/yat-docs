@@ -1,3 +1,9 @@
+const swagger = require('./lib/swagger_parser');
+const sdk = require('./lib/sdk_generator');
+const fs = require('fs').promises;
+const debug = require('debug')('tari-docs:plugin');
+const path = require('path');
+
 const DEFAULT_OPTIONS = {
     specification: "swagger.json"
 };
@@ -13,14 +19,11 @@ module.exports = function (context, opts) {
         name: 'taridocs-plugin',
 
         async loadContent() {
-            // The loadContent hook is executed after siteConfig and env has been loaded.
-            // You can return a JavaScript object that will be passed to contentLoaded hook.
+            const apiMarkdown = await swagger.openapi_to_markdown(options);
+            await writeApiReference(apiMarkdown, context);
         },
 
-        async contentLoaded({content, actions}) {
-            // The contentLoaded hook is done after loadContent hook is done.
-            // `actions` are set of functional API provided by Docusaurus (e.g. addRoute)
-        },
+        async contentLoaded({content, actions}) {},
 
         async postBuild(props) {
             // After docusaurus <build> finish.
@@ -40,3 +43,13 @@ module.exports = function (context, opts) {
         },
     };
 };
+
+async function writeApiReference(apiMarkdown, context) {
+    try {
+        const srcDir = context.siteDir;
+        const outPath = path.resolve(srcDir, "docs/api_reference/api.md");
+        await fs.writeFile(outPath, apiMarkdown);
+    } catch (e) {
+        debug("Could not write API reference markdown");
+    }
+}
