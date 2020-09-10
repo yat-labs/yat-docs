@@ -76,7 +76,31 @@ function cleanupApi(api) {
     return api;
 }
 
+async function writeApiReference(apiMarkdown, dest) {
+    try {
+        await fs.writeFile(dest, apiMarkdown);
+    } catch (e) {
+        debug("Could not write API reference markdown");
+    }
+}
+
+async function generateApiReference(ctx, options) {
+    debug("Generating API reference documentation...")
+    const apiMarkdown = await openapi_to_markdown(options);
+    const dest = path.resolve(ctx.siteDir, options.apiRefPath);
+    await writeApiReference(apiMarkdown, dest);
+    debug(`API reference documentation written to ${dest}`);
+}
+
+async function deleteApiReference(ctx, options) {
+    debug("Cleaning Api reference directory...");
+    let apiFile = path.resolve(ctx.siteDir, options.apiRefPath);
+    await fs.unlink(apiFile);
+}
+
 module.exports = {
     fetch_swagger_spec,
-    openapi_to_markdown
+    deleteApiReference,
+    writeApiReference,
+    generateApiReference
 }

@@ -9,32 +9,35 @@ const validUrl = require('valid-url');
 
 /**
  * Deletes the SDK folder
- * @param config
  */
-function cleanSDKs() {
-    let sdk_dir =  path.resolve('./sdks');
-    debug("SDK folder removal (%s) starting...", sdk_dir);
-    rimraf.sync(sdk_dir);
+async function cleanSdks(ctx, options) {
+    const sdkDir = path.resolve(ctx.siteDir, options.sdkPath);
+    debug("SDK folder removal (%s) starting...", sdkDir);
+    rimraf.sync(sdkDir);
+    const sdkDocDir = path.resolve(ctx.siteDir, options.sdkDocPath);
+    debug("SDK Doc folder removal (%s) starting...", sdkDocDir);
+    rimraf.sync(sdkDocDir);
     debug("SDK folder removal complete");
 }
 
 /**
  * Create an object to attach to the hexo context variable containing the parsed swagger markdown for each page
  */
-async function generateSDKs(config) {
-    let sdk_dir =  path.resolve('./sdks');
+async function generateSDKs(ctx, options) {
+    debug("Generating SDK docs...");
+    const sdkDir = path.resolve(ctx.siteDir, options.sdkPath);
     try {
-        await fs.mkdir(path.join(sdk_dir, "config"), { recursive: true });
+        await fs.mkdir(path.join(sdkDir, "config"), { recursive: true });
     } catch (err) {
         debug("Error creating SDK generation folder");
         throw err;
     }
-    const spec = config.specification || 'swagger.json';
-    const languages = config.languages || [];
+    const spec = options.specification;
+    const languages = options.languages;
     for (const lang of languages) {
         try {
             // Generate the SDK
-            await runOpenAPIGenerator(config, spec, lang, sdk_dir);
+            await runOpenAPIGenerator(options, spec, lang, sdkDir);
             // Copy the Documentation to a local object
         } catch (err) {
             debug("Error parsing Swagger spec %s: %O", spec.title, err.message);
@@ -148,7 +151,7 @@ async function generateSdkDoc(lang, sdk_src) {
 }
 
 module.exports = {
-    cleanSDKs,
+    cleanSdks,
     generateSDKs,
     loadSdkOptions
 }

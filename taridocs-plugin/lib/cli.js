@@ -1,46 +1,72 @@
 const debug = require('debug')('tari-docs:main');
 const paths = require('path');
 const sdk = require("./sdk_generator");
+const swagger = require('./swagger_parser');
 
-module.exports = function(program) {
+module.exports = function(program, ctx, options) {
+
+    function exec_wrapper(cmd) {
+        exec(cmd, ctx, options).then(() => {
+            debug("Completed execution.")
+        }).catch(err => {
+            console.error("Failed execution", err);
+        });
+    }
+
     program.command('clean-sdk')
-        .description('Delete all generated documentation files')
+        .description('Delete all generated SDK documentation files')
         .action(exec_wrapper);
     program.command('generate-sdk')
         .description('Build the SDKs and then quit')
         .action(exec_wrapper);
+    program.command('clean-api-ref')
+        .description('Delete all generated documentation files')
+        .action(exec_wrapper);
+    program.command('generate-api-ref')
+        .description('Build the API reference documentation and then quit')
+        .action(exec_wrapper);
+    program.command('clean-docs')
+        .description('Delete all generated SDK and API reference documentation files')
+        .action(exec_wrapper);
+    program.command('generate-docs')
+        .description('Generate and save the SDK and API reference docs without building the website')
+        .action(exec_wrapper);
     return program;
 }
 
-function exec_wrapper(cmd) {
-    exec(cmd).then(() => {
-        debug("Completed execution.")
-    }).catch(err => {
-        console.error("Failed execution", err);
-    });
-}
 
-async function exec(cmd) {
+
+async function exec(cmd, ctx, options) {
     let command = cmd.name();
     debug('Executing command: %s', command);
     switch (command) {
-        case "clean-sdk": return cleanSdks();
-        case "generate-sdk": return generateSDKs();
+        case "clean-sdk": return sdk.cleanSdks(ctx, options);
+        case "generate-sdk": return generateSDKs(ctx, options);
+        case "clean-api-ref": return swagger.deleteApiReference(ctx, options);
+        case "generate-api-ref": return swagger.generateApiReference(ctx, options);
+        case "clean-docs": return cleanDocs(ctx, options);
+        case "generate-docs": return generateDocs(ctx, options);
         default:
             debug("Unknown command: %s", command);
             return;
     }
 }
 
-async function cleanSdks() {
-    debug("Cleaning SDK directory...");
-    return sdk.cleanSDKs();
+
+async function cleanDocs(ctx, options) {
+    await sdk.cleanSdks(ctx, options);
+    await swagger.deleteApiReference(ctx, options);
 }
 
-async function generateSDKs() {
-    debug("Loading SDK config...");
-    // Ugly hack, but I don't know if docusaurus sends through any global here / the config.
-    let opts = await sdk.loadSdkOptions(paths.resolve('./sdk_generator_opts.yml'));
+async function generateSDKs(ctx, options) {
     debug("Generating docs...");
-    return sdk.generateSDKs(opts);
+    const sdkDir = paths.resolve(ctx.siteDir, options.sdkPath);
+    return sdk.generateSDKs(sdkDir, options);
+}
+
+
+
+async function generateDocs() {
+    await generateSDKs();
+    await swagger.generateApiReference();
 }

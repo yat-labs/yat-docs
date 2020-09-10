@@ -5,7 +5,13 @@ const debug = require('debug')('tari-docs:plugin');
 const path = require('path');
 
 const DEFAULT_OPTIONS = {
-    specification: "swagger.json"
+    specification: "swagger.json",
+    apiRefPath: "docs/api_reference/api.md",
+    sdkPath: "sdks",
+    sdkDocPath: "docs/sdks",
+    generateApiReference: true,
+    generateSDks: true,
+    languages: ["nodejs", "kotlin", "swift5"]
 };
 
 // A JavaScript function that returns an object.
@@ -19,37 +25,16 @@ module.exports = function (context, opts) {
         name: 'taridocs-plugin',
 
         async loadContent() {
-            const apiMarkdown = await swagger.openapi_to_markdown(options);
-            await writeApiReference(apiMarkdown, context);
-        },
-
-        async contentLoaded({content, actions}) {},
-
-        async postBuild(props) {
-            // After docusaurus <build> finish.
-        },
-
-        getThemePath() {
-            // Returns the path to the directory where the theme components can
-            // be found.
+            if (options.generateApiReference) {
+                await swagger.generateApiReference(context, options);
+            }
+            if (options.generateSDks) {
+                await sdk.generateSDKs(context, options);
+            }
         },
 
         extendCli(program) {
-            require("./lib/cli")(program);
-        },
-
-        injectHtmlTags() {
-            // Inject head and/or body HTML tags.
+            require("./lib/cli")(program, context, options);
         },
     };
 };
-
-async function writeApiReference(apiMarkdown, context) {
-    try {
-        const srcDir = context.siteDir;
-        const outPath = path.resolve(srcDir, "docs/api_reference/api.md");
-        await fs.writeFile(outPath, apiMarkdown);
-    } catch (e) {
-        debug("Could not write API reference markdown");
-    }
-}

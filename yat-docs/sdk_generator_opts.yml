@@ -1,151 +1,131 @@
-# filename or URL works
-specification: swagger.json
-
-# Languages to generate code snippets for
-languages:
-  - nodejs
-  - kotlin
-  - swift5
-
-# These options are passed directly to swagger-parser. Options are details at https://apitools.dev/swagger-parser/docs/options.html
-swagger_parser:
-  validate:
-    schema: true
-
-sdks:
-  # Destination directory; relative to the config directory
-  dest_dir: sdks
-
-
-openapi_generator:
-  # Javascript SDK generation options
-  nodejs:
-    #  boolean, toggles whether unicode identifiers are allowed in names or not, default is false (Default: false)
-    allowUnicodeIdentifiers: true
-    # package for generated api classes
-    apiPackage: yatjs
-    # Specify the behavior when the 'additionalProperties' keyword is not present in the OAS document. If false: the
-    # 'additionalProperties' implementation is compliant with the OAS and JSON schema specifications. If true: when the
-    # 'additionalProperties' keyword is not present in a schema, the value of 'additionalProperties' is set to false,
-    # i.e. no additional properties are allowed. Note: this mode is not compliant with the JSON schema specification.
-    # This is the original openapi-generator behavior.This setting is currently ignored for OAS 2.0 documents:  1)
-    # When the 'additionalProperties' keyword is not present in a 2.0 schema, additional properties are NOT allowed.
-    # 2) Boolean values of the 'additionalProperties' keyword are ignored. It's as if additional properties are NOT
-    # allowed.Note: the root cause are issues #1369 and #1371, which must be resolved in the swagger-parser project.
-    #(Default: true)
-    disallowAdditionalPropertiesIfNotPresent: true
-    # generate JSDoc comments (Default: true)
-    emitJSDoc: true
-    # generate getters and setters for model properties (Default: false)
-    emitModelMethods: false
-    # Whether to ensure parameter names are unique in an operation (rename parameters that are not). (Default: true)
-    ensureUniqueParams: true
-    # Hides the generation timestamp when files are generated. (Default: true)
-    hideGenerationTimestamp: true
-    # root package for generated code
-    invokerPackage: invokers
-    # This flag is used by OpenAPITools codegen to influence the processing of the discriminator attribute in OpenAPI
-    # documents. This flag has no impact if the OAS document does not use the discriminator attribute. The default value
-    # of this flag is set in each language-specific code generator (e.g. Python, Java, go...)using the method
-    # toModelName. Note to developers supporting a language generator in OpenAPITools; to fully support the
-    # discriminator attribute as defined in the OAS specification 3.x, language generators should set this flag to
-    # true by default; however this requires updating the mustache templates to generate a language-specific
-    # discriminator lookup function that iterates over {{#mappedModels}} and does not iterate over {{children}},
-    # {{#anyOf}}, or {{#oneOf}}. (Default: true)
-    #  true - The mapping in the discriminator includes descendent schemas that allOf inherit from self and the
-    # discriminator mapping schemas in the OAS document.
-    #  false - The mapping in the discriminator includes any descendent schemas that allOf inherit from self, any
-    # oneOf schemas, any anyOf schemas, any x-discriminator-values, and the discriminator mapping schemas in the OAS
-    # document AND Codegen validates that oneOf and anyOf schemas contain the required discriminator and throws an
-    # error if the discriminator is missing.
-    legacyDiscriminatorBehavior: true
-    # name of the license the project uses (Default: using info.license.name)
-    # licenseName:
-    # package for generated models
-    modelPackage: models
-    # Naming convention for the property: 'camelCase', 'PascalCase', 'snake_case' and 'original', which keeps the
-    # original name (Default: camelCase)
-    modelPropertyNaming: camelCase
-    # module name for AMD, Node or globals (Default: generated from <projectName>)
-    moduleName: YatJs
-    # Use this property to set an url your private npmRepo in the package.json
-    #npmRepository
-    # Add form or body parameters to the beginning of the parameter list. (Default: false)
-    prependFormOrBodyParameters: false
-    # version of the project (Default: using info.version or "1.0.0")
-    # projectVersion: 1.0.0
-    # Sort model properties to place required parameters before optional parameters. (Default: true)
-    sortModelPropertiesByRequiredFlag: true
-    # Sort method arguments to place required parameters before optional parameters. (Default: true)
-    sortParamsByRequiredFlag: true
-    # source folder for generated code (Default: src)
-    sourceFolder: source/sdks
-    # use JavaScript ES6 (ECMAScript 6).  (Default: true)
-    useES6: true
-    # use JavaScript prototype chains & delegation for inheritance (Default: true)
-    useInheritance: true
-    # use Promises as return values from the client API, instead of superagent callbacks (Default: false)
-    usePromises: true
-  kotlin:
-    # suffix for api classes (Default: Api)
-    apiSuffix: Api
-    # Generated artifact id (name of jar). (Default: kotlin-client)
-    artifactId: kotlin-client
-    # Generated artifact's package version. (Default: 1.0.0)
-    artifactVersion: 1.0.0
-    # Option. Collection type to use (Default: list)
-    #   array - kotlin.Array
-    #   list - kotlin.collections.List
-    collectionType: list
-    # Option. Date library to use (Default: java8)
-    #   threetenbp-localdatetime - Threetenbp - Backport of JSR310 (jvm only, for legacy app only)
-    #   string - String
-    #   java8-localdatetime - Java 8 native JSR310 (jvm only, for legacy app only)
-    #   java8 - Java 8 native JSR310 (jvm only, preferred for jdk 1.8+)
-    #   threetenbp - Threetenbp - Backport of JSR310 (jvm only, preferred for jdk < 1.8)
-    dateLibrary: java8
-    # Naming convention for enum properties: 'camelCase', 'PascalCase', 'snake_case', 'UPPERCASE', and 'original'
-    # (Default: camelCase)
-    enumPropertyNaming: camelCase
-    # Generated artifact package's organization (i.e. maven groupId). (Default: org.openapitools)
-    groupId: com.tarilabs
-    # Library template (sub-template) to use (Default: jvm-okhttp4)
-    #   jvm-okhttp4 - Platform: Java Virtual Machine.
-    #                 HTTP client: OkHttp 4.2.0 (Android 5.0+ and Java 8+).
-    #                 JSON processing: Moshi 1.8.0.
-    #   jvm-okhttp3 - Platform: Java Virtual Machine.
-    #                 HTTP client: OkHttp 3.12.4 (Android 2.3+ and Java 7+).
-    #                 JSON processing: Moshi 1.8.0.
-    #   jvm-retrofit2 - Platform: Java Virtual Machine. HTTP client: Retrofit 2.6.2.
-    #   multiplatform - Platform: Kotlin multiplatform.
-    #                   HTTP client: Ktor 1.2.4.
-    #                   JSON processing: Kotlinx Serialization: 0.12.0.
-    library: jvm-okhttp4
-    #Create mutable models (Default: false)
-    modelMutable: false
-    # Generated artifact package name. (Default: org.openapitools.client)
-    packageName: com.tarilabs.client
-    # toggle "@Parcelize" for generated models
-    parcelizeModels: true
-    # JVM-Option. Defines in how to handle date-time objects that are used for a request (as query or parameter)
-    #   toJson - [DEFAULT] Date formater option using a json converter.
-    #   toString - Use the 'toString'-method of the date-time object to retrieve the related string representation.
-    requestDateConverter: toJson
-    # boolean - toggle "implements Serializable" for generated models
-    serializableModel: true
-    # What serialization library to use: 'moshi' (default), or 'gson' or 'jackson' (Default: moshi)
-    serializationLibrary: moshi
-    # Sort model properties to place required parameters before optional parameters.
-    sortModelPropertiesByRequiredFlag: true
-    # Sort method arguments to place required parameters before optional parameters.
-    sortParamsByRequiredFlag: true
-    # source folder for generated code (Default: src/main/kotlin)
-    sourceFolder: src/main/kotlin
-    # Whether to use the Coroutines adapter with the retrofit2 library. (Default: false)
-    useCoroutines: false
-    # Whether to use the RxJava adapter with the retrofit2 library. (Default: false)
-    useRxJava: false
-    # Whether to use the RxJava2 adapter with the retrofit2 library. (Default: false)
-    useRxJava2: false
-    # Whether to use the RxJava3 adapter with the retrofit2 library. (Default: false)
-    useRxJava3: false
+# Javascript SDK generation options
+nodejs:
+  #  boolean, toggles whether unicode identifiers are allowed in names or not, default is false (Default: false)
+  allowUnicodeIdentifiers: true
+  # package for generated api classes
+  apiPackage: yatjs
+  # Specify the behavior when the 'additionalProperties' keyword is not present in the OAS document. If false: the
+  # 'additionalProperties' implementation is compliant with the OAS and JSON schema specifications. If true: when the
+  # 'additionalProperties' keyword is not present in a schema, the value of 'additionalProperties' is set to false,
+  # i.e. no additional properties are allowed. Note: this mode is not compliant with the JSON schema specification.
+  # This is the original openapi-generator behavior.This setting is currently ignored for OAS 2.0 documents:  1)
+  # When the 'additionalProperties' keyword is not present in a 2.0 schema, additional properties are NOT allowed.
+  # 2) Boolean values of the 'additionalProperties' keyword are ignored. It's as if additional properties are NOT
+  # allowed.Note: the root cause are issues #1369 and #1371, which must be resolved in the swagger-parser project.
+  #(Default: true)
+  disallowAdditionalPropertiesIfNotPresent: true
+  # generate JSDoc comments (Default: true)
+  emitJSDoc: true
+  # generate getters and setters for model properties (Default: false)
+  emitModelMethods: false
+  # Whether to ensure parameter names are unique in an operation (rename parameters that are not). (Default: true)
+  ensureUniqueParams: true
+  # Hides the generation timestamp when files are generated. (Default: true)
+  hideGenerationTimestamp: true
+  # root package for generated code
+  invokerPackage: invokers
+  # This flag is used by OpenAPITools codegen to influence the processing of the discriminator attribute in OpenAPI
+  # documents. This flag has no impact if the OAS document does not use the discriminator attribute. The default value
+  # of this flag is set in each language-specific code generator (e.g. Python, Java, go...)using the method
+  # toModelName. Note to developers supporting a language generator in OpenAPITools; to fully support the
+  # discriminator attribute as defined in the OAS specification 3.x, language generators should set this flag to
+  # true by default; however this requires updating the mustache templates to generate a language-specific
+  # discriminator lookup function that iterates over {{#mappedModels}} and does not iterate over {{children}},
+  # {{#anyOf}}, or {{#oneOf}}. (Default: true)
+  #  true - The mapping in the discriminator includes descendent schemas that allOf inherit from self and the
+  # discriminator mapping schemas in the OAS document.
+  #  false - The mapping in the discriminator includes any descendent schemas that allOf inherit from self, any
+  # oneOf schemas, any anyOf schemas, any x-discriminator-values, and the discriminator mapping schemas in the OAS
+  # document AND Codegen validates that oneOf and anyOf schemas contain the required discriminator and throws an
+  # error if the discriminator is missing.
+  legacyDiscriminatorBehavior: true
+  # name of the license the project uses (Default: using info.license.name)
+  # licenseName:
+  # package for generated models
+  modelPackage: models
+  # Naming convention for the property: 'camelCase', 'PascalCase', 'snake_case' and 'original', which keeps the
+  # original name (Default: camelCase)
+  modelPropertyNaming: camelCase
+  # module name for AMD, Node or globals (Default: generated from <projectName>)
+  moduleName: YatJs
+  # Use this property to set an url your private npmRepo in the package.json
+  #npmRepository
+  # Add form or body parameters to the beginning of the parameter list. (Default: false)
+  prependFormOrBodyParameters: false
+  # version of the project (Default: using info.version or "1.0.0")
+  # projectVersion: 1.0.0
+  # Sort model properties to place required parameters before optional parameters. (Default: true)
+  sortModelPropertiesByRequiredFlag: true
+  # Sort method arguments to place required parameters before optional parameters. (Default: true)
+  sortParamsByRequiredFlag: true
+  # source folder for generated code (Default: src)
+  sourceFolder: source/sdks
+  # use JavaScript ES6 (ECMAScript 6).  (Default: true)
+  useES6: true
+  # use JavaScript prototype chains & delegation for inheritance (Default: true)
+  useInheritance: true
+  # use Promises as return values from the client API, instead of superagent callbacks (Default: false)
+  usePromises: true
+kotlin:
+  # suffix for api classes (Default: Api)
+  apiSuffix: Api
+  # Generated artifact id (name of jar). (Default: kotlin-client)
+  artifactId: kotlin-client
+  # Generated artifact's package version. (Default: 1.0.0)
+  artifactVersion: 1.0.0
+  # Option. Collection type to use (Default: list)
+  #   array - kotlin.Array
+  #   list - kotlin.collections.List
+  collectionType: list
+  # Option. Date library to use (Default: java8)
+  #   threetenbp-localdatetime - Threetenbp - Backport of JSR310 (jvm only, for legacy app only)
+  #   string - String
+  #   java8-localdatetime - Java 8 native JSR310 (jvm only, for legacy app only)
+  #   java8 - Java 8 native JSR310 (jvm only, preferred for jdk 1.8+)
+  #   threetenbp - Threetenbp - Backport of JSR310 (jvm only, preferred for jdk < 1.8)
+  dateLibrary: java8
+  # Naming convention for enum properties: 'camelCase', 'PascalCase', 'snake_case', 'UPPERCASE', and 'original'
+  # (Default: camelCase)
+  enumPropertyNaming: camelCase
+  # Generated artifact package's organization (i.e. maven groupId). (Default: org.openapitools)
+  groupId: com.tarilabs
+  # Library template (sub-template) to use (Default: jvm-okhttp4)
+  #   jvm-okhttp4 - Platform: Java Virtual Machine.
+  #                 HTTP client: OkHttp 4.2.0 (Android 5.0+ and Java 8+).
+  #                 JSON processing: Moshi 1.8.0.
+  #   jvm-okhttp3 - Platform: Java Virtual Machine.
+  #                 HTTP client: OkHttp 3.12.4 (Android 2.3+ and Java 7+).
+  #                 JSON processing: Moshi 1.8.0.
+  #   jvm-retrofit2 - Platform: Java Virtual Machine. HTTP client: Retrofit 2.6.2.
+  #   multiplatform - Platform: Kotlin multiplatform.
+  #                   HTTP client: Ktor 1.2.4.
+  #                   JSON processing: Kotlinx Serialization: 0.12.0.
+  library: jvm-okhttp4
+  #Create mutable models (Default: false)
+  modelMutable: false
+  # Generated artifact package name. (Default: org.openapitools.client)
+  packageName: com.tarilabs.client
+  # toggle "@Parcelize" for generated models
+  parcelizeModels: true
+  # JVM-Option. Defines in how to handle date-time objects that are used for a request (as query or parameter)
+  #   toJson - [DEFAULT] Date formater option using a json converter.
+  #   toString - Use the 'toString'-method of the date-time object to retrieve the related string representation.
+  requestDateConverter: toJson
+  # boolean - toggle "implements Serializable" for generated models
+  serializableModel: true
+  # What serialization library to use: 'moshi' (default), or 'gson' or 'jackson' (Default: moshi)
+  serializationLibrary: moshi
+  # Sort model properties to place required parameters before optional parameters.
+  sortModelPropertiesByRequiredFlag: true
+  # Sort method arguments to place required parameters before optional parameters.
+  sortParamsByRequiredFlag: true
+  # source folder for generated code (Default: src/main/kotlin)
+  sourceFolder: src/main/kotlin
+  # Whether to use the Coroutines adapter with the retrofit2 library. (Default: false)
+  useCoroutines: false
+  # Whether to use the RxJava adapter with the retrofit2 library. (Default: false)
+  useRxJava: false
+  # Whether to use the RxJava2 adapter with the retrofit2 library. (Default: false)
+  useRxJava2: false
+  # Whether to use the RxJava3 adapter with the retrofit2 library. (Default: false)
+  useRxJava3: false

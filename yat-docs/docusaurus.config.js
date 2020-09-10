@@ -1,5 +1,6 @@
 const path = require('path');
-
+const yaml = require('yaml');
+const fs = require('fs');
 
 module.exports = {
   title: 'Yat Developer Documentation',
@@ -84,7 +85,20 @@ module.exports = {
   plugins: [
       [
           path.resolve(__dirname, '../taridocs-plugin'),
-          {}
+          {
+            specification: "swagger.json",
+            apiRefPath: "docs/api_reference/api.md",
+            sdkPath: "sdks",
+            sdkDocPath: "docs/sdks",
+            generateApiReference: true,
+            generateSDks: true,
+            languages: ["nodejs", "kotlin", "swift5"],
+            // These options are passed directly to swagger-parser. Options are details at https://apitools.dev/swagger-parser/docs/options.html
+            swagger_parser: {
+              validate: {schema: true}
+            },
+            openapi_generator: yaml.parse(fs.readFileSync("sdk_generator_opts.yml", "utf8"))
+          }
       ]
   ],
   presets: [
