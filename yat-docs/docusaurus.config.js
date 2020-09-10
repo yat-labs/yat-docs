@@ -92,7 +92,11 @@ module.exports = {
             apiRefPath: "docs/api_reference/api.md",
             sdkPath: "sdks",
             sdkDocPath: "docs/sdks",
-            languages: ["nodejs", "kotlin", "swift5"],
+            languages: [
+              {id: "nodejs", label: "Javascript / NodeJs"},
+              {id: "kotlin", label: "Android / Kotlin"},
+              {id: "swift5", label: "iOS / Swift 5"}
+            ],
             // These options are passed directly to swagger-parser. Options are details at https://apitools.dev/swagger-parser/docs/options.html
             swagger_parser: {
               validate: {schema: true}

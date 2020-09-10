@@ -3,6 +3,9 @@ id: index
 title: Sample Yat API reference
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 ----
 
 ## General information
@@ -10,7 +13,7 @@ title: Sample Yat API reference
 ### Description
 **Version:** 1.0.0
 
-No description provided.
+This is a temporary, hardcoded version of the Yat API.
 
 ----
 ## Authentication
@@ -22,32 +25,34 @@ No description provided.
 
 ## User Authentication
 
-From a user experience standpoint, we want encourage the use of magic links <br />                1. Users request a magic link <br />
-                2. If 2FA is enabled submit proceed to 2FA
-                
+From a user experience standpoint, we want encourage the use of magic links 1. Users request a magic link <br /> 2. If 2FA is enabled submit proceed to 2FA 
 
 ###  Two factor authentication
 
-> Code samples
+#### Example
   `POST /auth/2fa`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "code": {
-      "description": "Two factor authentication code",
-      "type": "string"
-    },
-    "refresh_token": {
-      "description": "Refresh token obtained from login request",
-      "type": "string"
-    }
-  },
-  "required": [
-    "code",
-    "refresh_token"
-  ]
+  "code": "string",
+  "refresh_token": "string"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -65,18 +70,27 @@ fetch('/auth/2fa',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Two factor authentication*
 
@@ -86,20 +100,8 @@ Complete login flow when user requires 2FA. `refresh_token` obtained from a call
 
 ```json
 {
-  "properties": {
-    "code": {
-      "description": "Two factor authentication code",
-      "type": "string"
-    },
-    "refresh_token": {
-      "description": "Refresh token obtained from login request",
-      "type": "string"
-    }
-  },
-  "required": [
-    "code",
-    "refresh_token"
-  ]
+  "code": "string",
+  "refresh_token": "string"
 }
 ```
 
@@ -125,25 +127,30 @@ This operation does not require authentication
 
 ###  Generate magic link for login
 
-> Code samples
+#### Example
   `POST /auth/magic_link`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "email": {
-      "description": "Email",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email"
-  ]
+  "email": "string",
+  "g-recaptcha-response": "string"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -161,18 +168,27 @@ fetch('/auth/magic_link',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Generate magic link for login*
 
@@ -182,19 +198,8 @@ Will generate and send magic link to provided user's email. Assuming the email a
 
 ```json
 {
-  "properties": {
-    "email": {
-      "description": "Email",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email"
-  ]
+  "email": "string",
+  "g-recaptcha-response": "string"
 }
 ```
 
@@ -220,30 +225,31 @@ This operation does not require authentication
 
 ###  Login via password
 
-> Code samples
+#### Example
   `POST /auth/token`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "email": {
-      "description": "Requred: Email",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    },
-    "password": {
-      "description": "Requred: Password",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email",
-    "password"
-  ]
+  "email": "string",
+  "g-recaptcha-response": "string",
+  "password": "string"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -261,18 +267,27 @@ fetch('/auth/token',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Login via password*
 
@@ -282,24 +297,9 @@ Login via username/password. Will return access and refresh tokens. NOTE: when `
 
 ```json
 {
-  "properties": {
-    "email": {
-      "description": "Requred: Email",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    },
-    "password": {
-      "description": "Requred: Password",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email",
-    "password"
-  ]
+  "email": "string",
+  "g-recaptcha-response": "string",
+  "password": "string"
 }
 ```
 
@@ -325,21 +325,29 @@ This operation does not require authentication
 
 ###  Refreshes access token
 
-> Code samples
+#### Example
   `POST /auth/token/refresh`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "refresh_token": {
-      "description": "Refresh token obtained from login request",
-      "type": "string"
-    }
-  },
-  "required": [
-    "refresh_token"
-  ]
+  "refresh_token": "string"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -357,18 +365,27 @@ fetch('/auth/token/refresh',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Refreshes access token*
 
@@ -378,15 +395,7 @@ Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not 
 
 ```json
 {
-  "properties": {
-    "refresh_token": {
-      "description": "Refresh token obtained from login request",
-      "type": "string"
-    }
-  },
-  "required": [
-    "refresh_token"
-  ]
+  "refresh_token": "string"
 }
 ```
 
@@ -418,10 +427,26 @@ Cart management endpoints
 
 ###  Return cart content
 
-> Code samples
+#### Example
   `GET /cart`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/cart',
@@ -434,18 +459,27 @@ fetch('/cart',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Return cart content*
 
@@ -464,42 +498,35 @@ None
 
 ###  Replace cart items
 
-> Code samples
+#### Example
   `PUT /cart`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "items": {
-      "description": "New items to add to cart",
-      "type": "array",
-      "items": {
-        "description": "Buy emoji",
-        "properties": {
-          "eid": {
-            "description": "EmojiID to buy",
-            "type": "string",
-            "example": "🐱🐲🐳🐴🐵"
-          },
-          "redemption_code": {
-            "description": "Redemption Code if applicable",
-            "type": "string"
-          }
-        },
-        "required": [
-          "eid"
-        ]
-      }
-    },
-    "tracking_data": {
-      "description": "Tracking data",
-      "type": "object"
+  "items": [
+    {
+      "eid": "🐱🐲🐳🐴🐵",
+      "redemption_code": "string"
     }
-  },
-  "required": [
-    "items"
-  ]
+  ],
+  "tracking_data": {}
 };
 const headers = {
   'Content-Type':'application/json'
@@ -516,18 +543,27 @@ fetch('/cart',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Replace cart items*
 
@@ -537,36 +573,13 @@ User requires scope `CartUpdate`.
 
 ```json
 {
-  "properties": {
-    "items": {
-      "description": "New items to add to cart",
-      "type": "array",
-      "items": {
-        "description": "Buy emoji",
-        "properties": {
-          "eid": {
-            "description": "EmojiID to buy",
-            "type": "string",
-            "example": "🐱🐲🐳🐴🐵"
-          },
-          "redemption_code": {
-            "description": "Redemption Code if applicable",
-            "type": "string"
-          }
-        },
-        "required": [
-          "eid"
-        ]
-      }
-    },
-    "tracking_data": {
-      "description": "Tracking data",
-      "type": "object"
+  "items": [
+    {
+      "eid": "🐱🐲🐳🐴🐵",
+      "redemption_code": "string"
     }
-  },
-  "required": [
-    "items"
-  ]
+  ],
+  "tracking_data": {}
 }
 ```
 
@@ -589,42 +602,35 @@ None
 
 ###  Update cart items
 
-> Code samples
+#### Example
   `POST /cart`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "items": {
-      "description": "New items to add to cart",
-      "type": "array",
-      "items": {
-        "description": "Buy emoji",
-        "properties": {
-          "eid": {
-            "description": "EmojiID to buy",
-            "type": "string",
-            "example": "🐱🐲🐳🐴🐵"
-          },
-          "redemption_code": {
-            "description": "Redemption Code if applicable",
-            "type": "string"
-          }
-        },
-        "required": [
-          "eid"
-        ]
-      }
-    },
-    "tracking_data": {
-      "description": "Tracking data",
-      "type": "object"
+  "items": [
+    {
+      "eid": "🐱🐲🐳🐴🐵",
+      "redemption_code": "string"
     }
-  },
-  "required": [
-    "items"
-  ]
+  ],
+  "tracking_data": {}
 };
 const headers = {
   'Content-Type':'application/json'
@@ -641,18 +647,27 @@ fetch('/cart',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Update cart items*
 
@@ -662,36 +677,13 @@ Will add new items to the cart. User requires scope `CartUpdate`.
 
 ```json
 {
-  "properties": {
-    "items": {
-      "description": "New items to add to cart",
-      "type": "array",
-      "items": {
-        "description": "Buy emoji",
-        "properties": {
-          "eid": {
-            "description": "EmojiID to buy",
-            "type": "string",
-            "example": "🐱🐲🐳🐴🐵"
-          },
-          "redemption_code": {
-            "description": "Redemption Code if applicable",
-            "type": "string"
-          }
-        },
-        "required": [
-          "eid"
-        ]
-      }
-    },
-    "tracking_data": {
-      "description": "Tracking data",
-      "type": "object"
+  "items": [
+    {
+      "eid": "🐱🐲🐳🐴🐵",
+      "redemption_code": "string"
     }
-  },
-  "required": [
-    "items"
-  ]
+  ],
+  "tracking_data": {}
 }
 ```
 
@@ -714,10 +706,26 @@ None
 
 ###  Clean up cart
 
-> Code samples
+#### Example
   `DELETE /cart`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/cart',
@@ -730,18 +738,27 @@ fetch('/cart',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Clean up cart*
 
@@ -760,34 +777,31 @@ None
 
 ###  Checkout cart
 
-> Code samples
+#### Example
   `POST /cart/checkout`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "method": {
-      "description": "Payment method",
-      "type": "string",
-      "enum": [
-        "Default",
-        "Free"
-      ]
-    },
-    "pubkey": {
-      "description": "Optional: user public key",
-      "type": "string",
-      "example": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f"
-    },
-    "tracking_data": {
-      "description": "Optional: tracking data",
-      "type": "object"
-    }
-  },
-  "required": [
-    "method"
-  ]
+  "method": "Default",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "tracking_data": {}
 };
 const headers = {
   'Content-Type':'application/json'
@@ -804,18 +818,27 @@ fetch('/cart/checkout',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Checkout cart*
 
@@ -825,28 +848,9 @@ Submit order with provided payment details.
 
 ```json
 {
-  "properties": {
-    "method": {
-      "description": "Payment method",
-      "type": "string",
-      "enum": [
-        "Default",
-        "Free"
-      ]
-    },
-    "pubkey": {
-      "description": "Optional: user public key",
-      "type": "string",
-      "example": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f"
-    },
-    "tracking_data": {
-      "description": "Optional: tracking data",
-      "type": "object"
-    }
-  },
-  "required": [
-    "method"
-  ]
+  "method": "Default",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "tracking_data": {}
 }
 ```
 
@@ -871,16 +875,30 @@ None
 
 ## Emoji
 
-                Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`,
-                this is when a user wants to get records associated with an Emoji ID.
-            
+Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`, this is when a user wants to get records associated with an Emoji ID.
 
 ###  List emojis
 
-> Code samples
+#### Example
   `GET /emoji`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/emoji',
@@ -893,18 +911,27 @@ fetch('/emoji',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * List emojis*
 
@@ -930,17 +957,33 @@ None
 
 ###  Search for EmojiID
 
-> Code samples
+#### Example
   `GET /emoji/search`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 const headers = {
   'Accept':'*/*'
 };
 
-fetch('/emoji/search?eid=type,string',
+fetch('/emoji/search?eid=string',
 {
   method: 'GET',
 
@@ -951,18 +994,27 @@ fetch('/emoji/search?eid=type,string',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Search for EmojiID*
 
@@ -991,10 +1043,26 @@ This operation does not require authentication
 
 ###  Lookup EmojiId
 
-> Code samples
+#### Example
   `GET /emoji/{eid}`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 const headers = {
@@ -1012,18 +1080,27 @@ fetch('/emoji/{eid}',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Lookup EmojiId*
 
@@ -1052,59 +1129,39 @@ This operation does not require authentication
 
 ###  Edit EmojiId
 
-> Code samples
+#### Example
   `PATCH /emoji/{eid}`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "delete": {
-      "description": "Optional: hashes of records to delete",
-      "type": "array",
-      "items": {
-        "description": "Hash which identifies emoji record.",
-        "type": "string",
-        "format": "binary",
-        "example": "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
-      }
-    },
-    "insert": {
-      "description": "Optional: list of records to add",
-      "type": "array",
-      "items": {
-        "description": "Data record stored in emoji.",
-        "properties": {
-          "data": {
-            "description": "Category data in text format",
-            "type": "string",
-            "example": "127.0.0.1"
-          },
-          "tag": {
-            "description": "Category ID as a hex number",
-            "type": "string",
-            "example": "0x4101"
-          }
-        },
-        "required": [
-          "data",
-          "tag"
-        ]
-      }
-    },
-    "merkle_root": {
-      "description": "Optional: merkle root (use WASM to generate)",
-      "type": "string",
-      "format": "binary",
-      "example": "916ea8882cdbe350ca9cec48680e4bf37d75930d8d033bed57128c0809537336"
-    },
-    "signature": {
-      "description": "Optional: signature (use WASM to generate)",
-      "type": "string",
-      "format": "binary",
-      "example": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  "delete": [
+    "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
+  ],
+  "insert": [
+    {
+      "data": "127.0.0.1",
+      "tag": "0x4101"
     }
-  }
+  ],
+  "merkle_root": "916ea8882cdbe350ca9cec48680e4bf37d75930d8d033bed57128c0809537336",
+  "signature": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -1122,18 +1179,27 @@ fetch('/emoji/{eid}',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Edit EmojiId*
 
@@ -1143,53 +1209,17 @@ Add and remove records in EmojiId, update merkle_root and signature too. Access 
 
 ```json
 {
-  "properties": {
-    "delete": {
-      "description": "Optional: hashes of records to delete",
-      "type": "array",
-      "items": {
-        "description": "Hash which identifies emoji record.",
-        "type": "string",
-        "format": "binary",
-        "example": "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
-      }
-    },
-    "insert": {
-      "description": "Optional: list of records to add",
-      "type": "array",
-      "items": {
-        "description": "Data record stored in emoji.",
-        "properties": {
-          "data": {
-            "description": "Category data in text format",
-            "type": "string",
-            "example": "127.0.0.1"
-          },
-          "tag": {
-            "description": "Category ID as a hex number",
-            "type": "string",
-            "example": "0x4101"
-          }
-        },
-        "required": [
-          "data",
-          "tag"
-        ]
-      }
-    },
-    "merkle_root": {
-      "description": "Optional: merkle root (use WASM to generate)",
-      "type": "string",
-      "format": "binary",
-      "example": "916ea8882cdbe350ca9cec48680e4bf37d75930d8d033bed57128c0809537336"
-    },
-    "signature": {
-      "description": "Optional: signature (use WASM to generate)",
-      "type": "string",
-      "format": "binary",
-      "example": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  "delete": [
+    "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
+  ],
+  "insert": [
+    {
+      "data": "127.0.0.1",
+      "tag": "0x4101"
     }
-  }
+  ],
+  "merkle_root": "916ea8882cdbe350ca9cec48680e4bf37d75930d8d033bed57128c0809537336",
+  "signature": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 }
 ```
 
@@ -1225,10 +1255,26 @@ User Interest endpoints. Endpoints for users to express interest in Emoji IDs.
 
 ###  Returns a paginated list of user interest records associated with the user
 
-> Code samples
+#### Example
   `GET /user_interests`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/user_interests',
@@ -1241,18 +1287,27 @@ fetch('/user_interests',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Returns a paginated list of user interest records associated with the user*
 
@@ -1271,22 +1326,29 @@ None
 
 ###  Create new interest in emoji to be notified when available
 
-> Code samples
+#### Example
   `POST /user_interests`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "eid": {
-      "description": "EmojiID to express interest in",
-      "type": "string",
-      "example": "🐱🐲🐳🐴🐵"
-    }
-  },
-  "required": [
-    "eid"
-  ]
+  "eid": "🐱🐲🐳🐴🐵"
 };
 const headers = {
   'Content-Type':'application/json'
@@ -1303,18 +1365,27 @@ fetch('/user_interests',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Create new interest in emoji to be notified when available*
 
@@ -1324,16 +1395,7 @@ User requires scope `UserInterestWrite`.
 
 ```json
 {
-  "properties": {
-    "eid": {
-      "description": "EmojiID to express interest in",
-      "type": "string",
-      "example": "🐱🐲🐳🐴🐵"
-    }
-  },
-  "required": [
-    "eid"
-  ]
+  "eid": "🐱🐲🐳🐴🐵"
 }
 ```
 
@@ -1356,10 +1418,26 @@ None
 
 ###  Given an EmojiId returns information about the user interest if a record exists for this user
 
-> Code samples
+#### Example
   `GET /user_interests/{eid}`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/user_interests/{eid}',
@@ -1372,18 +1450,27 @@ fetch('/user_interests/{eid}',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Given an EmojiId returns information about the user interest if a record exists for this user*
 
@@ -1408,10 +1495,26 @@ None
 
 ###  Destroys the user interest preventing this eid's notification emails from being sent for this user
 
-> Code samples
+#### Example
   `DELETE /user_interests/{eid}`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/user_interests/{eid}',
@@ -1424,18 +1527,27 @@ fetch('/user_interests/{eid}',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Destroys the user interest preventing this eid's notification emails from being sent for this user*
 
@@ -1466,37 +1578,33 @@ User Management. Only applicable for users with custodial wallets.
 
 ###  Register a User
 
-> Code samples
+#### Example
   `POST /users`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "email": {
-      "description": "Required: email address",
-      "type": "string"
-    },
-    "first_name": {
-      "description": "Optional: first name",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    },
-    "last_name": {
-      "description": "Optional: last name",
-      "type": "string"
-    },
-    "password": {
-      "description": "Optional: password",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email"
-  ]
+  "email": "string",
+  "first_name": "string",
+  "g-recaptcha-response": "string",
+  "last_name": "string",
+  "password": "string"
 };
 const headers = {
   'Content-Type':'application/json'
@@ -1513,18 +1621,27 @@ fetch('/users',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Register a User*
 
@@ -1534,31 +1651,11 @@ Create a user and a custodial wallet
 
 ```json
 {
-  "properties": {
-    "email": {
-      "description": "Required: email address",
-      "type": "string"
-    },
-    "first_name": {
-      "description": "Optional: first name",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    },
-    "last_name": {
-      "description": "Optional: last name",
-      "type": "string"
-    },
-    "password": {
-      "description": "Optional: password",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email"
-  ]
+  "email": "string",
+  "first_name": "string",
+  "g-recaptcha-response": "string",
+  "last_name": "string",
+  "password": "string"
 }
 ```
 
@@ -1586,10 +1683,26 @@ Manage a user's public keys
 
 ###  Retrieve pubkeys
 
-> Code samples
+#### Example
   `GET /pubkeys`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 const headers = {
@@ -1607,18 +1720,27 @@ fetch('/pubkeys',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Retrieve pubkeys*
 
@@ -1649,10 +1771,26 @@ None
 
 ###  Generate custodial wallet
 
-> Code samples
+#### Example
   `POST /pubkeys`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 const headers = {
@@ -1670,18 +1808,27 @@ fetch('/pubkeys',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Generate custodial wallet*
 
@@ -1704,10 +1851,26 @@ None, apiKey
 
 ###  Add pubkey for current user
 
-> Code samples
+#### Example
   `POST /pubkeys/{pubkey}`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/pubkeys/{pubkey}',
@@ -1720,18 +1883,27 @@ fetch('/pubkeys/{pubkey}',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Add pubkey for current user*
 
@@ -1756,10 +1928,26 @@ None, apiKey
 
 ###  Retrieve pubkeys by user_id
 
-> Code samples
+#### Example
   `GET /users/{user_id}/pubkeys`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 const headers = {
@@ -1777,18 +1965,27 @@ fetch('/users/{user_id}/pubkeys',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Retrieve pubkeys by user_id*
 
@@ -1825,10 +2022,26 @@ None
 
 ###  Add pubkey for user by user_id
 
-> Code samples
+#### Example
   `POST /users/{user_id}/pubkeys/{pubkey}`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 
 fetch('/users/{user_id}/pubkeys/{pubkey}',
@@ -1841,18 +2054,27 @@ fetch('/users/{user_id}/pubkeys/{pubkey}',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Add pubkey for user by user_id*
 
@@ -1882,29 +2104,30 @@ None, apiKey
 
 ###  Calls a pre-defined proxy service with the provided data
 
-> Code samples
+#### Example
   `POST /proxy`
 
-```nodejs
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "properties": {
-    "data": {
-      "description": "The data to pass through to the proxied service",
-      "type": "string"
-    },
-    "service": {
-      "description": "`ProxyService` type",
-      "type": "string",
-      "enum": [
-        "Microlink",
-        "Echo"
-      ]
-    }
-  },
-  "required": [
-    "service"
-  ]
+  "data": "string",
+  "service": "Microlink"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -1922,18 +2145,27 @@ fetch('/proxy',
 }).then(function(body) {
     console.log(body);
 });
-
 ```
+
+</TabItem>
+
+<TabItem value="kotlin">
 
 ```kotlin
-PUT A KOTLIN TEMPLATE HERE
-
+// PUT A KOTLIN TEMPLATE HERE
 ```
+
+</TabItem>
+
+<TabItem value="swift5">
 
 ```swift5
-PUT A SWIFT TEMPLATE HERE
-
+// PUT A SWIFT5 TEMPLATE HERE
 ```
+
+</TabItem>
+
+</Tabs>
 
 * Calls a pre-defined proxy service with the provided data*
 
@@ -1943,23 +2175,8 @@ Returns the response from the proxied service as a string
 
 ```json
 {
-  "properties": {
-    "data": {
-      "description": "The data to pass through to the proxied service",
-      "type": "string"
-    },
-    "service": {
-      "description": "`ProxyService` type",
-      "type": "string",
-      "enum": [
-        "Microlink",
-        "Echo"
-      ]
-    }
-  },
-  "required": [
-    "service"
-  ]
+  "data": "string",
+  "service": "Microlink"
 }
 ```
 
@@ -1992,28 +2209,9 @@ None
 
 ```json
 {
-  "properties": {
-    "method": {
-      "description": "Payment method",
-      "type": "string",
-      "enum": [
-        "Default",
-        "Free"
-      ]
-    },
-    "pubkey": {
-      "description": "Optional: user public key",
-      "type": "string",
-      "example": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f"
-    },
-    "tracking_data": {
-      "description": "Optional: tracking data",
-      "type": "object"
-    }
-  },
-  "required": [
-    "method"
-  ]
+  "method": "Default",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "tracking_data": {}
 }
 
 ```
@@ -2037,20 +2235,8 @@ None
 
 ```json
 {
-  "properties": {
-    "code": {
-      "description": "Two factor authentication code",
-      "type": "string"
-    },
-    "refresh_token": {
-      "description": "Refresh token obtained from login request",
-      "type": "string"
-    }
-  },
-  "required": [
-    "code",
-    "refresh_token"
-  ]
+  "code": "string",
+  "refresh_token": "string"
 }
 
 ```
@@ -2066,53 +2252,17 @@ None
 
 ```json
 {
-  "properties": {
-    "delete": {
-      "description": "Optional: hashes of records to delete",
-      "type": "array",
-      "items": {
-        "description": "Hash which identifies emoji record.",
-        "type": "string",
-        "format": "binary",
-        "example": "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
-      }
-    },
-    "insert": {
-      "description": "Optional: list of records to add",
-      "type": "array",
-      "items": {
-        "description": "Data record stored in emoji.",
-        "properties": {
-          "data": {
-            "description": "Category data in text format",
-            "type": "string",
-            "example": "127.0.0.1"
-          },
-          "tag": {
-            "description": "Category ID as a hex number",
-            "type": "string",
-            "example": "0x4101"
-          }
-        },
-        "required": [
-          "data",
-          "tag"
-        ]
-      }
-    },
-    "merkle_root": {
-      "description": "Optional: merkle root (use WASM to generate)",
-      "type": "string",
-      "format": "binary",
-      "example": "916ea8882cdbe350ca9cec48680e4bf37d75930d8d033bed57128c0809537336"
-    },
-    "signature": {
-      "description": "Optional: signature (use WASM to generate)",
-      "type": "string",
-      "format": "binary",
-      "example": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  "delete": [
+    "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
+  ],
+  "insert": [
+    {
+      "data": "127.0.0.1",
+      "tag": "0x4101"
     }
-  }
+  ],
+  "merkle_root": "916ea8882cdbe350ca9cec48680e4bf37d75930d8d033bed57128c0809537336",
+  "signature": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 }
 
 ```
@@ -2132,24 +2282,9 @@ None
 
 ```json
 {
-  "properties": {
-    "email": {
-      "description": "Requred: Email",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    },
-    "password": {
-      "description": "Requred: Password",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email",
-    "password"
-  ]
+  "email": "string",
+  "g-recaptcha-response": "string",
+  "password": "string"
 }
 
 ```
@@ -2166,72 +2301,21 @@ None
 
 ```json
 {
-  "properties": {
-    "response": {
-      "properties": {
-        "error": {
-          "properties": {
-            "code": {
-              "description": "Error code",
-              "type": "string"
-            },
-            "reason": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "code",
-            "reason"
-          ]
-        },
-        "result": {
-          "description": "Records associated with EmojiID",
-          "type": "array",
-          "items": {
-            "description": "Emoji tags data",
-            "properties": {
-              "data": {
-                "description": "Category data in text or hex encoded formats",
-                "type": "string"
-              },
-              "hash": {
-                "description": "Hash identifies record, can be used to delete records",
-                "type": "string",
-                "format": "binary",
-                "example": "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944"
-              },
-              "tag": {
-                "description": "Category as a hex string number",
-                "type": "string",
-                "example": "0x4001"
-              }
-            },
-            "required": [
-              "data",
-              "hash",
-              "tag"
-            ]
-          }
-        },
-        "status": {
-          "description": "Response status. If true, the requested data will be in the result field, null otherwise",
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "status"
-      ]
+  "response": {
+    "error": {
+      "code": "string",
+      "reason": "string"
     },
-    "views_past_month": {
-      "description": "Number of times emoji viewed during past month",
-      "type": "integer",
-      "format": "int64"
-    }
+    "result": [
+      {
+        "data": "string",
+        "hash": "5aaf5eac326102cf208e397f15534f0b89747b2263f47857b1d797275ce7e944",
+        "tag": "0x4001"
+      }
+    ],
+    "status": true
   },
-  "required": [
-    "response",
-    "views_past_month"
-  ]
+  "views_past_month": 0
 }
 
 ```
@@ -2255,19 +2339,8 @@ None
 
 ```json
 {
-  "properties": {
-    "email": {
-      "description": "Email",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email"
-  ]
+  "email": "string",
+  "g-recaptcha-response": "string"
 }
 
 ```
@@ -2283,14 +2356,7 @@ None
 
 ```json
 {
-  "properties": {
-    "message": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "message"
-  ]
+  "message": "string"
 }
 
 ```
@@ -2305,16 +2371,7 @@ None
 
 ```json
 {
-  "properties": {
-    "eid": {
-      "description": "EmojiID to express interest in",
-      "type": "string",
-      "example": "🐱🐲🐳🐴🐵"
-    }
-  },
-  "required": [
-    "eid"
-  ]
+  "eid": "🐱🐲🐳🐴🐵"
 }
 
 ```
@@ -2329,23 +2386,8 @@ None
 
 ```json
 {
-  "properties": {
-    "data": {
-      "description": "The data to pass through to the proxied service",
-      "type": "string"
-    },
-    "service": {
-      "description": "`ProxyService` type",
-      "type": "string",
-      "enum": [
-        "Microlink",
-        "Echo"
-      ]
-    }
-  },
-  "required": [
-    "service"
-  ]
+  "data": "string",
+  "service": "Microlink"
 }
 
 ```
@@ -2368,15 +2410,7 @@ None
 
 ```json
 {
-  "properties": {
-    "value": {
-      "description": "The response from the proxied service as a String",
-      "type": "string"
-    }
-  },
-  "required": [
-    "value"
-  ]
+  "value": "string"
 }
 
 ```
@@ -2406,15 +2440,7 @@ Public key
 
 ```json
 {
-  "properties": {
-    "refresh_token": {
-      "description": "Refresh token obtained from login request",
-      "type": "string"
-    }
-  },
-  "required": [
-    "refresh_token"
-  ]
+  "refresh_token": "string"
 }
 
 ```
@@ -2429,31 +2455,11 @@ Public key
 
 ```json
 {
-  "properties": {
-    "email": {
-      "description": "Required: email address",
-      "type": "string"
-    },
-    "first_name": {
-      "description": "Optional: first name",
-      "type": "string"
-    },
-    "g-recaptcha-response": {
-      "description": "Response from google Recaptcha",
-      "type": "string"
-    },
-    "last_name": {
-      "description": "Optional: last name",
-      "type": "string"
-    },
-    "password": {
-      "description": "Optional: password",
-      "type": "string"
-    }
-  },
-  "required": [
-    "email"
-  ]
+  "email": "string",
+  "first_name": "string",
+  "g-recaptcha-response": "string",
+  "last_name": "string",
+  "password": "string"
 }
 
 ```
@@ -2472,87 +2478,22 @@ Public key
 
 ```json
 {
-  "properties": {
-    "alternates": {
-      "description": "Alternative Emoji IDs",
-      "type": "array",
-      "items": {
-        "properties": {
-          "available": {
-            "description": "Whether the EID is available for purchase",
-            "type": "boolean"
-          },
-          "discounted_price": {
-            "description": "Pricing in US cents, e.g. 1024 is 10.24 USD. Discounted price is 0 if the emoji is not available",
-            "type": "integer",
-            "format": "int64"
-          },
-          "eid": {
-            "description": "Emoji ID in percent url-encoded form",
-            "type": "string",
-            "example": "🐱🐲🐳🐴🐵"
-          },
-          "price": {
-            "description": "Pricing in US cents, e.g. 1024 is 10.24 USD. Price is 0 if the emoji is not available",
-            "type": "integer",
-            "format": "int64"
-          },
-          "views_past_month": {
-            "description": "Total lookups using this API, if someone is viewing this EID using their own self hosted node, it will not be counted here",
-            "type": "integer",
-            "format": "int64"
-          }
-        },
-        "required": [
-          "available",
-          "discounted_price",
-          "eid",
-          "price",
-          "views_past_month"
-        ]
-      }
-    },
-    "result": {
-      "description": "The specific Emoji ID that the user requests",
-      "properties": {
-        "available": {
-          "description": "Whether the EID is available for purchase",
-          "type": "boolean"
-        },
-        "discounted_price": {
-          "description": "Pricing in US cents, e.g. 1024 is 10.24 USD. Discounted price is 0 if the emoji is not available",
-          "type": "integer",
-          "format": "int64"
-        },
-        "eid": {
-          "description": "Emoji ID in percent url-encoded form",
-          "type": "string",
-          "example": "🐱🐲🐳🐴🐵"
-        },
-        "price": {
-          "description": "Pricing in US cents, e.g. 1024 is 10.24 USD. Price is 0 if the emoji is not available",
-          "type": "integer",
-          "format": "int64"
-        },
-        "views_past_month": {
-          "description": "Total lookups using this API, if someone is viewing this EID using their own self hosted node, it will not be counted here",
-          "type": "integer",
-          "format": "int64"
-        }
-      },
-      "required": [
-        "available",
-        "discounted_price",
-        "eid",
-        "price",
-        "views_past_month"
-      ]
+  "alternates": [
+    {
+      "available": true,
+      "discounted_price": 0,
+      "eid": "🐱🐲🐳🐴🐵",
+      "price": 0,
+      "views_past_month": 0
     }
-  },
-  "required": [
-    "alternates",
-    "result"
-  ]
+  ],
+  "result": {
+    "available": true,
+    "discounted_price": 0,
+    "eid": "🐱🐲🐳🐴🐵",
+    "price": 0,
+    "views_past_month": 0
+  }
 }
 
 ```
@@ -2578,23 +2519,9 @@ Public key
 
 ```json
 {
-  "properties": {
-    "access_token": {
-      "description": "Access token",
-      "type": "string"
-    },
-    "refresh_token": {
-      "description": "Refresh token,  only required for 2FA (???)",
-      "type": "string"
-    },
-    "requires_2fa": {
-      "description": "Whether has 2FA enabled or not"
-    }
-  },
-  "required": [
-    "access_token",
-    "refresh_token"
-  ]
+  "access_token": "string",
+  "refresh_token": "string",
+  "requires_2fa": null
 }
 
 ```
@@ -2611,36 +2538,13 @@ Public key
 
 ```json
 {
-  "properties": {
-    "items": {
-      "description": "New items to add to cart",
-      "type": "array",
-      "items": {
-        "description": "Buy emoji",
-        "properties": {
-          "eid": {
-            "description": "EmojiID to buy",
-            "type": "string",
-            "example": "🐱🐲🐳🐴🐵"
-          },
-          "redemption_code": {
-            "description": "Redemption Code if applicable",
-            "type": "string"
-          }
-        },
-        "required": [
-          "eid"
-        ]
-      }
-    },
-    "tracking_data": {
-      "description": "Tracking data",
-      "type": "object"
+  "items": [
+    {
+      "eid": "🐱🐲🐳🐴🐵",
+      "redemption_code": "string"
     }
-  },
-  "required": [
-    "items"
-  ]
+  ],
+  "tracking_data": {}
 }
 
 ```

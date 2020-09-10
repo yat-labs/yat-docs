@@ -1,3 +1,6 @@
+<TabItem value="nodejs">
+
+```javascript
 const fetch = require('node-fetch');
 {{?data.bodyParameter.present}}const inputBody = {{=data.bodyParameter.exampleValues.json}};{{?}}
 {{?data.allHeaders.length}}const headers = {
@@ -15,3 +18,7 @@ fetch('{{=data.url}}{{=data.requiredQueryString}}',
 }).then(function(body) {
     console.log(body);
 });
+```
+
+</TabItem>
+

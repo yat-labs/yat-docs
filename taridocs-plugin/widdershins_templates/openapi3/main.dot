@@ -3,6 +3,9 @@ id: {{=data.options.page_id || "api-reference"}}
 title: {{=(data.api.info && data.api.info.title) || "API reference"}}
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 {{? data.api.info}}
 ----
 {{= data.tags.section }}

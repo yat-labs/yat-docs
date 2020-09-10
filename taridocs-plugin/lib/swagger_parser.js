@@ -49,7 +49,7 @@ async function openapi_to_markdown(options) {
         // Define widdershins options
         const opts = {
             omitHeader: true,
-            language_tabs: options.languages || ['javascript'],
+            language_tabs: options.languages || [['javascript', 'Javascript']],
             search: false,
             expandBody: true,
             codeSamples: true,

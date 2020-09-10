@@ -20,13 +20,23 @@
 {{?}}
 
 {{? data.options.codeSamples || data.operation["x-code-samples"] }}
-> Code samples
+#### Example
   `{{= data.methodUpper}} {{=data.method.path}}`
+
+<Tabs
+  defaultValue="{{= data.options.language_tabs[0].id}}"
+  groupId="operation_code_samples"
+  values={[
+    {{~ data.options.language_tabs: lang}}
+    { label: '{{= lang.label}}', value: '{{= lang.id}}', },
+    {{~}}
+  ]
+}>
 
 {{= data.utils.getCodeSamples(data) }}
 {{?}}
 
-
+</Tabs>
 
 {{? data.operation.summary && !data.options.tocSummary}}*{{= data.operation.summary }}*{{?}}
 
