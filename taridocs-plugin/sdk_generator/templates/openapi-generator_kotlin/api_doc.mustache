@@ -1,5 +1,12 @@
-# {{classname}}{{#description}}
-{{description}}{{/description}}
+---
+id: {{#lambda.lowercase}}{{classname}}{{/lambda.lowercase}}
+title: {{classname}}
+---
+
+{{#description}}
+## Description
+{{description}}
+{{/description}}
 
 All URIs are relative to *{{basePath}}*
 
@@ -10,47 +17,31 @@ Method | HTTP request | Description
 
 {{#operations}}
 {{#operation}}
-<a name="{{operationId}}"></a>
-# **{{operationId}}**
-> {{#returnType}}{{returnType}} {{/returnType}}{{operationId}}({{#allParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
 
-{{summary}}{{#notes}}
+## {{operationId}}
 
-{{notes}}{{/notes}}
+{{summary}}
 
-### Example
-```kotlin
-// Import classes:
-//import {{{packageName}}}.infrastructure.*
-//import {{{modelPackage}}}.*
+#### {{#returnType}}{{returnType}} {{/returnType}}{{operationId}}({{#allParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/allParams}})
 
-{{! TODO: Auth method documentation examples}}
-val apiInstance = {{{classname}}}()
-{{#allParams}}
-val {{{paramName}}} : {{{dataType}}} = {{{example}}} // {{{dataType}}} | {{{description}}}
-{{/allParams}}
-try {
-    {{#returnType}}val result : {{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}} = {{/returnType}}apiInstance.{{{operationId}}}({{#allParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/allParams}}){{#returnType}}
-    println(result){{/returnType}}
-} catch (e: ClientException) {
-    println("4xx response calling {{{classname}}}#{{{operationId}}}")
-    e.printStackTrace()
-} catch (e: ServerException) {
-    println("5xx response calling {{{classname}}}#{{{operationId}}}")
-    e.printStackTrace()
-}
-```
+
+{{#notes}}{{notes}}{{/notes}}
 
 ### Parameters
 {{^allParams}}This endpoint does not need any parameter.{{/allParams}}{{#allParams}}{{#-last}}
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------{{/-last}}{{/allParams}}
-{{#allParams}} **{{paramName}}** | {{#isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isFile}}**{{dataType}}**{{/isFile}}{{^isFile}}{{#generateModelDocs}}[**{{dataType}}**]({{baseType}}.md){{/generateModelDocs}}{{^generateModelDocs}}**{{dataType}}**{{/generateModelDocs}}{{/isFile}}{{/isPrimitiveType}}| {{description}} |{{^required}} [optional]{{/required}}{{#defaultValue}} [default to {{defaultValue}}]{{/defaultValue}}{{#allowableValues}} [enum: {{#values}}{{{.}}}{{^-last}}, {{/-last}}{{/values}}]{{/allowableValues}}
+{{#allParams}} **{{paramName}}** | {{#isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isFile}}**{{dataType}}**{{/isFile}}{{^isFile}}{{#generateModelDocs}}[**{{dataType}}**](../sdk_kotlin_index#{{baseType}}){{/generateModelDocs}}{{^generateModelDocs}}**{{dataType}}**{{/generateModelDocs}}{{/isFile}}{{/isPrimitiveType}}| {{description}} |{{^required}} [optional]{{/required}}{{#defaultValue}} [default to {{defaultValue}}]{{/defaultValue}}{{#allowableValues}} [enum: {{#values}}{{{.}}}{{^-last}}, {{/-last}}{{/values}}]{{/allowableValues}}
 {{/allParams}}
 
 ### Return type
 
-{{#returnType}}{{#returnTypeIsPrimitive}}**{{returnType}}**{{/returnTypeIsPrimitive}}{{^returnTypeIsPrimitive}}{{#generateModelDocs}}[**{{returnType}}**]({{returnBaseType}}.md){{/generateModelDocs}}{{^generateModelDocs}}**{{returnType}}**{{/generateModelDocs}}{{/returnTypeIsPrimitive}}{{/returnType}}{{^returnType}}null (empty response body){{/returnType}}
+{{#returnType}}{{#returnTypeIsPrimitive}}**{{returnType}}**{{/returnTypeIsPrimitive}}
+{{^returnTypeIsPrimitive}}
+{{#generateModelDocs}}[**{{returnType}}**](../sdk_kotlin_index#{{returnBaseType}}){{/generateModelDocs}}
+{{^generateModelDocs}}
+**{{returnType}}**
+{{/generateModelDocs}}{{/returnTypeIsPrimitive}}{{/returnType}}{{^returnType}}null (empty response body){{/returnType}}
 
 ### Authorization
 
@@ -82,6 +73,30 @@ Configure {{name}}:
 
  - **Content-Type**: {{#consumes}}{{{mediaType}}}{{#hasMore}}, {{/hasMore}}{{/consumes}}{{^consumes}}Not defined{{/consumes}}
  - **Accept**: {{#produces}}{{{mediaType}}}{{#hasMore}}, {{/hasMore}}{{/produces}}{{^produces}}Not defined{{/produces}}
+
+### Example
+
+```kotlin
+// Import classes:
+// import {{{packageName}}}.infrastructure.*
+// import {{{modelPackage}}}.*
+
+{{! TODO: Auth method documentation examples}}
+val apiInstance = {{{classname}}}()
+{{#allParams}}
+    val {{{paramName}}} : {{{dataType}}} = {{{example}}} // {{{dataType}}} | {{{description}}}
+{{/allParams}}
+try {
+{{#returnType}}val result : {{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}} = {{/returnType}}apiInstance.{{{operationId}}}({{#allParams}}{{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/allParams}}){{#returnType}}
+    println(result){{/returnType}}
+} catch (e: ClientException) {
+println("4xx response calling {{{classname}}}#{{{operationId}}}")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling {{{classname}}}#{{{operationId}}}")
+e.printStackTrace()
+}
+```
 
 {{/operation}}
 {{/operations}}

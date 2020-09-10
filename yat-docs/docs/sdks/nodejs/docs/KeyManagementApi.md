@@ -1,4 +1,7 @@
-## KeyManagementApi
+---
+id: keymanagementapi
+title: KeyManagementApi
+---
 
 All URIs are relative to *http://localhost*
 
@@ -23,7 +26,13 @@ Retrieves pubkeys owned by currently authenticated user. This call expects empty
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.KeyManagementApi();
 apiInstance.pubkeysGet().then((data) => {
@@ -42,9 +51,10 @@ This endpoint does not need any parameter.
 
 **[String]**
 
+
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -63,8 +73,13 @@ Generates custodial wallet with pubkey for currently authenticated user. This ca
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 // Configure API key authorization: apiKey
 let apiKey = defaultClient.authentications['apiKey'];
 apiKey.apiKey = 'YOUR API KEY';
@@ -88,9 +103,10 @@ This endpoint does not need any parameter.
 
 **String**
 
+
 #### Authorization
 
-[apiKey](../README.md#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
 
 #### HTTP request headers
 
@@ -109,8 +125,13 @@ This call expects empty body
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 // Configure API key authorization: apiKey
 let apiKey = defaultClient.authentications['apiKey'];
 apiKey.apiKey = 'YOUR API KEY';
@@ -132,7 +153,7 @@ apiInstance.pubkeysPubkeyPost(pubkey).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **pubkey** | **String**|  | 
+**pubkey** | **String**|  | 
 
 #### Return type
 
@@ -140,7 +161,7 @@ null (empty response body)
 
 #### Authorization
 
-[apiKey](../README.md#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
 
 #### HTTP request headers
 
@@ -159,7 +180,13 @@ NOTE: user should have scope &#x60;UserPubkeyList&#x60;
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.KeyManagementApi();
 let userId = null; // String | 
@@ -176,15 +203,17 @@ apiInstance.usersUserIdPubkeysGet(userId).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **userId** | [**String**](.md)|  | 
+**userId** | [**String**](../sdk_nodejs_index#)
+|  | 
 
 #### Return type
 
 **[String]**
 
+
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -203,8 +232,13 @@ NOTE: user should have scope &#x60;UserPubkeyWrite&#x60; This call expects empty
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 // Configure API key authorization: apiKey
 let apiKey = defaultClient.authentications['apiKey'];
 apiKey.apiKey = 'YOUR API KEY';
@@ -227,8 +261,9 @@ apiInstance.usersUserIdPubkeysPubkeyPost(userId, pubkey).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **userId** | **String**| Public key to add | 
- **pubkey** | [**String**](.md)| &#x60;user_id&#x60; to grant public key ownership to | 
+**userId** | **String**| Public key to add | 
+**pubkey** | [**String**](../sdk_nodejs_index#)
+| &#x60;user_id&#x60; to grant public key ownership to | 
 
 #### Return type
 
@@ -236,7 +271,7 @@ null (empty response body)
 
 #### Authorization
 
-[apiKey](../README.md#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
 
 #### HTTP request headers
 

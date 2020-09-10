@@ -1,4 +1,7 @@
-## EmojiApi
+---
+id: emojiapi
+title: EmojiApi
+---
 
 All URIs are relative to *http://localhost*
 
@@ -22,7 +25,7 @@ Will filter and return data from supplied tags, If tags filter is not supplied w
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 
 let apiInstance = new YatJs.EmojiApi();
 let eid = "eid_example"; // String | 
@@ -42,12 +45,14 @@ apiInstance.emojiEidGet(eid, opts).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **eid** | **String**|  | 
- **tags** | **String**| Comma-separated list of tags to display, skip it to display all, e.g. &#x60;?tags&#x3D;0x0001,0x1001&#x60; | [optional] 
+**eid** | **String**|  | 
+**tags** | **String**| Comma-separated list of tags to display, skip it to display all, e.g. &#x60;?tags&#x3D;0x0001,0x1001&#x60; | [optional] 
 
 #### Return type
 
-[**LookupResponse**](LookupResponse.md)
+
+[**LookupResponse**](../sdk_nodejs_index#LookupResponse)
+
 
 #### Authorization
 
@@ -70,8 +75,13 @@ Add and remove records in EmojiId, update merkle_root and signature too. Access 
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 // Configure API key authorization: apiKey
 let apiKey = defaultClient.authentications['apiKey'];
 apiKey.apiKey = 'YOUR API KEY';
@@ -94,16 +104,18 @@ apiInstance.emojiEidPatch(eid, body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **eid** | **String**|  | 
- **body** | [**EditRequest**](EditRequest.md)|  | 
+**eid** | **String**|  | 
+**body** | [**EditRequest**](../sdk_nodejs_index#EditRequest)
+|  | 
 
 #### Return type
 
 **Object**
 
+
 #### Authorization
 
-[apiKey](../README.md#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
 
 #### HTTP request headers
 
@@ -122,7 +134,13 @@ If no parameters provided will return all emojis of current user. When &#x60;use
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.EmojiApi();
 let opts = {
@@ -142,8 +160,10 @@ apiInstance.emojiGet(opts).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **organizationId** | [**String**](.md)| Lookup emojis owned by &#x60;organization_id&#x60;,  requires organization power user role | [optional] 
- **userId** | [**String**](.md)| Lookup emojis owned by &#x60;user_id&#x60;,  requires Admin role | [optional] 
+**organizationId** | [**String**](../sdk_nodejs_index#)
+| Lookup emojis owned by &#x60;organization_id&#x60;,  requires organization power user role | [optional] 
+**userId** | [**String**](../sdk_nodejs_index#)
+| Lookup emojis owned by &#x60;user_id&#x60;,  requires Admin role | [optional] 
 
 #### Return type
 
@@ -151,7 +171,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -170,7 +190,7 @@ Returns price, availability and other information on emoji and its alternates (s
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 
 let apiInstance = new YatJs.EmojiApi();
 let eid = "eid_example"; // String | Emoji ID in percent url-encoded form
@@ -190,12 +210,14 @@ apiInstance.emojiSearchGet(eid, opts).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **eid** | **String**| Emoji ID in percent url-encoded form | 
- **redemptionCode** | **String**| Redemption code | [optional] 
+**eid** | **String**| Emoji ID in percent url-encoded form | 
+**redemptionCode** | **String**| Redemption code | [optional] 
 
 #### Return type
 
-[**SearchResult**](SearchResult.md)
+
+[**SearchResult**](../sdk_nodejs_index#SearchResult)
+
 
 #### Authorization
 

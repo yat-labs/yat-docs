@@ -23,8 +23,7 @@ over their Yats. This would require a centralized server that would route all re
 * **Emoji id record** - A piece of data, such as a URL, social media handle, or payment address that is associated with
   an emoji id.
 * **Emoji id category** - Emoji id record types are grouped into categories to aid data management and record discovery.
-  Examples include  
-  cryptocurrency addresses, web properties, DNS records, location data.
+  Examples include cryptocurrency addresses, web properties, DNS records, location data.
 * **Emoji id tag** - Emoji id categories are subdivided into specific data types that have specific data formats,
   represented by their Category Tag. Examples include Bitcoin addresses, DNS A records, web URLs and Lat-Long
   coordinates.
@@ -32,7 +31,7 @@ over their Yats. This would require a centralized server that would route all re
 # Signing up a new user
 
 To create a new account at y.at, register a user with a `POST` query to the
-[`/users`](API_URL#tag/Users/paths/~1users/post) end-point.
+[`/users`](api_reference/index#users) end-point.
 
 The only mandatory field for registration is an email address, but the user's name and last name can be provided as
 well.
@@ -56,7 +55,7 @@ Every user has a pre-defined role which includes exactly what endpoints they hav
 
 ### Magic links
 
-What the fuck are magic links? I'm glad you asked.
+What the heck are magic links? I'm glad you asked.
 
 A user only requires an email address for registration. An introductory email is sent which includes a “magic link”. The
 calling app can register an intent / universal link for the Yat domain and extract the `refresh_token` query parameter.

@@ -2,35 +2,36 @@ const debug = require('debug')('tari-docs:swagger');
 const validUrl = require('valid-url');
 const path = require('path');
 const widdershins = require('widdershins');
-const superagent= require('superagent');
+const superagent = require('superagent');
 const fs = require('fs').promises;
 const yaml = require('yaml');
 const traverse = require('traverse');
 
 async function fetch_swagger_spec(apiUrl) {
-    let spec = {};
-        if (validUrl.isUri(apiUrl)) {
+    let api = {};
+    if (validUrl.isUri(apiUrl)) {
         try {
-            spec = await superagent.get(apiUrl).json();
+            const res = await superagent.get(apiUrl);
+            api = res.body;
         } catch (err) {
             debug("Error downloading swagger specification: %s", err.message);
         }
     } else {
+        let spec = "";
         try {
             spec = await fs.readFile(apiUrl, 'utf8');
         } catch (err) {
             debug("Error loading swagger specification: %s", err.message);
         }
-    }
-    let api = {};
-    try {
-        api = JSON.parse(spec);
-    } catch (err) {
         try {
-            api = yaml.parse(spec);
-        } catch (e) {
-            debug(`API string was not JSON or YAML format. ${e.message}`);
-            api = {};
+            api = JSON.parse(spec);
+        } catch (err) {
+            try {
+                api = yaml.parse(spec);
+            } catch (e) {
+                debug(`API string was not JSON or YAML format. ${e.message}`);
+                api = {};
+            }
         }
     }
     return api;

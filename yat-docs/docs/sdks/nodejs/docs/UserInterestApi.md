@@ -1,4 +1,7 @@
-## UserInterestApi
+---
+id: userinterestapi
+title: UserInterestApi
+---
 
 All URIs are relative to *http://localhost*
 
@@ -22,7 +25,13 @@ User requires scope &#x60;UserInterestDelete&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.UserInterestApi();
 let eid = "eid_example"; // String | 
@@ -39,7 +48,7 @@ apiInstance.userInterestsEidDelete(eid).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **eid** | **String**|  | 
+**eid** | **String**|  | 
 
 #### Return type
 
@@ -47,7 +56,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -66,7 +75,13 @@ User requires scope &#x60;UserInterestRead&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.UserInterestApi();
 let eid = "eid_example"; // String | 
@@ -83,7 +98,7 @@ apiInstance.userInterestsEidGet(eid).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **eid** | **String**|  | 
+**eid** | **String**|  | 
 
 #### Return type
 
@@ -91,7 +106,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -110,7 +125,13 @@ User requires scope &#x60;UserInterestRead&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.UserInterestApi();
 apiInstance.userInterestsGet().then(() => {
@@ -131,7 +152,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -150,7 +171,13 @@ User requires scope &#x60;UserInterestWrite&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.UserInterestApi();
 let body = new YatJs.NewUserInterestParameters(); // NewUserInterestParameters | 
@@ -167,7 +194,8 @@ apiInstance.userInterestsPost(body).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**NewUserInterestParameters**](NewUserInterestParameters.md)|  | 
+**body** | [**NewUserInterestParameters**](../sdk_nodejs_index#NewUserInterestParameters)
+|  | 
 
 #### Return type
 
@@ -175,7 +203,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 

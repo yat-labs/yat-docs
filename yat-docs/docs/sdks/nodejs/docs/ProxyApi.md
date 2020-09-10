@@ -1,4 +1,7 @@
-## ProxyApi
+---
+id: proxyapi
+title: ProxyApi
+---
 
 All URIs are relative to *http://localhost*
 
@@ -19,7 +22,13 @@ Returns the response from the proxied service as a string
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.ProxyApi();
 let body = new YatJs.ProxyCallParameters(); // ProxyCallParameters | 
@@ -36,15 +45,18 @@ apiInstance.proxyPost(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**ProxyCallParameters**](ProxyCallParameters.md)|  | 
+**body** | [**ProxyCallParameters**](../sdk_nodejs_index#ProxyCallParameters)
+|  | 
 
 #### Return type
 
-[**ProxyResult**](ProxyResult.md)
+
+[**ProxyResult**](../sdk_nodejs_index#ProxyResult)
+
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 

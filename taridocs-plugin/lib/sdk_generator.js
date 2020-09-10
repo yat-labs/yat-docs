@@ -63,21 +63,21 @@ function spec_path(spec) {
 async function runOpenAPIGenerator(config, spec, lang, out_dir) {
     const specUri = spec_path(spec);
     // Write config to tmp file
-    const langConfig = config.openapi_generator[lang];
+    const langConfig = config.openapi_generator[lang.id];
     if (!langConfig) {
-        throw(new Error(`No openapi Generator configuration exists for ${lang}`));
+        throw(new Error(`No openapi Generator configuration exists for ${lang.id}`));
     }
 
-    const langConfigFile = path.resolve(out_dir, "config", `config_${lang}.yml`);
+    const langConfigFile = path.resolve(out_dir, "config", `config_${lang.id}.yml`);
     try {
         await fs.writeFile(langConfigFile, yaml.stringify(langConfig));
     } catch (err) {
-        throw new Error(`Error writing ${lang} SDK configuration file: ${err.message}`);
+        throw new Error(`Error writing ${lang.id} SDK configuration file: ${err.message}`);
     }
     // Map lang => generator
-    const generator = lang_to_generator(lang);
+    const generator = lang_to_generator(lang.id);
     // Specify output and template folders
-    const output = path.join(out_dir, lang);
+    const output = path.join(out_dir, lang.id);
     const templates = path.resolve(__dirname, `../sdk_generator/templates/openapi-generator_${generator}`);
     const script_dir = path.resolve(__dirname, '../sdk_generator');
     // Build command
@@ -128,9 +128,9 @@ async function writeSDKdocs(ctx, options) {
 
 
 async function writeSdkDoc(lang, sdkSrc, ctx, options) {
-    const srcDocs = path.join(sdkSrc, lang, "docs");
-    const readme = path.join(sdkSrc, lang, "README.md");
-    const destDir = path.resolve(ctx.siteDir, options.sdkDocPath, lang);
+    const srcDocs = path.join(sdkSrc, lang.id, "docs");
+    const readme = path.join(sdkSrc, lang.id, "README.md");
+    const destDir = path.resolve(ctx.siteDir, options.sdkDocPath, lang.id);
     await fs.mkdir(path.join(destDir, 'docs'), { recursive: true });
     // Save the README
     const readmePath = path.join(destDir, "index.md");
@@ -146,7 +146,7 @@ async function writeSdkDoc(lang, sdkSrc, ctx, options) {
         .filter(f => f.endsWith("Api.md"))
         .map(async f =>  fs.copyFile(path.join(srcDocs, f), path.join(destDir, 'docs/', f)));
     await Promise.all(pArr);
-    debug(`${lang} SDK documentation copied.`)
+    debug(`${lang.id} SDK documentation copied.`)
 }
 
 module.exports = {

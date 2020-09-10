@@ -1,4 +1,7 @@
-## CartApi
+---
+id: cartapi
+title: CartApi
+---
 
 All URIs are relative to *http://localhost*
 
@@ -23,7 +26,13 @@ Submit order with provided payment details.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.CartApi();
 let body = new YatJs.CheckoutCartRequest(); // CheckoutCartRequest | 
@@ -40,7 +49,8 @@ apiInstance.cartCheckoutPost(body).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**CheckoutCartRequest**](CheckoutCartRequest.md)|  | 
+**body** | [**CheckoutCartRequest**](../sdk_nodejs_index#CheckoutCartRequest)
+|  | 
 
 #### Return type
 
@@ -48,7 +58,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -67,7 +77,13 @@ User requires scope &#x60;CartUpdate&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.CartApi();
 apiInstance.cartDelete().then(() => {
@@ -88,7 +104,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -107,7 +123,13 @@ User requires scope &#x60;CartShow&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.CartApi();
 apiInstance.cartGet().then(() => {
@@ -128,7 +150,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -147,7 +169,13 @@ Will add new items to the cart. User requires scope &#x60;CartUpdate&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.CartApi();
 let body = new YatJs.UpdateCartRequest(); // UpdateCartRequest | 
@@ -164,7 +192,8 @@ apiInstance.cartPost(body).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**UpdateCartRequest**](UpdateCartRequest.md)|  | 
+**body** | [**UpdateCartRequest**](../sdk_nodejs_index#UpdateCartRequest)
+|  | 
 
 #### Return type
 
@@ -172,7 +201,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 
@@ -191,7 +220,13 @@ User requires scope &#x60;CartUpdate&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
+let defaultClient = YatJs.ApiClient.instance;
+// Configure API key authorization: JWT
+let JWT = defaultClient.authentications['JWT'];
+JWT.apiKey = 'YOUR API KEY';
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//JWT.apiKeyPrefix = 'Token';
 
 let apiInstance = new YatJs.CartApi();
 let body = new YatJs.UpdateCartRequest(); // UpdateCartRequest | 
@@ -208,7 +243,8 @@ apiInstance.cartPut(body).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**UpdateCartRequest**](UpdateCartRequest.md)|  | 
+**body** | [**UpdateCartRequest**](../sdk_nodejs_index#UpdateCartRequest)
+|  | 
 
 #### Return type
 
@@ -216,7 +252,7 @@ null (empty response body)
 
 #### Authorization
 
-No authorization required
+[JWT](../sdk_nodejs_index#JWT)
 
 #### HTTP request headers
 

@@ -1,4 +1,7 @@
-## UserAuthenticationApi
+---
+id: userauthenticationapi
+title: UserAuthenticationApi
+---
 
 All URIs are relative to *http://localhost*
 
@@ -22,7 +25,7 @@ Complete login flow when user requires 2FA. &#x60;refresh_token&#x60; obtained f
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.Confirm2Fa(); // Confirm2Fa | 
@@ -39,11 +42,14 @@ apiInstance.auth2faPost(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**Confirm2Fa**](Confirm2Fa.md)|  | 
+**body** | [**Confirm2Fa**](../sdk_nodejs_index#Confirm2Fa)
+|  | 
 
 #### Return type
 
-[**TokenResponse**](TokenResponse.md)
+
+[**TokenResponse**](../sdk_nodejs_index#TokenResponse)
+
 
 #### Authorization
 
@@ -66,7 +72,7 @@ Will generate and send magic link to provided user&#39;s email. Assuming the ema
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.MagicLinkLoginRequest(); // MagicLinkLoginRequest | 
@@ -83,11 +89,14 @@ apiInstance.authMagicLinkPost(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**MagicLinkLoginRequest**](MagicLinkLoginRequest.md)|  | 
+**body** | [**MagicLinkLoginRequest**](../sdk_nodejs_index#MagicLinkLoginRequest)
+|  | 
 
 #### Return type
 
-[**MagicLinkLoginResponse**](MagicLinkLoginResponse.md)
+
+[**MagicLinkLoginResponse**](../sdk_nodejs_index#MagicLinkLoginResponse)
+
 
 #### Authorization
 
@@ -110,7 +119,7 @@ Login via username/password. Will return access and refresh tokens. NOTE: when &
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.LoginRequest(); // LoginRequest | 
@@ -127,11 +136,14 @@ apiInstance.authTokenPost(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**LoginRequest**](LoginRequest.md)|  | 
+**body** | [**LoginRequest**](../sdk_nodejs_index#LoginRequest)
+|  | 
 
 #### Return type
 
-[**TokenResponse**](TokenResponse.md)
+
+[**TokenResponse**](../sdk_nodejs_index#TokenResponse)
+
 
 #### Authorization
 
@@ -154,7 +166,7 @@ Will return updated access and refresh tokens. NOTE: when &#x60;requires_2fa&#x6
 > Example
 
 ```javascript
-import YatJs from 'sample_yat_api_reference';
+import YatJs from 'openapi-js-client';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.RefreshRequest(); // RefreshRequest | 
@@ -171,11 +183,14 @@ apiInstance.authTokenRefreshPost(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**RefreshRequest**](RefreshRequest.md)|  | 
+**body** | [**RefreshRequest**](../sdk_nodejs_index#RefreshRequest)
+|  | 
 
 #### Return type
 
-[**TokenResponse**](TokenResponse.md)
+
+[**TokenResponse**](../sdk_nodejs_index#TokenResponse)
+
 
 #### Authorization
 

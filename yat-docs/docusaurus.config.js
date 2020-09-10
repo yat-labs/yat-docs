@@ -7,7 +7,7 @@ module.exports = {
   tagline: 'Helping you build awesome stuff with 🖖.at',
   url: 'https://docs.y.at',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'Tari Labs', // Usually your GitHub org/user name.
   projectName: 'yat-docs', // Usually your repo name.
@@ -15,8 +15,8 @@ module.exports = {
     navbar: {
       title: 'Yat Developer Documentation',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
+        alt: 'Yat',
+        src: 'img/yat-logo-yellow.png',
       },
       items: [
         {
@@ -26,7 +26,7 @@ module.exports = {
           position: 'left',
         },
         {
-          href: 'https://github.com/tari/tari',
+          href: 'https://github.com/tari-labs/tari-docs',
           label: 'GitHub',
           position: 'right',
         },
@@ -36,32 +36,15 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Style Guide',
-              to: 'docs/',
-            },
-            {
-              label: 'Second Doc',
-              to: 'docs/doc2/',
-            },
-          ],
-        },
-        {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Telegram',
+              href: 'https://t.me/tarilabs',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/tarilabs',
             },
           ],
         },
@@ -74,7 +57,7 @@ module.exports = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/tari-labs/tari-docs',
             },
           ],
         },
@@ -86,9 +69,9 @@ module.exports = {
       [
           path.resolve(__dirname, '../taridocs-plugin'),
           {
-            generateApiReference: true,
+            generateApiReference: false,
             generateSDks: false,
-            specification: "swagger.json",
+            specification: "http://localhost:3001/swagger",
             apiRefPath: "docs/api_reference/api.md",
             sdkPath: "sdks",
             sdkDocPath: "docs/sdks",

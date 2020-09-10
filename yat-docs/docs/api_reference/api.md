@@ -1,6 +1,6 @@
 ---
 id: index
-title: Sample Yat API reference
+title: API reference
 ---
 
 import Tabs from '@theme/Tabs';
@@ -11,21 +11,26 @@ import TabItem from '@theme/TabItem';
 ## General information
 
 ### Description
-**Version:** 1.0.0
+**Version:** 
 
-This is a temporary, hardcoded version of the Yat API.
+No description provided.
 
 ----
 ## Authentication
 
+* API Key (JWT)
+    - Parameter Name: **Authorization**, in: header. Use format `Bearer TOKEN`
+
 * API Key (apiKey)
-    - Parameter Name: **API**, in: header. When user has 2FA configured: JWT token in `Bearer TOKEN` format which has not expired 2FA timeout
+    - Parameter Name: **Authorization**, in: header. When user has 2FA configured: JWT token in `Bearer TOKEN` format which has not expired 2FA timeout
 
 ----
 
 ## User Authentication
 
-From a user experience standpoint, we want encourage the use of magic links 1. Users request a magic link <br /> 2. If 2FA is enabled submit proceed to 2FA 
+From a user experience standpoint, we want encourage the use of magic links <br />                1. Users request a magic link <br />
+                2. If 2FA is enabled submit proceed to 2FA
+                
 
 ###  Two factor authentication
 
@@ -120,6 +125,10 @@ Complete login flow when user requires 2FA. `refresh_token` obtained from a call
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[TokenResponse](#schematokenresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -150,7 +159,8 @@ This operation does not require authentication
 const fetch = require('node-fetch');
 const inputBody = {
   "email": "string",
-  "g-recaptcha-response": "string"
+  "g-recaptcha-response": "string",
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -199,7 +209,8 @@ Will generate and send magic link to provided user's email. Assuming the email a
 ```json
 {
   "email": "string",
-  "g-recaptcha-response": "string"
+  "g-recaptcha-response": "string",
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
 }
 ```
 
@@ -218,6 +229,10 @@ Will generate and send magic link to provided user's email. Assuming the email a
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[MagicLinkLoginResponse](#schemamagiclinkloginresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -318,6 +333,10 @@ Login via username/password. Will return access and refresh tokens. NOTE: when `
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[TokenResponse](#schematokenresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -414,6 +433,10 @@ Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[TokenResponse](#schematokenresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -449,10 +472,15 @@ Cart management endpoints
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/cart',
 {
-  method: 'GET'
+  method: 'GET',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -489,11 +517,14 @@ User requires scope `CartShow`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Replace cart items
@@ -529,7 +560,8 @@ const inputBody = {
   "tracking_data": {}
 };
 const headers = {
-  'Content-Type':'application/json'
+  'Content-Type':'application/json',
+  'Authorization':'API_KEY'
 };
 
 fetch('/cart',
@@ -593,11 +625,14 @@ User requires scope `CartUpdate`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Update cart items
@@ -633,7 +668,8 @@ const inputBody = {
   "tracking_data": {}
 };
 const headers = {
-  'Content-Type':'application/json'
+  'Content-Type':'application/json',
+  'Authorization':'API_KEY'
 };
 
 fetch('/cart',
@@ -697,11 +733,14 @@ Will add new items to the cart. User requires scope `CartUpdate`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Clean up cart
@@ -728,10 +767,15 @@ None
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/cart',
 {
-  method: 'DELETE'
+  method: 'DELETE',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -768,11 +812,14 @@ User requires scope `CartUpdate`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Checkout cart
@@ -804,7 +851,8 @@ const inputBody = {
   "tracking_data": {}
 };
 const headers = {
-  'Content-Type':'application/json'
+  'Content-Type':'application/json',
+  'Authorization':'API_KEY'
 };
 
 fetch('/cart/checkout',
@@ -864,18 +912,23 @@ Submit order with provided payment details.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ----
 
 ## Emoji
 
-Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`, this is when a user wants to get records associated with an Emoji ID.
+                Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`,
+                this is when a user wants to get records associated with an Emoji ID.
+            
 
 ###  List emojis
 
@@ -901,10 +954,15 @@ Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`, th
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/emoji',
 {
-  method: 'GET'
+  method: 'GET',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -948,11 +1006,14 @@ If no parameters provided will return all emojis of current user. When `user_id`
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Search for EmojiID
@@ -1036,6 +1097,10 @@ Returns price, availability and other information on emoji and its alternates (s
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[SearchResult](#schemasearchresult)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -1122,6 +1187,10 @@ Will filter and return data from supplied tags, If tags filter is not supplied w
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[LookupResponse](#schemalookupresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="success">
 This operation does not require authentication
@@ -1165,7 +1234,8 @@ const inputBody = {
 };
 const headers = {
   'Content-Type':'application/json',
-  'Accept':'*/*'
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
 };
 
 fetch('/emoji/{eid}',
@@ -1239,12 +1309,16 @@ Add and remove records in EmojiId, update merkle_root and signature too. Access 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <h4 id="patch__emoji_{eid}-responseschema">Response Schema</h4>
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None, apiKey
+JWT, apiKey
 </aside>
 
 ----
@@ -1277,10 +1351,15 @@ User Interest endpoints. Endpoints for users to express interest in Emoji IDs.
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/user_interests',
 {
-  method: 'GET'
+  method: 'GET',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -1317,11 +1396,14 @@ User requires scope `UserInterestRead`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Create new interest in emoji to be notified when available
@@ -1351,7 +1433,8 @@ const inputBody = {
   "eid": "🐱🐲🐳🐴🐵"
 };
 const headers = {
-  'Content-Type':'application/json'
+  'Content-Type':'application/json',
+  'Authorization':'API_KEY'
 };
 
 fetch('/user_interests',
@@ -1409,11 +1492,14 @@ User requires scope `UserInterestWrite`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Given an EmojiId returns information about the user interest if a record exists for this user
@@ -1440,10 +1526,15 @@ None
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/user_interests/{eid}',
 {
-  method: 'GET'
+  method: 'GET',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -1486,11 +1577,14 @@ User requires scope `UserInterestRead`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Destroys the user interest preventing this eid's notification emails from being sent for this user
@@ -1517,10 +1611,15 @@ None
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/user_interests/{eid}',
 {
-  method: 'DELETE'
+  method: 'DELETE',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -1563,11 +1662,14 @@ User requires scope `UserInterestDelete`.
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ----
@@ -1575,6 +1677,262 @@ None
 ## Users
 
 User Management. Only applicable for users with custodial wallets.
+
+###  Current user account
+
+#### Example
+  `GET /account`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+
+const headers = {
+  'Authorization':'API_KEY'
+};
+
+fetch('/account',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+// PUT A KOTLIN TEMPLATE HERE
+```
+
+</TabItem>
+
+<TabItem value="swift5">
+
+```swift5
+// PUT A SWIFT5 TEMPLATE HERE
+```
+
+</TabItem>
+
+</Tabs>
+
+* Current user account*
+
+Displays the currently logged in user account details.
+
+<h4 id="get__account-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT
+</aside>
+
+###  Update the currently logged in user
+
+#### Example
+  `PATCH /account`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+const inputBody = {
+  "email": "string",
+  "first_name": "string",
+  "last_name": "string"
+};
+const headers = {
+  'Content-Type':'application/json',
+  'Authorization':'API_KEY'
+};
+
+fetch('/account',
+{
+  method: 'PATCH',
+  body: JSON.stringify(inputBody),
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+// PUT A KOTLIN TEMPLATE HERE
+```
+
+</TabItem>
+
+<TabItem value="swift5">
+
+```swift5
+// PUT A SWIFT5 TEMPLATE HERE
+```
+
+</TabItem>
+
+</Tabs>
+
+* Update the currently logged in user*
+
+> Body parameter
+
+```json
+{
+  "email": "string",
+  "first_name": "string",
+  "last_name": "string"
+}
+```
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[UpdateUserParameters](#schemaupdateuserparameters)|true|none|
+
+<h4 id="patch__account-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT, apiKey
+</aside>
+
+###  List users
+
+#### Example
+  `GET /users`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+
+const headers = {
+  'Authorization':'API_KEY'
+};
+
+fetch('/users',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+// PUT A KOTLIN TEMPLATE HERE
+```
+
+</TabItem>
+
+<TabItem value="swift5">
+
+```swift5
+// PUT A SWIFT5 TEMPLATE HERE
+```
+
+</TabItem>
+
+</Tabs>
+
+* List users*
+
+This is an admin endpoint
+
+<h4 id="get__users-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT
+</aside>
 
 ###  Register a User
 
@@ -1669,10 +2027,205 @@ Create a user and a custodial wallet
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="success">
 This operation does not require authentication
+</aside>
+
+###  Delete a user
+
+#### Example
+  `DELETE /users/{id}`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+
+const headers = {
+  'Authorization':'API_KEY'
+};
+
+fetch('/users/{id}',
+{
+  method: 'DELETE',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+// PUT A KOTLIN TEMPLATE HERE
+```
+
+</TabItem>
+
+<TabItem value="swift5">
+
+```swift5
+// PUT A SWIFT5 TEMPLATE HERE
+```
+
+</TabItem>
+
+</Tabs>
+
+* Delete a user*
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|id|path|string(uuid)|true|none|
+
+<h4 id="delete__users_{id}-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT
+</aside>
+
+###  Update a user as an admin
+
+#### Example
+  `PATCH /users/{id}`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+const inputBody = {
+  "free_limit": 0,
+  "is_active": true,
+  "user_parameters": {
+    "email": "string",
+    "first_name": "string",
+    "last_name": "string"
+  }
+};
+const headers = {
+  'Content-Type':'application/json',
+  'Authorization':'API_KEY'
+};
+
+fetch('/users/{id}',
+{
+  method: 'PATCH',
+  body: JSON.stringify(inputBody),
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+// PUT A KOTLIN TEMPLATE HERE
+```
+
+</TabItem>
+
+<TabItem value="swift5">
+
+```swift5
+// PUT A SWIFT5 TEMPLATE HERE
+```
+
+</TabItem>
+
+</Tabs>
+
+* Update a user as an admin*
+
+Note: Requires UserWrite Scope
+
+> Body parameter
+
+```json
+{
+  "free_limit": 0,
+  "is_active": true,
+  "user_parameters": {
+    "email": "string",
+    "first_name": "string",
+    "last_name": "string"
+  }
+}
+```
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[AdminUpdateUserParameters](#schemaadminupdateuserparameters)|true|none|
+|id|path|string(uuid)|true|none|
+
+<h4 id="patch__users_{id}-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+<aside class="warning">
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT, apiKey
 </aside>
 
 ----
@@ -1706,7 +2259,8 @@ Manage a user's public keys
 const fetch = require('node-fetch');
 
 const headers = {
-  'Accept':'*/*'
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
 };
 
 fetch('/pubkeys',
@@ -1755,6 +2309,10 @@ Retrieves pubkeys owned by currently authenticated user. This call expects empty
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <h4 id="get__pubkeys-responseschema">Response Schema</h4>
 
@@ -1766,7 +2324,7 @@ Status Code **200**
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Generate custodial wallet
@@ -1794,7 +2352,8 @@ None
 const fetch = require('node-fetch');
 
 const headers = {
-  'Accept':'*/*'
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
 };
 
 fetch('/pubkeys',
@@ -1843,10 +2402,14 @@ Generates custodial wallet with pubkey for currently authenticated user. This ca
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[Pubkey](#schemapubkey)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None, apiKey
+JWT, apiKey
 </aside>
 
 ###  Add pubkey for current user
@@ -1873,10 +2436,15 @@ None, apiKey
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/pubkeys/{pubkey}',
 {
-  method: 'POST'
+  method: 'POST',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -1919,11 +2487,14 @@ This call expects empty body
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None, apiKey
+JWT, apiKey
 </aside>
 
 ###  Retrieve pubkeys by user_id
@@ -1951,7 +2522,8 @@ None, apiKey
 const fetch = require('node-fetch');
 
 const headers = {
-  'Accept':'*/*'
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
 };
 
 fetch('/users/{user_id}/pubkeys',
@@ -2006,6 +2578,10 @@ NOTE: user should have scope `UserPubkeyList`
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|Inline|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <h4 id="get__users_{user_id}_pubkeys-responseschema">Response Schema</h4>
 
@@ -2017,7 +2593,7 @@ Status Code **200**
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ###  Add pubkey for user by user_id
@@ -2044,10 +2620,15 @@ None
 ```javascript
 const fetch = require('node-fetch');
 
+const headers = {
+  'Authorization':'API_KEY'
+};
+
 fetch('/users/{user_id}/pubkeys/{pubkey}',
 {
-  method: 'POST'
+  method: 'POST',
 
+  headers: headers
 })
 .then(function(res) {
     return res.json();
@@ -2091,11 +2672,14 @@ NOTE: user should have scope `UserPubkeyWrite` This call expects empty body
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|None|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None, apiKey
+JWT, apiKey
 </aside>
 
 ----
@@ -2131,7 +2715,8 @@ const inputBody = {
 };
 const headers = {
   'Content-Type':'application/json',
-  'Accept':'*/*'
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
 };
 
 fetch('/proxy',
@@ -2195,15 +2780,45 @@ Returns the response from the proxied service as a string
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
 |200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ProxyResult](#schemaproxyresult)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
 
 <aside class="warning">
 To perform this operation, you must be authenticated by means of one of the following methods:
-None
+JWT
 </aside>
 
 ----
 
 ## Schemas
+
+### AdminUpdateUserParameters
+
+```json
+{
+  "free_limit": 0,
+  "is_active": true,
+  "user_parameters": {
+    "email": "string",
+    "first_name": "string",
+    "last_name": "string"
+  }
+}
+
+```
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|free_limit|integer(int32)|false|none|none|
+|is_active|boolean|false|none|none|
+|user_parameters|object|true|none|none|
+|» email|string|false|none|none|
+|» first_name|string|false|none|none|
+|» last_name|string|false|none|none|
 
 ### CheckoutCartRequest
 
@@ -2340,7 +2955,8 @@ None
 ```json
 {
   "email": "string",
-  "g-recaptcha-response": "string"
+  "g-recaptcha-response": "string",
+  "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
 }
 
 ```
@@ -2349,8 +2965,9 @@ None
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|email|string|true|none|Email|
+|email|string|false|none|Email|
 |g-recaptcha-response|string|false|none|Response from google Recaptcha|
+|user_id|string(uuid)|false|none|User ID|
 
 ### MagicLinkLoginResponse
 
@@ -2557,4 +3174,23 @@ Public key
 |» eid|string|true|none|EmojiID to buy|
 |» redemption_code|string|false|none|Redemption Code if applicable|
 |tracking_data|object|false|none|Tracking data|
+
+### UpdateUserParameters
+
+```json
+{
+  "email": "string",
+  "first_name": "string",
+  "last_name": "string"
+}
+
+```
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|email|string|false|none|none|
+|first_name|string|false|none|none|
+|last_name|string|false|none|none|
 

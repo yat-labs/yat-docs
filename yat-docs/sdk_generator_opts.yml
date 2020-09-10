@@ -59,7 +59,7 @@ nodejs:
   # Sort method arguments to place required parameters before optional parameters. (Default: true)
   sortParamsByRequiredFlag: true
   # source folder for generated code (Default: src)
-  sourceFolder: source/sdks
+  sourceFolder: src # Don't change this unless you want to break the tests
   # use JavaScript ES6 (ECMAScript 6).  (Default: true)
   useES6: true
   # use JavaScript prototype chains & delegation for inheritance (Default: true)
@@ -129,3 +129,4 @@ kotlin:
   useRxJava2: false
   # Whether to use the RxJava3 adapter with the retrofit2 library. (Default: false)
   useRxJava3: false
+  disableHtmlEscaping: true
