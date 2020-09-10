@@ -41,7 +41,7 @@ async function exec(cmd, ctx, options) {
     debug('Executing command: %s', command);
     switch (command) {
         case "clean-sdk": return sdk.cleanSdks(ctx, options);
-        case "generate-sdk": return generateSDKs(ctx, options);
+        case "generate-sdk": return sdk.generateSDKs(ctx, options);
         case "clean-api-ref": return swagger.deleteApiReference(ctx, options);
         case "generate-api-ref": return swagger.generateApiReference(ctx, options);
         case "clean-docs": return cleanDocs(ctx, options);
@@ -58,15 +58,9 @@ async function cleanDocs(ctx, options) {
     await swagger.deleteApiReference(ctx, options);
 }
 
-async function generateSDKs(ctx, options) {
-    debug("Generating docs...");
-    const sdkDir = paths.resolve(ctx.siteDir, options.sdkPath);
-    return sdk.generateSDKs(sdkDir, options);
-}
 
 
-
-async function generateDocs() {
-    await generateSDKs();
-    await swagger.generateApiReference();
+async function generateDocs(ctx, options) {
+    await sdk.generateSDKs(ctx, options);
+    await swagger.generateApiReference(ctx, options);
 }

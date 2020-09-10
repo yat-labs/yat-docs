@@ -86,12 +86,12 @@ module.exports = {
       [
           path.resolve(__dirname, '../taridocs-plugin'),
           {
+            generateApiReference: true,
+            generateSDks: false,
             specification: "swagger.json",
             apiRefPath: "docs/api_reference/api.md",
             sdkPath: "sdks",
             sdkDocPath: "docs/sdks",
-            generateApiReference: true,
-            generateSDks: true,
             languages: ["nodejs", "kotlin", "swift5"],
             // These options are passed directly to swagger-parser. Options are details at https://apitools.dev/swagger-parser/docs/options.html
             swagger_parser: {

@@ -48,12 +48,13 @@ async function openapi_to_markdown(options) {
         let templatesPath = options.templatesPath || path.resolve(__dirname, "../widdershins_templates/openapi3");
         // Define widdershins options
         const opts = {
-            omitHeader: false,
+            omitHeader: true,
             language_tabs: options.languages || ['javascript'],
             search: false,
             expandBody: true,
             codeSamples: true,
-            user_templates: templatesPath
+            user_templates: templatesPath,
+            page_id: "index"
         };
         let output = await widdershins.convert(api, opts);
         return output;

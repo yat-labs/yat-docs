@@ -43,6 +43,11 @@ async function generateSDKs(ctx, options) {
             debug("Error parsing Swagger spec %s: %O", spec.title, err.message);
         }
     }
+    try {
+        await writeSDKdocs(ctx, options);
+    } catch (err) {
+        debug("Error copying SDK documentation: %s", err.message);
+    }
 }
 
 /**
@@ -108,46 +113,40 @@ async function loadSdkOptions(path) {
     return opts;
 }
 
-/// from hexo
-
-/**
- * SDK doc generator.
- *
- * Assumes that the SDKs have already been generated and reside at `config.sdk_dir`
- */
-async function generateSdkDocs(locals) {
-    let sdk_src = sdk_utils.get_sdk_dest(hexo.config);
-    if (!sdk_src) {
+async function writeSDKdocs(ctx, options) {
+    let sdkSrc = path.resolve(ctx.siteDir, options.sdkPath);
+    try {
+        await fs.access(sdkSrc);
+    } catch {
         debug("No SDKs were found");
         return;
     }
-    const pArr = hexo.config.languages.map(lang => generateSdkDoc(lang, sdk_src));
+    const pArr = options.languages.map(lang => writeSdkDoc(lang, sdkSrc, ctx, options));
     const result = await Promise.all(pArr);
     return result;
 }
 
 
-async function generateSdkDoc(lang, sdk_src) {
-    const src_docs = path.join(sdk_src, lang, "docs");
+async function writeSdkDoc(lang, sdkSrc, ctx, options) {
+    const srcDocs = path.join(sdkSrc, lang, "docs");
+    const readme = path.join(sdkSrc, lang, "README.md");
+    const destDir = path.resolve(ctx.siteDir, options.sdkDocPath, lang);
+    await fs.mkdir(path.join(destDir, 'docs'), { recursive: true });
+    // Save the README
+    const readmePath = path.join(destDir, "index.md");
+    await fs.copyFile(readme, readmePath);
+    // Save the SDK docs
     let file_list = [];
     try {
-        file_list = await fs.readdir(src_docs);
+        file_list = await fs.readdir(srcDocs);
     } catch (err) {
         debug("Error getting SDK source documentation: %s", err.message);
     }
     const pArr = file_list
-        .filter(f => f.endsWith(".md"))
-        .map(async f =>  fs.readFile(path.join(src_docs, f), {encoding: 'utf8'}));
-    const docs = await Promise.all(pArr);
-    const text = docs.join("\n");
-    const html = await hexo.render.render({text, engine: "markdown"});
-    return {
-        path: `sdk_ref/${lang}.html`,
-        data: {
-            content: html
-        },
-        layout: ["sdk", "index"]
-    }
+        .filter(f => f.endsWith("Api.md"))
+        .map(async f =>  fs.copyFile(path.join(srcDocs, f), path.join(destDir, 'docs/', f)));
+    await Promise.all(pArr);
+    debug(`${lang} SDK documentation copied.`)
 }
 
 module.exports = {

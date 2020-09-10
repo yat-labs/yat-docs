@@ -9,7 +9,11 @@
 {{ data.utils.mergePathParameters(data); }}
 {{ data.utils.getParameters(data); }}
 
+{{? data.operation.summary}}
+### {{= data.operation.summary }}
+{{?? true }}
 ### {{= data.methodUpper}} {{= data.method.path}}
+{{?}}
 
 {{? data.operation.operationId}}
 <a id="opId{{=data.operation.operationId}}"></a>

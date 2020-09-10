@@ -1039,7 +1039,7 @@
   "tags": [
     {
       "name": "User Authentication",
-      "description": "From a user experience standpoint, we want encourage the use of magic links <br />\n                1. Users request a magic link <br />\n                2. If 2FA is enabled submit proceed to 2FA\n                "
+      "description": "From a user experience standpoint, we want encourage the use of magic links 1. Users request a magic link <br /> 2. If 2FA is enabled submit proceed to 2FA "
     },
     {
       "name": "Cart",
@@ -1047,7 +1047,7 @@
     },
     {
       "name": "Emoji",
-      "description": "\n                Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`,\n                this is when a user wants to get records associated with an Emoji ID.\n            "
+      "description": "Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`, this is when a user wants to get records associated with an Emoji ID."
     },
     {
       "name": "User Interest",
@@ -1064,6 +1064,7 @@
   ],
   "info": {
     "version": "1.0.0",
-    "title": "Sample Yat API reference"
+    "title": "Sample Yat API reference",
+    "description": "This is a temporary, hardcoded version of the Yat API."
   }
 }

@@ -1,10 +1,26 @@
+---
+id: {{=data.options.page_id || "api-reference"}}
+title: {{=(data.api.info && data.api.info.title) || "API reference"}}
+---
 
+{{? data.api.info}}
+----
 {{= data.tags.section }}
-<h1 id="{{=data.title_prefix}}">{{=data.api.info && data.api.info.title}} {{=data.version}}</h1>
+## General information
 
-> Scroll down for {{? data.header.language_tabs.length}}code samples, {{?}}example requests and responses.{{? data.header.language_tabs.length}} Select a language for code samples from the tabs above or the mobile navigation menu.{{?}}
+### Description
+**Version:** {{=data.api.info.version}}
 
-{{? data.api.info && data.api.info.description}}{{=data.api.info.description}}{{?}}
+{{=data.api.info.description || "No description provided."}}
+
+
+{{? data.api.info.termsOfService}}
+Use of this API infers that you have read and agree to the<a href="{{=data.api.info .termsOfService}}">Terms of service</a>.
+{{?}}
+{{? data.api.info.contact}}{{? data.api.info.contact.email}}Email: <a href="mailto:{{=data.api.info.contact.email}}">{{=data.api.info.contact.name || 'Support'}}</a> {{?}}{{? data.api.info.contact.url}}Web: <a href="{{=data.api.info.contact.url}}">{{= data.api.info.contact.name || 'Support'}}</a> {{?}}{{?}}
+{{? data.api.info.license}}{{? data.api.info.license.url}}License: <a href="{{=data.api.info.license.url}}">{{=data.api.info.license.name}}</a>{{??}} License: {{=data.api.info.license.name}}{{?}}{{?}}
+
+{{?}}
 
 {{? data.api.servers }}
 Base URLs:
@@ -19,12 +35,9 @@ Base URLs:
 {{?}}
 {{ } }}
 {{~}}
+{{= data.tags.endSection }}
 {{?}}
 
-{{? data.api.info && data.api.info.termsOfService}}<a href="{{=data.api.info.termsOfService}}">Terms of service</a>{{?}}
-{{? data.api.info && data.api.info.contact}}{{? data.api.info.contact.email}}Email: <a href="mailto:{{=data.api.info.contact.email}}">{{=data.api.info.contact.name || 'Support'}}</a> {{?}}{{? data.api.info.contact.url}}Web: <a href="{{=data.api.info.contact.url}}">{{= data.api.info.contact.name || 'Support'}}</a> {{?}}{{?}}
-{{? data.api.info && data.api.info.license}}{{? data.api.info.license.url}}License: <a href="{{=data.api.info.license.url}}">{{=data.api.info.license.name}}</a>{{??}} License: {{=data.api.info.license.name}}{{?}}{{?}}
-{{= data.tags.endSection }}
 
 {{? data.api.components && data.api.components.securitySchemes }}
 {{#def.security}}
@@ -33,10 +46,9 @@ Base URLs:
 {{ for (var r in data.resources) { }}
 {{ data.resource = data.resources[r]; }}
 
+----
 {{= data.tags.section }}
-<h2 id="{{=data.title_prefix+'-'+data.utils.slugify(r)}}">
-  {{= r}}
-</h2>
+## {{= r}}
 
 {{? data.resource.description }}{{= data.resource.description}}{{?}}
 
@@ -56,6 +68,8 @@ Base URLs:
 {{ } /* of resources */ }}
 
 {{? data.api.components && data.api.components.schemas }}
+
+----
 {{= data.tags.section }}
 
 ## Schemas
@@ -65,14 +79,7 @@ Base URLs:
 {{ var schema = data.api.components.schemas[s]; }}
 
 {{= data.tags.section }}
-<h3 id="tocS_{{=s}}">{{=s}}</h3>
-
-<!-- backwards compatibility -->
-
-<a id="schema{{=s.toLowerCase()}}"></a>
-<a id="schema_{{=s}}"></a>
-<a id="tocS{{=s.toLowerCase()}}"></a>
-<a id="tocs{{=s.toLowerCase()}}"></a>
+### {{=s}}
 
 {{? data.options.yaml }}
 ```yaml
@@ -105,7 +112,7 @@ Base URLs:
 {{? block===blocks[0] }}
 {{= data.tags.section }}
 
-### Properties
+#### Properties
 {{?}}
 
 {{? block.rows.length}}|Name|Type|Required|Restrictions|Description|
