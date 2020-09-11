@@ -39,13 +39,14 @@ class ApiClient {
 </isBasicBearer>
 </isBasic>
 <#isApiKey>
-            '<name>': {type: 'apiKey', 'in': <#isKeyInHeader>'header'</isKeyInHeader><^isKeyInHeader>'query'</isKeyInHeader>, name: '<keyParamName>'}<^-last>,</-last>
+            // Since Swagger 2.0 does not support bearer tokens, and all Yat's token are as such, we add in the prefix here
+            '<name>': {type: 'apiKey', 'in': <#isKeyInHeader>'header'</isKeyInHeader><^isKeyInHeader>'query'</isKeyInHeader>, name: '<keyParamName>', apiKeyPrefix: 'Bearer' }<^-last>,</-last>
 </isApiKey>
 <#isOAuth>
             '<name>': {type: 'oauth2'}<^-last>,</-last>
 </isOAuth>
 </authMethods>
-        }
+        };
 
         <={{ }}=>{{#emitJSDoc}}/**
          * The default HTTP headers to be included for all API calls.
@@ -130,6 +131,22 @@ class ApiClient {
             return false;
         }
     };
+
+    {{#emitJSDoc}}/*
+    * Returns a boolean indicating whether the client is logged in or not.
+    * @returns {Boolean} Flag indicating if this instance has logged in already
+    */{{/emitJSDoc}}
+    loggedIn() {
+        return this.authentications['JWT'].apiKey || this.authentications['JWT'].accessToken;
+    }
+
+    {{#emitJSDoc}}/*
+        * Deletes the local authentication info, effectively logging the client out
+        */{{/emitJSDoc}}
+    logout() {
+        delete this.authentications['JWT'].apiKey;
+        delete this.authentications['JWT'].accessToken;
+    }
 
     {{#emitJSDoc}}
    /**

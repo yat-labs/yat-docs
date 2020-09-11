@@ -4,6 +4,7 @@
 import ApiClient from "../ApiClient";
 <#imports>import <&import> from '../<#modelPackage><&modelPackage>/</modelPackage><import>';
 </imports>
+import {LoginRequest as LoginInfo, UserAuthenticationApi as AuthApi} from '../index';
 
 <#emitJSDoc>/**
 * <baseName> service.
@@ -22,6 +23,36 @@ export default class <&classname> {
     */</emitJSDoc>
     constructor(apiClient) {
         this.apiClient = apiClient || ApiClient.instance;
+    }
+
+    <#emitJSDoc>/**
+     * Alias and convenience function for logging into the server with a username and password. Subsequent requests
+     * will supply this data automatically. This function is idempotent, so calling it once you're already logged in
+     * has no effect;
+     */</emitJSDoc>
+    login(email, password) {
+        if (this.apiClient.loggedIn()) {
+            return;
+        }
+        const body = new LoginInfo(email, password);
+        let promise;
+        if (this instanceof AuthApi) {
+        promise = this.authTokenPost(body);
+        } else {
+        const auth = new AuthApi();
+        promise = auth.authTokenPost(body);
+        }
+        return promise.then(res => {
+            this.apiClient.authentications['JWT'].apiKey = res.access_token;
+            this.apiClient.authentications['JWT'].refreshToken = res.refresh_token;
+        });
+    }
+
+    <#emitJSDoc>/**
+    * Logs the client out
+    */</emitJSDoc>
+    logout() {
+        this.apiClient.logout();
     }
 
 <#operations><#operation><#emitJSDoc><^usePromises>

@@ -4,15 +4,11 @@ title: UserInterestApi
 ---
 
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**userInterestsEidDelete**](UserInterestApi.md#userInterestsEidDelete) | **DELETE** /user_interests/{eid} |  Destroys the user interest preventing this eid&#39;s notification emails from being sent for this user
-[**userInterestsEidGet**](UserInterestApi.md#userInterestsEidGet) | **GET** /user_interests/{eid} |  Given an EmojiId returns information about the user interest if a record exists for this user
-[**userInterestsGet**](UserInterestApi.md#userInterestsGet) | **GET** /user_interests |  Returns a paginated list of user interest records associated with the user
-[**userInterestsPost**](UserInterestApi.md#userInterestsPost) | **POST** /user_interests |  Create new interest in emoji to be notified when available
-
+[**userInterestsEidDelete**](UserInterestApi.md#userInterestsEidDelete) | **DELETE** /user_interests/{eid} |  Destroys the user interest preventing this eid&#39;s notification emails from being sent for this user[**userInterestsEidGet**](UserInterestApi.md#userInterestsEidGet) | **GET** /user_interests/{eid} |  Given an EmojiId returns information about the user interest if a record exists for this user[**userInterestsGet**](UserInterestApi.md#userInterestsGet) | **GET** /user_interests |  Returns a paginated list of user interest records associated with the user[**userInterestsPost**](UserInterestApi.md#userInterestsPost) | **POST** /user_interests |  Create new interest in emoji to be notified when available
 
 
 ## userInterestsEidDelete

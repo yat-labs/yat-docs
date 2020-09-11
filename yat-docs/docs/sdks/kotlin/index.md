@@ -33,46 +33,40 @@ This runs all tests and packages the library.
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-
 [CartApi](docs/CartApi.md) | [**cartCheckoutPost**](docs/CartApi.md#cartcheckoutpost) | **POST** /cart/checkout |  Checkout cart
 [CartApi](docs/CartApi.md) | [**cartDelete**](docs/CartApi.md#cartdelete) | **DELETE** /cart |  Clean up cart
 [CartApi](docs/CartApi.md) | [**cartGet**](docs/CartApi.md#cartget) | **GET** /cart |  Return cart content
 [CartApi](docs/CartApi.md) | [**cartPost**](docs/CartApi.md#cartpost) | **POST** /cart |  Update cart items
 [CartApi](docs/CartApi.md) | [**cartPut**](docs/CartApi.md#cartput) | **PUT** /cart |  Replace cart items
-
 [EmojiApi](docs/EmojiApi.md) | [**emojiEidGet**](docs/EmojiApi.md#emojieidget) | **GET** /emoji/{eid} |  Lookup EmojiId
 [EmojiApi](docs/EmojiApi.md) | [**emojiEidPatch**](docs/EmojiApi.md#emojieidpatch) | **PATCH** /emoji/{eid} |  Edit EmojiId
 [EmojiApi](docs/EmojiApi.md) | [**emojiGet**](docs/EmojiApi.md#emojiget) | **GET** /emoji |  List emojis
 [EmojiApi](docs/EmojiApi.md) | [**emojiSearchGet**](docs/EmojiApi.md#emojisearchget) | **GET** /emoji/search |  Search for EmojiID
-
 [KeyManagementApi](docs/KeyManagementApi.md) | [**pubkeysGet**](docs/KeyManagementApi.md#pubkeysget) | **GET** /pubkeys |  Retrieve pubkeys
 [KeyManagementApi](docs/KeyManagementApi.md) | [**pubkeysPost**](docs/KeyManagementApi.md#pubkeyspost) | **POST** /pubkeys |  Generate custodial wallet
 [KeyManagementApi](docs/KeyManagementApi.md) | [**pubkeysPubkeyPost**](docs/KeyManagementApi.md#pubkeyspubkeypost) | **POST** /pubkeys/{pubkey} |  Add pubkey for current user
 [KeyManagementApi](docs/KeyManagementApi.md) | [**usersUserIdPubkeysGet**](docs/KeyManagementApi.md#usersuseridpubkeysget) | **GET** /users/{user_id}/pubkeys |  Retrieve pubkeys by user_id
 [KeyManagementApi](docs/KeyManagementApi.md) | [**usersUserIdPubkeysPubkeyPost**](docs/KeyManagementApi.md#usersuseridpubkeyspubkeypost) | **POST** /users/{user_id}/pubkeys/{pubkey} |  Add pubkey for user by user_id
-
 [ProxyApi](docs/ProxyApi.md) | [**proxyPost**](docs/ProxyApi.md#proxypost) | **POST** /proxy |  Calls a pre-defined proxy service with the provided data
-
 [UserAuthenticationApi](docs/UserAuthenticationApi.md) | [**auth2faPost**](docs/UserAuthenticationApi.md#auth2fapost) | **POST** /auth/2fa |  Two factor authentication
 [UserAuthenticationApi](docs/UserAuthenticationApi.md) | [**authMagicLinkPost**](docs/UserAuthenticationApi.md#authmagiclinkpost) | **POST** /auth/magic_link |  Generate magic link for login
 [UserAuthenticationApi](docs/UserAuthenticationApi.md) | [**authTokenPost**](docs/UserAuthenticationApi.md#authtokenpost) | **POST** /auth/token |  Login via password
 [UserAuthenticationApi](docs/UserAuthenticationApi.md) | [**authTokenRefreshPost**](docs/UserAuthenticationApi.md#authtokenrefreshpost) | **POST** /auth/token/refresh |  Refreshes access token
-
 [UserInterestApi](docs/UserInterestApi.md) | [**userInterestsEidDelete**](docs/UserInterestApi.md#userinterestseiddelete) | **DELETE** /user_interests/{eid} |  Destroys the user interest preventing this eid's notification emails from being sent for this user
 [UserInterestApi](docs/UserInterestApi.md) | [**userInterestsEidGet**](docs/UserInterestApi.md#userinterestseidget) | **GET** /user_interests/{eid} |  Given an EmojiId returns information about the user interest if a record exists for this user
 [UserInterestApi](docs/UserInterestApi.md) | [**userInterestsGet**](docs/UserInterestApi.md#userinterestsget) | **GET** /user_interests |  Returns a paginated list of user interest records associated with the user
 [UserInterestApi](docs/UserInterestApi.md) | [**userInterestsPost**](docs/UserInterestApi.md#userinterestspost) | **POST** /user_interests |  Create new interest in emoji to be notified when available
-
 [UsersApi](docs/UsersApi.md) | [**accountGet**](docs/UsersApi.md#accountget) | **GET** /account |  Current user account
 [UsersApi](docs/UsersApi.md) | [**accountPatch**](docs/UsersApi.md#accountpatch) | **PATCH** /account |  Update the currently logged in user
 [UsersApi](docs/UsersApi.md) | [**usersGet**](docs/UsersApi.md#usersget) | **GET** /users |  List users
 [UsersApi](docs/UsersApi.md) | [**usersIdDelete**](docs/UsersApi.md#usersiddelete) | **DELETE** /users/{id} |  Delete a user
 [UsersApi](docs/UsersApi.md) | [**usersIdPatch**](docs/UsersApi.md#usersidpatch) | **PATCH** /users/{id} |  Update a user as an admin
 [UsersApi](docs/UsersApi.md) | [**usersPost**](docs/UsersApi.md#userspost) | **POST** /users |  Register a User
+
 
 
 ## Documentation for Models

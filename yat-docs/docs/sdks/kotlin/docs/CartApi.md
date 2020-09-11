@@ -4,16 +4,11 @@ title: CartApi
 ---
 
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**cartCheckoutPost**](CartApi.md#cartCheckoutPost) | **POST** /cart/checkout |  Checkout cart
-[**cartDelete**](CartApi.md#cartDelete) | **DELETE** /cart |  Clean up cart
-[**cartGet**](CartApi.md#cartGet) | **GET** /cart |  Return cart content
-[**cartPost**](CartApi.md#cartPost) | **POST** /cart |  Update cart items
-[**cartPut**](CartApi.md#cartPut) | **PUT** /cart |  Replace cart items
-
+[**cartCheckoutPost**](CartApi.md#cartCheckoutPost) | **POST** /cart/checkout |  Checkout cart[**cartDelete**](CartApi.md#cartDelete) | **DELETE** /cart |  Clean up cart[**cartGet**](CartApi.md#cartGet) | **GET** /cart |  Return cart content[**cartPost**](CartApi.md#cartPost) | **POST** /cart |  Update cart items[**cartPut**](CartApi.md#cartPut) | **PUT** /cart |  Replace cart items
 
 
 ## cartCheckoutPost

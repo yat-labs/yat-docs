@@ -83,7 +83,7 @@ async function runOpenAPIGenerator(config, spec, lang, out_dir) {
     // Build command
     const cmd = `./oag.sh generate -c ${langConfigFile} -g ${generator} -i ${specUri} -o ${output} -t ${templates}`;
     try {
-        const {stdout, stderr} = await exec(cmd, {cwd: script_dir});
+        const {stdout, stderr} = await exec(cmd, {cwd: script_dir, maxBuffer: 1024 * 1024 * 5});
         debug(stdout);
         debug(stderr);
     } catch (err) {

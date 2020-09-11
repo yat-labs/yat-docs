@@ -1,6 +1,33 @@
 {
   "swagger": "2.0",
   "definitions": {
+    "AdminUpdateUserParameters": {
+      "properties": {
+        "free_limit": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "is_active": {
+          "type": "boolean"
+        },
+        "user_parameters": {
+          "properties": {
+            "email": {
+              "type": "string"
+            },
+            "first_name": {
+              "type": "string"
+            },
+            "last_name": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "user_parameters"
+      ]
+    },
     "CheckoutCartRequest": {
       "properties": {
         "method": {
@@ -187,11 +214,13 @@
         "g-recaptcha-response": {
           "description": "Response from google Recaptcha",
           "type": "string"
+        },
+        "user_id": {
+          "description": "User ID",
+          "type": "string",
+          "format": "uuid"
         }
-      },
-      "required": [
-        "email"
-      ]
+      }
     },
     "MagicLinkLoginResponse": {
       "properties": {
@@ -421,9 +450,88 @@
       "required": [
         "items"
       ]
+    },
+    "UpdateUserParameters": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      }
     }
   },
   "paths": {
+    "/account": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": " Current user account",
+        "description": "Displays the currently logged in user account details.",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": " Update the currently logged in user",
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserParameters"
+            }
+          }
+        ]
+      }
+    },
     "/auth/2fa": {
       "post": {
         "tags": [
@@ -437,6 +545,18 @@
             "schema": {
               "$ref": "#/definitions/TokenResponse"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -464,6 +584,18 @@
             "schema": {
               "$ref": "#/definitions/MagicLinkLoginResponse"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -491,6 +623,18 @@
             "schema": {
               "$ref": "#/definitions/TokenResponse"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -518,6 +662,18 @@
             "schema": {
               "$ref": "#/definitions/TokenResponse"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -544,7 +700,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}}
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
       },
       "put": {
         "tags": [
@@ -557,7 +726,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "in": "body",
@@ -580,7 +762,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "in": "body",
@@ -603,7 +798,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}}
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
       }
     },
     "/cart/checkout": {
@@ -618,7 +826,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "in": "body",
@@ -643,7 +864,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "description": "Lookup emojis owned by `organization_id`,\n requires organization power user role",
@@ -675,6 +909,18 @@
             "schema": {
               "$ref": "#/definitions/SearchResult"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -707,6 +953,18 @@
             "schema": {
               "$ref": "#/definitions/LookupResponse"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -736,6 +994,18 @@
           "200": {
             "description": "OK",
             "schema": {}
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -776,6 +1046,18 @@
             "schema": {
               "$ref": "#/definitions/ProxyResult"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -811,6 +1093,18 @@
                 "$ref": "#/definitions/Pubkey"
               }
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       },
@@ -834,6 +1128,18 @@
             "schema": {
               "$ref": "#/definitions/Pubkey"
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       }
@@ -853,7 +1159,20 @@
             "apiKey": []
           }
         ],
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "in": "path",
@@ -876,7 +1195,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}}
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
       },
       "post": {
         "tags": [
@@ -889,7 +1221,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "in": "body",
@@ -914,7 +1259,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}}
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
       },
       "delete": {
         "tags": [
@@ -927,7 +1285,20 @@
             "JWT": []
           }
         ],
-        "responses": {"200": {"description": "OK"}}
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
       },
       "parameters": [
         {
@@ -939,13 +1310,52 @@
       ]
     },
     "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": " List users",
+        "description": "This is an admin endpoint",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
       "post": {
         "tags": [
           "Users"
         ],
         "summary": " Register a User",
         "description": "Create a user and a custodial wallet",
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "in": "body",
@@ -957,6 +1367,81 @@
           }
         ]
       }
+    },
+    "/users/{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": " Delete a user",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": " Update a user as an admin",
+        "description": "Note: Requires UserWrite Scope",
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminUpdateUserParameters"
+            }
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "string",
+          "format": "uuid"
+        }
+      ]
     },
     "/users/{user_id}/pubkeys": {
       "get": {
@@ -979,6 +1464,18 @@
                 "$ref": "#/definitions/Pubkey"
               }
             }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         },
         "parameters": [
@@ -1007,7 +1504,20 @@
             "apiKey": []
           }
         ],
-        "responses": {"200": {"description": "OK"}},
+        "responses": {
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
         "parameters": [
           {
             "description": "Public key to add",
@@ -1029,17 +1539,23 @@
     }
   },
   "securityDefinitions": {
-    "apiKey": {
+    "JWT": {
+      "name": "Authorization",
       "type": "apiKey",
       "in": "header",
-      "description": "When user has 2FA configured: JWT token in `Bearer TOKEN` format which has not expired 2FA timeout",
-      "name": "API"
+      "description": "Use format `Bearer TOKEN`"
+    },
+    "apiKey": {
+      "name": "Authorization",
+      "type": "apiKey",
+      "in": "header",
+      "description": "When user has 2FA configured: JWT token in `Bearer TOKEN` format which has not expired 2FA timeout"
     }
   },
   "tags": [
     {
       "name": "User Authentication",
-      "description": "From a user experience standpoint, we want encourage the use of magic links 1. Users request a magic link <br /> 2. If 2FA is enabled submit proceed to 2FA "
+      "description": "From a user experience standpoint, we want encourage the use of magic links <br />\n                1. Users request a magic link <br />\n                2. If 2FA is enabled submit proceed to 2FA\n                "
     },
     {
       "name": "Cart",
@@ -1047,7 +1563,7 @@
     },
     {
       "name": "Emoji",
-      "description": "Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`, this is when a user wants to get records associated with an Emoji ID."
+      "description": "\n                Emoji ID endpoints. The most common endpoint will be a lookup `/emoji/{eid}`,\n                this is when a user wants to get records associated with an Emoji ID.\n            "
     },
     {
       "name": "User Interest",
@@ -1062,9 +1578,9 @@
       "description": "Manage a user's public keys"
     }
   ],
+  "host": "localhost:3001",
   "info": {
-    "version": "1.0.0",
-    "title": "Sample Yat API reference",
-    "description": "This is a temporary, hardcoded version of the Yat API."
+    "version": "v1.0.0",
+    "title": "Yat"
   }
 }

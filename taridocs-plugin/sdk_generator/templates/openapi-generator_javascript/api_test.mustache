@@ -39,13 +39,11 @@
 {{#operations}}
 {{#operation}}
     describe('{{operationId}}', function() {
-      it('should call {{operationId}} successfully', function(done) {
-        //uncomment below and update the code to test {{operationId}}
-        //instance.{{operationId}}(function(error) {
-        //  if (error) throw error;
-        //expect().to.be();
-        //});
-        done();
+      it('should call {{operationId}} successfully', function() {
+        return instance.{{operationId}}()
+            .then(result => {
+                // Test results
+            });
       });
     });
 {{/operation}}

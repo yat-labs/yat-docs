@@ -25,6 +25,7 @@
 {{/models}}
   });
 
+{{#defaultValue}}
   var getProperty = function(object, getter, property) {
     // Use getter method if present; otherwise, get the property directly.
     if (typeof object[getter] === 'function')
@@ -40,21 +41,24 @@
     else
       object[property] = value;
   }
+{{/defaultValue}}
 
   describe('{{classname}}', function() {
     it('should create an instance of {{classname}}', function() {
-      // uncomment below and update the code to test {{classname}}
-      //var instane = new {{moduleName}}.{{classname}}();
-      //expect(instance).to.be.a({{moduleName}}.{{classname}});
+      const instance = new {{moduleName}}.{{classname}}();
+      expect(instance).to.be.a({{moduleName}}.{{classname}});
     });
 
 {{#models}}
 {{#model}}
 {{#vars}}
     it('should have the property {{name}} (base name: "{{baseName}}")', function() {
-      // uncomment below and update the code to test the property {{name}}
-      //var instane = new {{moduleName}}.{{classname}}();
-      //expect(instance).to.be();
+        const instance = new {{moduleName}}.{{classname}}();
+        expect(instance.{{name}}).to.be();
+        {{#defaultValue}}
+        const {{name}}_val = getProperty(instance, "{{name}}", "{{name}}");
+        expect({{name}}_val).to.equal({{defaultValue}});
+        {{/defaultValue}}
     });
 
 {{/vars}}

@@ -3,7 +3,7 @@ id: proxyapi
 title: ProxyApi
 ---
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -22,7 +22,7 @@ Returns the response from the proxied service as a string
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];

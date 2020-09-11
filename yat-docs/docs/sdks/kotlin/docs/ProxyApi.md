@@ -4,12 +4,11 @@ title: ProxyApi
 ---
 
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**proxyPost**](ProxyApi.md#proxyPost) | **POST** /proxy |  Calls a pre-defined proxy service with the provided data
-
 
 
 ## proxyPost

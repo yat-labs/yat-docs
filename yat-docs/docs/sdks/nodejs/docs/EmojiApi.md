@@ -3,7 +3,7 @@ id: emojiapi
 title: EmojiApi
 ---
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -25,7 +25,7 @@ Will filter and return data from supplied tags, If tags filter is not supplied w
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 
 let apiInstance = new YatJs.EmojiApi();
 let eid = "eid_example"; // String | 
@@ -75,7 +75,7 @@ Add and remove records in EmojiId, update merkle_root and signature too. Access 
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -134,7 +134,7 @@ If no parameters provided will return all emojis of current user. When &#x60;use
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -190,7 +190,7 @@ Returns price, availability and other information on emoji and its alternates (s
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 
 let apiInstance = new YatJs.EmojiApi();
 let eid = "eid_example"; // String | Emoji ID in percent url-encoded form

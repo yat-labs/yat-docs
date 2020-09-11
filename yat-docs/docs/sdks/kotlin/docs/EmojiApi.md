@@ -4,15 +4,11 @@ title: EmojiApi
 ---
 
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**emojiEidGet**](EmojiApi.md#emojiEidGet) | **GET** /emoji/{eid} |  Lookup EmojiId
-[**emojiEidPatch**](EmojiApi.md#emojiEidPatch) | **PATCH** /emoji/{eid} |  Edit EmojiId
-[**emojiGet**](EmojiApi.md#emojiGet) | **GET** /emoji |  List emojis
-[**emojiSearchGet**](EmojiApi.md#emojiSearchGet) | **GET** /emoji/search |  Search for EmojiID
-
+[**emojiEidGet**](EmojiApi.md#emojiEidGet) | **GET** /emoji/{eid} |  Lookup EmojiId[**emojiEidPatch**](EmojiApi.md#emojiEidPatch) | **PATCH** /emoji/{eid} |  Edit EmojiId[**emojiGet**](EmojiApi.md#emojiGet) | **GET** /emoji |  List emojis[**emojiSearchGet**](EmojiApi.md#emojiSearchGet) | **GET** /emoji/search |  Search for EmojiID
 
 
 ## emojiEidGet

@@ -3,7 +3,7 @@ id: userinterestapi
 title: UserInterestApi
 ---
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -25,7 +25,7 @@ User requires scope &#x60;UserInterestDelete&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -75,7 +75,7 @@ User requires scope &#x60;UserInterestRead&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -125,7 +125,7 @@ User requires scope &#x60;UserInterestRead&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -171,7 +171,7 @@ User requires scope &#x60;UserInterestWrite&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];

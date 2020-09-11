@@ -4,17 +4,11 @@ title: UsersApi
 ---
 
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**accountGet**](UsersApi.md#accountGet) | **GET** /account |  Current user account
-[**accountPatch**](UsersApi.md#accountPatch) | **PATCH** /account |  Update the currently logged in user
-[**usersGet**](UsersApi.md#usersGet) | **GET** /users |  List users
-[**usersIdDelete**](UsersApi.md#usersIdDelete) | **DELETE** /users/{id} |  Delete a user
-[**usersIdPatch**](UsersApi.md#usersIdPatch) | **PATCH** /users/{id} |  Update a user as an admin
-[**usersPost**](UsersApi.md#usersPost) | **POST** /users |  Register a User
-
+[**accountGet**](UsersApi.md#accountGet) | **GET** /account |  Current user account[**accountPatch**](UsersApi.md#accountPatch) | **PATCH** /account |  Update the currently logged in user[**usersGet**](UsersApi.md#usersGet) | **GET** /users |  List users[**usersIdDelete**](UsersApi.md#usersIdDelete) | **DELETE** /users/{id} |  Delete a user[**usersIdPatch**](UsersApi.md#usersIdPatch) | **PATCH** /users/{id} |  Update a user as an admin[**usersPost**](UsersApi.md#usersPost) | **POST** /users |  Register a User
 
 
 ## accountGet

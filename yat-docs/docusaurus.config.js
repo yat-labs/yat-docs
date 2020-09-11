@@ -12,6 +12,9 @@ module.exports = {
   organizationName: 'Tari Labs', // Usually your GitHub org/user name.
   projectName: 'yat-docs', // Usually your repo name.
   themeConfig: {
+    colorMode: {
+      defaultMode: 'dark'
+    },
     navbar: {
       title: 'Yat Developer Documentation',
       logo: {
@@ -71,7 +74,7 @@ module.exports = {
           {
             generateApiReference: false,
             generateSDks: false,
-            specification: "http://localhost:3001/swagger",
+            specification: "swagger.json",
             apiRefPath: "docs/api_reference/api.md",
             sdkPath: "sdks",
             sdkDocPath: "docs/sdks",

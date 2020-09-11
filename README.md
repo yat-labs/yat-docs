@@ -8,6 +8,14 @@ This website is built using
 
 ### Installation
 
+## Prerequisites
+
+* You need node (version 12 works fine. v14 had some issues)
+* Java (Tested with OpenJDK  1.8.0_242-b08. Presumably later versions work too).
+* s3-deploy to push to AWS S3
+
+## Building the site
+
 ```bash
 $ cd yat-docs
 $ yarn install # npm doesn't seem to work for some reason
@@ -57,4 +65,32 @@ Commands:
   generate-docs                                            Generate and save the SDK and API reference docs without building the website
 ```
 
-#
+# Build and deploy
+
+There's a makefile that eases the build / deploy cycle pain.
+
+| Make command | Description                    |
+|:-------------|:-------------------------------|
+| `clean`      | Deletes the build directory    |
+| `cleandocs`  | Deletes the generated docs     |
+| `generate`   | Generates the API and SDK docs |
+| `build`      | Builds the static website      |
+| `preview`    | Build and run the site locally |
+
+To successfully deploy, you need some environment variables set up. You can store these in `.env`
+
+```
+REGION=us-east-1
+
+PREVIEW_BUCKET=previewbucket
+PREVIEW_KEY=previewkey
+PREVIEW_SECRET=previewsecret
+
+PRODUCTION_BUCKET=productionbucket
+PRODUCTION_KEY=prodkey234876786d
+PRODUCTION_SECRET=prodsecret-3498sduhsdvjnvsdnflk
+```
+
+Then run
+
+    $ ./deploy.sh

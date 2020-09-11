@@ -4,15 +4,11 @@ title: UserAuthenticationApi
 ---
 
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**auth2faPost**](UserAuthenticationApi.md#auth2faPost) | **POST** /auth/2fa |  Two factor authentication
-[**authMagicLinkPost**](UserAuthenticationApi.md#authMagicLinkPost) | **POST** /auth/magic_link |  Generate magic link for login
-[**authTokenPost**](UserAuthenticationApi.md#authTokenPost) | **POST** /auth/token |  Login via password
-[**authTokenRefreshPost**](UserAuthenticationApi.md#authTokenRefreshPost) | **POST** /auth/token/refresh |  Refreshes access token
-
+[**auth2faPost**](UserAuthenticationApi.md#auth2faPost) | **POST** /auth/2fa |  Two factor authentication[**authMagicLinkPost**](UserAuthenticationApi.md#authMagicLinkPost) | **POST** /auth/magic_link |  Generate magic link for login[**authTokenPost**](UserAuthenticationApi.md#authTokenPost) | **POST** /auth/token |  Login via password[**authTokenRefreshPost**](UserAuthenticationApi.md#authTokenRefreshPost) | **POST** /auth/token/refresh |  Refreshes access token
 
 
 ## auth2faPost

@@ -3,3 +3,6 @@ Thumbs.db
 node_modules/
 yat-docs/sdks
 yat-docs/build
+
+#secrets
+.env

@@ -3,7 +3,7 @@ id: keymanagementapi
 title: KeyManagementApi
 ---
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -26,7 +26,7 @@ Retrieves pubkeys owned by currently authenticated user. This call expects empty
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -73,7 +73,7 @@ Generates custodial wallet with pubkey for currently authenticated user. This ca
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -125,7 +125,7 @@ This call expects empty body
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -180,7 +180,7 @@ NOTE: user should have scope &#x60;UserPubkeyList&#x60;
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -232,7 +232,7 @@ NOTE: user should have scope &#x60;UserPubkeyWrite&#x60; This call expects empty
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];

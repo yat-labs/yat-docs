@@ -3,7 +3,7 @@ id: cartapi
 title: CartApi
 ---
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -26,7 +26,7 @@ Submit order with provided payment details.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -77,7 +77,7 @@ User requires scope &#x60;CartUpdate&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -123,7 +123,7 @@ User requires scope &#x60;CartShow&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -169,7 +169,7 @@ Will add new items to the cart. User requires scope &#x60;CartUpdate&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -220,7 +220,7 @@ User requires scope &#x60;CartUpdate&#x60;.
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];

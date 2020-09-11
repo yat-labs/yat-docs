@@ -4,16 +4,11 @@ title: KeyManagementApi
 ---
 
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**pubkeysGet**](KeyManagementApi.md#pubkeysGet) | **GET** /pubkeys |  Retrieve pubkeys
-[**pubkeysPost**](KeyManagementApi.md#pubkeysPost) | **POST** /pubkeys |  Generate custodial wallet
-[**pubkeysPubkeyPost**](KeyManagementApi.md#pubkeysPubkeyPost) | **POST** /pubkeys/{pubkey} |  Add pubkey for current user
-[**usersUserIdPubkeysGet**](KeyManagementApi.md#usersUserIdPubkeysGet) | **GET** /users/{user_id}/pubkeys |  Retrieve pubkeys by user_id
-[**usersUserIdPubkeysPubkeyPost**](KeyManagementApi.md#usersUserIdPubkeysPubkeyPost) | **POST** /users/{user_id}/pubkeys/{pubkey} |  Add pubkey for user by user_id
-
+[**pubkeysGet**](KeyManagementApi.md#pubkeysGet) | **GET** /pubkeys |  Retrieve pubkeys[**pubkeysPost**](KeyManagementApi.md#pubkeysPost) | **POST** /pubkeys |  Generate custodial wallet[**pubkeysPubkeyPost**](KeyManagementApi.md#pubkeysPubkeyPost) | **POST** /pubkeys/{pubkey} |  Add pubkey for current user[**usersUserIdPubkeysGet**](KeyManagementApi.md#usersUserIdPubkeysGet) | **GET** /users/{user_id}/pubkeys |  Retrieve pubkeys by user_id[**usersUserIdPubkeysPubkeyPost**](KeyManagementApi.md#usersUserIdPubkeysPubkeyPost) | **POST** /users/{user_id}/pubkeys/{pubkey} |  Add pubkey for user by user_id
 
 
 ## pubkeysGet

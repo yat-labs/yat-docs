@@ -3,7 +3,7 @@ id: userauthenticationapi
 title: UserAuthenticationApi
 ---
 
-All URIs are relative to *http://localhost*
+All URIs are relative to *http://localhost:3001*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -25,7 +25,7 @@ Complete login flow when user requires 2FA. &#x60;refresh_token&#x60; obtained f
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.Confirm2Fa(); // Confirm2Fa | 
@@ -72,7 +72,7 @@ Will generate and send magic link to provided user&#39;s email. Assuming the ema
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.MagicLinkLoginRequest(); // MagicLinkLoginRequest | 
@@ -119,7 +119,7 @@ Login via username/password. Will return access and refresh tokens. NOTE: when &
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.LoginRequest(); // LoginRequest | 
@@ -166,7 +166,7 @@ Will return updated access and refresh tokens. NOTE: when &#x60;requires_2fa&#x6
 > Example
 
 ```javascript
-import YatJs from 'openapi-js-client';
+import YatJs from 'yat';
 
 let apiInstance = new YatJs.UserAuthenticationApi();
 let body = new YatJs.RefreshRequest(); // RefreshRequest | 
