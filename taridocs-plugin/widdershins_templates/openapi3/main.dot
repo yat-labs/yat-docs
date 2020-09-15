@@ -1,7 +1,13 @@
 ---
-id: {{=data.options.page_id || "api-reference"}}
+id: "api-reference"
+slug: "/api-ref"
 title: {{=(data.api.info && data.api.info.title) || "API reference"}}
 ---
+
+:::caution
+The emoji id API is currently in BETA. The API has largely stabilised, but endpoint paths, input and
+output parameters may still change without notice.
+:::
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
@@ -84,15 +90,6 @@ Base URLs:
 {{= data.tags.section }}
 ### {{=s}}
 
-{{? data.options.yaml }}
-```yaml
-{{=data.utils.yaml.stringify(data.utils.getSample(schema,data.options,{quiet:true},data.api))}}
-{{??}}
-```json
-{{=data.utils.safejson(data.utils.getSample(schema,data.options,{quiet:true},data.api),null,2)}}
-{{?}}
-```
-
 {{ var enums = []; }}
 {{ var blocks = data.utils.schemaToArray(origSchema,-1,{trim:true,join:true},data); }}
 {{ for (var block of blocks) {
@@ -139,6 +136,16 @@ Base URLs:
 
 {{= data.tags.endSection }}
 {{?}}
+
+#### Example
+{{? data.options.yaml }}
+```yaml
+{{=data.utils.yaml.stringify(data.utils.getSample(schema,data.options,{quiet:true},data.api))}}
+{{??}}
+```json
+{{=data.utils.safejson(data.utils.getSample(schema,data.options,{quiet:true},data.api),null,2)}}
+{{?}}
+```
 
 {{= data.tags.endSection }}
 {{= data.tags.endSection }}

@@ -4,73 +4,21 @@ title: UserInterestApi
 ---
 
 
-All URIs are relative to *http://localhost:3001*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**userInterestsEidDelete**](UserInterestApi.md#userInterestsEidDelete) | **DELETE** /user_interests/{eid} |  Destroys the user interest preventing this eid&#39;s notification emails from being sent for this user[**userInterestsEidGet**](UserInterestApi.md#userInterestsEidGet) | **GET** /user_interests/{eid} |  Given an EmojiId returns information about the user interest if a record exists for this user[**userInterestsGet**](UserInterestApi.md#userInterestsGet) | **GET** /user_interests |  Returns a paginated list of user interest records associated with the user[**userInterestsPost**](UserInterestApi.md#userInterestsPost) | **POST** /user_interests |  Create new interest in emoji to be notified when available
+[**deleteUserInterest**](UserInterestApi.md#deleteUserInterest) | **DELETE** /user_interests/{eid} | Destroys the user interest preventing this eid&#39;s notification emails from being sent for this user[**getInterestedUsers**](UserInterestApi.md#getInterestedUsers) | **GET** /user_interests | Returns a paginated list of user interest records associated with the user[**getUserInterestForYat**](UserInterestApi.md#getUserInterestForYat) | **GET** /user_interests/{eid} | Given an EmojiId returns information about the user interest if a record exists for this user[**registerInterest**](UserInterestApi.md#registerInterest) | **POST** /user_interests | Create new interest in emoji to be notified when available
 
 
-## userInterestsEidDelete
+## deleteUserInterest
 
- Destroys the user interest preventing this eid&#39;s notification emails from being sent for this user
+Destroys the user interest preventing this eid&#39;s notification emails from being sent for this user
 
-#### userInterestsEidDelete(eid)
-
-
-User requires scope &#x60;UserInterestDelete&#x60;.
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **eid** | **kotlin.String**|  |
-
-### Return type
-
-null (empty response body)
-
-### Authorization
+#### deleteUserInterest(eid)
 
 
-Configure JWT:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### Example
-
-```kotlin
-// Import classes:
-// import com.tarilabs.client.infrastructure.*
-// import com.tarilabs.client.models.*
-
-val apiInstance = UserInterestApi()
-    val eid : kotlin.String = eid_example // kotlin.String | 
-try {
-apiInstance.userInterestsEidDelete(eid)
-} catch (e: ClientException) {
-println("4xx response calling UserInterestApi#userInterestsEidDelete")
-e.printStackTrace()
-} catch (e: ServerException) {
-println("5xx response calling UserInterestApi#userInterestsEidDelete")
-e.printStackTrace()
-}
-```
-
-
-## userInterestsEidGet
-
- Given an EmojiId returns information about the user interest if a record exists for this user
-
-#### userInterestsEidGet(eid)
-
-
-User requires scope &#x60;UserInterestRead&#x60;.
+NOTE: user should have scope &#x60;UserInterestDelete&#x60;
 
 ### Parameters
 
@@ -104,25 +52,25 @@ Configure JWT:
 val apiInstance = UserInterestApi()
     val eid : kotlin.String = eid_example // kotlin.String | 
 try {
-apiInstance.userInterestsEidGet(eid)
+apiInstance.deleteUserInterest(eid)
 } catch (e: ClientException) {
-println("4xx response calling UserInterestApi#userInterestsEidGet")
+println("4xx response calling UserInterestApi#deleteUserInterest")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling UserInterestApi#userInterestsEidGet")
+println("5xx response calling UserInterestApi#deleteUserInterest")
 e.printStackTrace()
 }
 ```
 
 
-## userInterestsGet
+## getInterestedUsers
 
- Returns a paginated list of user interest records associated with the user
+Returns a paginated list of user interest records associated with the user
 
-#### userInterestsGet()
+#### getInterestedUsers()
 
 
-User requires scope &#x60;UserInterestRead&#x60;.
+NOTE: user should have scope &#x60;UserInterestRead&#x60;
 
 ### Parameters
 This endpoint does not need any parameter.
@@ -152,25 +100,77 @@ Configure JWT:
 
 val apiInstance = UserInterestApi()
 try {
-apiInstance.userInterestsGet()
+apiInstance.getInterestedUsers()
 } catch (e: ClientException) {
-println("4xx response calling UserInterestApi#userInterestsGet")
+println("4xx response calling UserInterestApi#getInterestedUsers")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling UserInterestApi#userInterestsGet")
+println("5xx response calling UserInterestApi#getInterestedUsers")
 e.printStackTrace()
 }
 ```
 
 
-## userInterestsPost
+## getUserInterestForYat
 
- Create new interest in emoji to be notified when available
+Given an EmojiId returns information about the user interest if a record exists for this user
 
-#### userInterestsPost(body)
+#### getUserInterestForYat(eid)
 
 
-User requires scope &#x60;UserInterestWrite&#x60;.
+NOTE: user should have scope &#x60;UserInterestRead&#x60;
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **eid** | **kotlin.String**|  |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = UserInterestApi()
+    val eid : kotlin.String = eid_example // kotlin.String | 
+try {
+apiInstance.getUserInterestForYat(eid)
+} catch (e: ClientException) {
+println("4xx response calling UserInterestApi#getUserInterestForYat")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling UserInterestApi#getUserInterestForYat")
+e.printStackTrace()
+}
+```
+
+
+## registerInterest
+
+Create new interest in emoji to be notified when available
+
+#### registerInterest(body)
+
+
+NOTE: user should have scope &#x60;UserInterestWrite&#x60;
 
 ### Parameters
 
@@ -204,12 +204,12 @@ Configure JWT:
 val apiInstance = UserInterestApi()
     val body : NewUserInterestParameters =  // NewUserInterestParameters | 
 try {
-apiInstance.userInterestsPost(body)
+apiInstance.registerInterest(body)
 } catch (e: ClientException) {
-println("4xx response calling UserInterestApi#userInterestsPost")
+println("4xx response calling UserInterestApi#registerInterest")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling UserInterestApi#userInterestsPost")
+println("5xx response calling UserInterestApi#registerInterest")
 e.printStackTrace()
 }
 ```

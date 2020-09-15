@@ -4,18 +4,18 @@ title: ProxyApi
 ---
 
 
-All URIs are relative to *http://localhost:3001*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**proxyPost**](ProxyApi.md#proxyPost) | **POST** /proxy |  Calls a pre-defined proxy service with the provided data
+[**callProxy**](ProxyApi.md#callProxy) | **POST** /proxy | Calls a pre-defined proxy service with the provided data
 
 
-## proxyPost
+## callProxy
 
- Calls a pre-defined proxy service with the provided data
+Calls a pre-defined proxy service with the provided data
 
-#### ProxyResult proxyPost(body)
+#### ProxyResult callProxy(body)
 
 
 Returns the response from the proxied service as a string
@@ -54,13 +54,13 @@ Configure JWT:
 val apiInstance = ProxyApi()
     val body : ProxyCallParameters =  // ProxyCallParameters | 
 try {
-val result : ProxyResult = apiInstance.proxyPost(body)
+val result : ProxyResult = apiInstance.callProxy(body)
     println(result)
 } catch (e: ClientException) {
-println("4xx response calling ProxyApi#proxyPost")
+println("4xx response calling ProxyApi#callProxy")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling ProxyApi#proxyPost")
+println("5xx response calling ProxyApi#callProxy")
 e.printStackTrace()
 }
 ```

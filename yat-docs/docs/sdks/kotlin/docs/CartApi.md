@@ -4,21 +4,73 @@ title: CartApi
 ---
 
 
-All URIs are relative to *http://localhost:3001*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**cartCheckoutPost**](CartApi.md#cartCheckoutPost) | **POST** /cart/checkout |  Checkout cart[**cartDelete**](CartApi.md#cartDelete) | **DELETE** /cart |  Clean up cart[**cartGet**](CartApi.md#cartGet) | **GET** /cart |  Return cart content[**cartPost**](CartApi.md#cartPost) | **POST** /cart |  Update cart items[**cartPut**](CartApi.md#cartPut) | **PUT** /cart |  Replace cart items
+[**add**](CartApi.md#add) | **POST** /cart | Update cart items by adding new items to the cart[**checkout**](CartApi.md#checkout) | **POST** /cart/checkout | Checkout cart with provided payment details[**clear**](CartApi.md#clear) | **DELETE** /cart | Remove all items from cart[**getItems**](CartApi.md#getItems) | **GET** /cart | Return cart content[**replaceItems**](CartApi.md#replaceItems) | **PUT** /cart | Replace cart items
 
 
-## cartCheckoutPost
+## add
 
- Checkout cart
+Update cart items by adding new items to the cart
 
-#### cartCheckoutPost(body)
+#### add(body)
 
 
-Submit order with provided payment details.
+NOTE: user should have scope &#x60;CartUpdate&#x60;
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**UpdateCartRequest**](../sdk_kotlin_index#UpdateCartRequest)|  |
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = CartApi()
+    val body : UpdateCartRequest =  // UpdateCartRequest | 
+try {
+apiInstance.add(body)
+} catch (e: ClientException) {
+println("4xx response calling CartApi#add")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling CartApi#add")
+e.printStackTrace()
+}
+```
+
+
+## checkout
+
+Checkout cart with provided payment details
+
+#### checkout(body)
+
+
+NOTE: user should have scope &#x60;CartUpdate&#x60;
 
 ### Parameters
 
@@ -52,25 +104,25 @@ Configure JWT:
 val apiInstance = CartApi()
     val body : CheckoutCartRequest =  // CheckoutCartRequest | 
 try {
-apiInstance.cartCheckoutPost(body)
+apiInstance.checkout(body)
 } catch (e: ClientException) {
-println("4xx response calling CartApi#cartCheckoutPost")
+println("4xx response calling CartApi#checkout")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling CartApi#cartCheckoutPost")
+println("5xx response calling CartApi#checkout")
 e.printStackTrace()
 }
 ```
 
 
-## cartDelete
+## clear
 
- Clean up cart
+Remove all items from cart
 
-#### cartDelete()
+#### clear()
 
 
-User requires scope &#x60;CartUpdate&#x60;.
+NOTE: user should have scope &#x60;CartUpdate&#x60;
 
 ### Parameters
 This endpoint does not need any parameter.
@@ -100,25 +152,25 @@ Configure JWT:
 
 val apiInstance = CartApi()
 try {
-apiInstance.cartDelete()
+apiInstance.clear()
 } catch (e: ClientException) {
-println("4xx response calling CartApi#cartDelete")
+println("4xx response calling CartApi#clear")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling CartApi#cartDelete")
+println("5xx response calling CartApi#clear")
 e.printStackTrace()
 }
 ```
 
 
-## cartGet
+## getItems
 
- Return cart content
+Return cart content
 
-#### cartGet()
+#### getItems()
 
 
-User requires scope &#x60;CartShow&#x60;.
+NOTE: user should have scope &#x60;CartShow&#x60;
 
 ### Parameters
 This endpoint does not need any parameter.
@@ -148,25 +200,25 @@ Configure JWT:
 
 val apiInstance = CartApi()
 try {
-apiInstance.cartGet()
+apiInstance.getItems()
 } catch (e: ClientException) {
-println("4xx response calling CartApi#cartGet")
+println("4xx response calling CartApi#getItems")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling CartApi#cartGet")
+println("5xx response calling CartApi#getItems")
 e.printStackTrace()
 }
 ```
 
 
-## cartPost
+## replaceItems
 
- Update cart items
+Replace cart items
 
-#### cartPost(body)
+#### replaceItems(body)
 
 
-Will add new items to the cart. User requires scope &#x60;CartUpdate&#x60;.
+NOTE: user should have scope &#x60;CartUpdate&#x60;
 
 ### Parameters
 
@@ -200,64 +252,12 @@ Configure JWT:
 val apiInstance = CartApi()
     val body : UpdateCartRequest =  // UpdateCartRequest | 
 try {
-apiInstance.cartPost(body)
+apiInstance.replaceItems(body)
 } catch (e: ClientException) {
-println("4xx response calling CartApi#cartPost")
+println("4xx response calling CartApi#replaceItems")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling CartApi#cartPost")
-e.printStackTrace()
-}
-```
-
-
-## cartPut
-
- Replace cart items
-
-#### cartPut(body)
-
-
-User requires scope &#x60;CartUpdate&#x60;.
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**UpdateCartRequest**](../sdk_kotlin_index#UpdateCartRequest)|  |
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-
-Configure JWT:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### Example
-
-```kotlin
-// Import classes:
-// import com.tarilabs.client.infrastructure.*
-// import com.tarilabs.client.models.*
-
-val apiInstance = CartApi()
-    val body : UpdateCartRequest =  // UpdateCartRequest | 
-try {
-apiInstance.cartPut(body)
-} catch (e: ClientException) {
-println("4xx response calling CartApi#cartPut")
-e.printStackTrace()
-} catch (e: ServerException) {
-println("5xx response calling CartApi#cartPut")
+println("5xx response calling CartApi#replaceItems")
 e.printStackTrace()
 }
 ```

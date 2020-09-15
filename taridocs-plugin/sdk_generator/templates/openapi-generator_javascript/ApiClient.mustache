@@ -2,6 +2,7 @@
 
 import superagent from "superagent";
 import querystring from "querystring";
+import TokenResponse from "./models/TokenResponse";
 
 {{#emitJSDoc}}/**
 * @module {{#invokerPackage}}{{invokerPackage}}/{{/invokerPackage}}ApiClient
@@ -95,6 +96,20 @@ class ApiClient {
          */
         this.plugins = null;
 
+        // The number of seconds before the JWT token expires before asking for a refresh
+        this.tokenTimeout = 30;
+    }
+
+    setToken(tokens) {
+        if (!tokens.access_token || !tokens.refresh_token) {
+            throw new Error("Invalid access token provided", tokens);
+        }
+        try {
+            this.jwt = new JWT(tokens.access_token);
+            this.tokens = tokens;
+        } catch (err) {
+            throw new Error("Could not set access tokens:", tokens);
+        }
     }
 
     {{#emitJSDoc}}/**
@@ -146,6 +161,8 @@ class ApiClient {
     logout() {
         delete this.authentications['JWT'].apiKey;
         delete this.authentications['JWT'].accessToken;
+        delete this.jwt;
+        delete this.tokens;
     }
 
     {{#emitJSDoc}}
@@ -417,7 +434,19 @@ class ApiClient {
     {{/emitJSDoc}}
     callApi(path, httpMethod, pathParams,
         queryParams, headerParams, formParams, bodyParam, authNames, contentTypes, accepts,
-        returnType, apiBasePath{{^usePromises}}, callback{{/usePromises}}) {
+        returnType, apiBasePath , checkToken = true{{^usePromises}}, callback{{/usePromises}}) {
+
+        // Check whether tokens should be refreshed
+        if (checkToken && authNames.includes("JWT") && this.jwt && this.jwt.isExpiring(this.tokenTimeout || 30) ) {
+            // Access token is about to / has expired. Refresh the token first
+            const body = { refresh_token: (this.tokens || {}).refresh_token || ""};
+            return this.callApi('/auth/token/refresh', 'POST', {}, {}, {}, {}, body, [], [], ['*/*'], TokenResponse, null, false)
+                // Then repeat the request
+                .then((res) => {
+                    this.setToken(res.data);
+                    return this.callApi(path, httpMethod, pathParams, queryParams, headerParams, formParams, bodyParam, authNames, contentTypes, accepts, returnType, apiBasePath, checkToken);
+                });
+        }
 
         var url = this.buildUrl(path, pathParams, apiBasePath);
         var request = superagent(httpMethod, url);
@@ -764,3 +793,5 @@ ApiClient.CollectionFormatEnum = {
 */{{/emitJSDoc}}
 ApiClient.instance = new ApiClient();
 export default ApiClient;
+
+{{>partial_jwt.mustache}}

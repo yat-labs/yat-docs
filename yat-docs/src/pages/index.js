@@ -12,7 +12,7 @@ const features = [
     imageUrl: 'img/feature_img1.png',
     description: (
       <>
-        Integrate your app or website with Yat in minutes with our easy-to-follow <a href="docs/">user guides</a>.
+        Integrate your app or website with Yat in minutes with our easy-to-follow <a href="/docs/overview">user guides</a>.
       </>
     ),
   },
@@ -21,7 +21,7 @@ const features = [
     imageUrl: 'img/feature_img2.png',
     description: (
       <>
-        Dive straight into the <a href="docs/api-reference/">API reference documentation</a>.
+        Dive straight into the <a href="/docs/api-ref/">API reference documentation</a>.
       </>
     ),
   },
@@ -30,7 +30,7 @@ const features = [
     imageUrl: 'img/feature_img3.png',
     description: (
       <>
-        We have SDK libraries and <a href="docs/sdks/">documentation</a> for several langauges.
+        We have SDK libraries and <a href="/docs/sdks/nodejs/sdk_nodejs_index">documentation</a> for several langauges.
       </>
     ),
   },
@@ -68,7 +68,7 @@ function Home() {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
               )}
-              to={useBaseUrl('docs/')}>
+              to={useBaseUrl('/docs/api-ref')}>
               Get Started
             </Link>
           </div>

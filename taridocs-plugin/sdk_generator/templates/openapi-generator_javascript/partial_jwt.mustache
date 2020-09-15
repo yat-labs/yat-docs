@@ -1,0 +1,67 @@
+/**
+* JwtToken {
+*   sub?: string;
+*   iss: string;
+*   exp: number;
+*   scopes: string[];
+*   issued: number;
+*   active2fa: boolean;
+* }
+**/
+function parseJwt(token) {
+    let decode;
+    if (typeof atob === 'undefined') {
+        decode = (s) => Buffer.from(s, 'base64').toString('binary');
+    } else {
+        decode = atob;
+    }
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(decode(base64)
+        .split('')
+        .map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+}
+
+/**
+ * Utility JWT token class
+ */
+class JWT {
+    constructor(encoded_token) {
+        try {
+            this.token = parseJwt(encoded_token);
+        }
+        catch (err) {
+            throw new Error("Invalid Jwt token");
+        }
+    }
+
+    sub() {
+        return this.token.sub;
+    }
+
+    iss() {
+        return this.token.iss;
+    }
+
+    issued() {
+        return new Date(this.token.issued * 1000);
+    }
+
+    scopes() {
+        return this.token.scopes;
+    }
+
+    /**
+    *  Returns true if the token is expiring within `within` seconds.
+    **/
+    isExpiring(within = 30) {
+        const now = Number(new Date())/1000;
+        const exp = this.token.exp || now;
+        return (exp - now) < within;
+    }
+}

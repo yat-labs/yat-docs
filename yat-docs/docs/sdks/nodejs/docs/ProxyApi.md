@@ -3,26 +3,32 @@ id: proxyapi
 title: ProxyApi
 ---
 
-All URIs are relative to *http://localhost:3001*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**proxyPost**](ProxyApi.md#proxyPost) | **POST** /proxy |  Calls a pre-defined proxy service with the provided data
+[**callProxy**](ProxyApi.md#callProxy) | **POST** /proxy | Calls a pre-defined proxy service with the provided data
 
 
 
-### proxyPost
+### callProxy
 
-> ProxyResult proxyPost(body)
+```js
+/**
+*  @returns ProxyResult 
+**/
+function callProxy(body)
+```
 
- Calls a pre-defined proxy service with the provided data
+Calls a pre-defined proxy service with the provided data
 
+#### Notes:
 Returns the response from the proxied service as a string
 
-> Example
+#### Example
 
 ```javascript
-import YatJs from 'yat';
+import YatJs from 'emoji_id_api_server';
 let defaultClient = YatJs.ApiClient.instance;
 // Configure API key authorization: JWT
 let JWT = defaultClient.authentications['JWT'];
@@ -32,7 +38,7 @@ JWT.apiKey = 'YOUR API KEY';
 
 let apiInstance = new YatJs.ProxyApi();
 let body = new YatJs.ProxyCallParameters(); // ProxyCallParameters | 
-apiInstance.proxyPost(body).then((data) => {
+apiInstance.callProxy(body).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

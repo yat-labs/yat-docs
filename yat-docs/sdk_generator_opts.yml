@@ -130,3 +130,4 @@ kotlin:
   # Whether to use the RxJava3 adapter with the retrofit2 library. (Default: false)
   useRxJava3: false
   disableHtmlEscaping: true
+swift5:

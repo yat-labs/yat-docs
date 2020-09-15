@@ -19,6 +19,8 @@ This website is built using
 ```bash
 $ cd yat-docs
 $ yarn install # npm doesn't seem to work for some reason
+$ cd ../taridocs-plugin
+$ yarn install
 ```
 
 ### Local Development
@@ -64,6 +66,16 @@ Commands:
   clean-docs                                               Delete all generated SDK and API reference documentation files
   generate-docs                                            Generate and save the SDK and API reference docs without building the website
 ```
+
+## Debug logs
+
+To generate debug logs to stdout, set the `DEBUG~ environment variable. All tari-doc plugin logs are namespaced accordingly,
+so
+
+    $ DEBUG=tari-docs:* npm run build
+
+will print out all tari-docs debug information and ignore any other messages from other packages.
+
 
 # Build and deploy
 

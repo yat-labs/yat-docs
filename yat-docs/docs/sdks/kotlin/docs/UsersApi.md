@@ -4,278 +4,18 @@ title: UsersApi
 ---
 
 
-All URIs are relative to *http://localhost:3001*
+All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**accountGet**](UsersApi.md#accountGet) | **GET** /account |  Current user account[**accountPatch**](UsersApi.md#accountPatch) | **PATCH** /account |  Update the currently logged in user[**usersGet**](UsersApi.md#usersGet) | **GET** /users |  List users[**usersIdDelete**](UsersApi.md#usersIdDelete) | **DELETE** /users/{id} |  Delete a user[**usersIdPatch**](UsersApi.md#usersIdPatch) | **PATCH** /users/{id} |  Update a user as an admin[**usersPost**](UsersApi.md#usersPost) | **POST** /users |  Register a User
+[**createUser**](UsersApi.md#createUser) | **POST** /users | Register a User[**delete**](UsersApi.md#delete) | **DELETE** /users/{id} | Delete a user[**getAccount**](UsersApi.md#getAccount) | **GET** /account | Current user account[**getAllUsers**](UsersApi.md#getAllUsers) | **GET** /users | List users[**update**](UsersApi.md#update) | **PATCH** /account | Update the currently logged in user[**updateUser**](UsersApi.md#updateUser) | **PATCH** /users/{id} | Update a user as an admin
 
 
-## accountGet
+## createUser
 
- Current user account
+Register a User
 
-#### accountGet()
-
-
-Displays the currently logged in user account details.
-
-### Parameters
-This endpoint does not need any parameter.
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-
-Configure JWT:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### Example
-
-```kotlin
-// Import classes:
-// import com.tarilabs.client.infrastructure.*
-// import com.tarilabs.client.models.*
-
-val apiInstance = UsersApi()
-try {
-apiInstance.accountGet()
-} catch (e: ClientException) {
-println("4xx response calling UsersApi#accountGet")
-e.printStackTrace()
-} catch (e: ServerException) {
-println("5xx response calling UsersApi#accountGet")
-e.printStackTrace()
-}
-```
-
-
-## accountPatch
-
- Update the currently logged in user
-
-#### accountPatch(body)
-
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **body** | [**UpdateUserParameters**](../sdk_kotlin_index#UpdateUserParameters)|  |
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-
-Configure JWT:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure apiKey:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### Example
-
-```kotlin
-// Import classes:
-// import com.tarilabs.client.infrastructure.*
-// import com.tarilabs.client.models.*
-
-val apiInstance = UsersApi()
-    val body : UpdateUserParameters =  // UpdateUserParameters | 
-try {
-apiInstance.accountPatch(body)
-} catch (e: ClientException) {
-println("4xx response calling UsersApi#accountPatch")
-e.printStackTrace()
-} catch (e: ServerException) {
-println("5xx response calling UsersApi#accountPatch")
-e.printStackTrace()
-}
-```
-
-
-## usersGet
-
- List users
-
-#### usersGet()
-
-
-This is an admin endpoint
-
-### Parameters
-This endpoint does not need any parameter.
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-
-Configure JWT:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### Example
-
-```kotlin
-// Import classes:
-// import com.tarilabs.client.infrastructure.*
-// import com.tarilabs.client.models.*
-
-val apiInstance = UsersApi()
-try {
-apiInstance.usersGet()
-} catch (e: ClientException) {
-println("4xx response calling UsersApi#usersGet")
-e.printStackTrace()
-} catch (e: ServerException) {
-println("5xx response calling UsersApi#usersGet")
-e.printStackTrace()
-}
-```
-
-
-## usersIdDelete
-
- Delete a user
-
-#### usersIdDelete(id)
-
-
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | [**java.util.UUID**](../sdk_kotlin_index#)|  |
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-
-Configure JWT:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### Example
-
-```kotlin
-// Import classes:
-// import com.tarilabs.client.infrastructure.*
-// import com.tarilabs.client.models.*
-
-val apiInstance = UsersApi()
-    val id : java.util.UUID = 38400000-8cf0-11bd-b23e-10b96e4ef00d // java.util.UUID | 
-try {
-apiInstance.usersIdDelete(id)
-} catch (e: ClientException) {
-println("4xx response calling UsersApi#usersIdDelete")
-e.printStackTrace()
-} catch (e: ServerException) {
-println("5xx response calling UsersApi#usersIdDelete")
-e.printStackTrace()
-}
-```
-
-
-## usersIdPatch
-
- Update a user as an admin
-
-#### usersIdPatch(id, body)
-
-
-Note: Requires UserWrite Scope
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | [**java.util.UUID**](../sdk_kotlin_index#)|  |
- **body** | [**AdminUpdateUserParameters**](../sdk_kotlin_index#AdminUpdateUserParameters)|  |
-
-### Return type
-
-null (empty response body)
-
-### Authorization
-
-
-Configure JWT:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure apiKey:
-    ApiClient.apiKey["Authorization"] = ""
-    ApiClient.apiKeyPrefix["Authorization"] = ""
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-### Example
-
-```kotlin
-// Import classes:
-// import com.tarilabs.client.infrastructure.*
-// import com.tarilabs.client.models.*
-
-val apiInstance = UsersApi()
-    val id : java.util.UUID = 38400000-8cf0-11bd-b23e-10b96e4ef00d // java.util.UUID | 
-    val body : AdminUpdateUserParameters =  // AdminUpdateUserParameters | 
-try {
-apiInstance.usersIdPatch(id, body)
-} catch (e: ClientException) {
-println("4xx response calling UsersApi#usersIdPatch")
-e.printStackTrace()
-} catch (e: ServerException) {
-println("5xx response calling UsersApi#usersIdPatch")
-e.printStackTrace()
-}
-```
-
-
-## usersPost
-
- Register a User
-
-#### usersPost(body)
+#### CurrentUser createUser(body)
 
 
 Create a user and a custodial wallet
@@ -288,11 +28,169 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-null (empty response body)
+
+[**CurrentUser**](../sdk_kotlin_index#CurrentUser)
+
 
 ### Authorization
 
 No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = UsersApi()
+    val body : RegisterUserParameters =  // RegisterUserParameters | 
+try {
+val result : CurrentUser = apiInstance.createUser(body)
+    println(result)
+} catch (e: ClientException) {
+println("4xx response calling UsersApi#createUser")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling UsersApi#createUser")
+e.printStackTrace()
+}
+```
+
+
+## delete
+
+Delete a user
+
+#### DisplayUser delete(id)
+
+
+NOTE: user should have scope &#x60;UserDeleteSelf&#x60; if deleting themselves, &#x60;UserDelete&#x60; is needed for other users
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | [**java.util.UUID**](../sdk_kotlin_index#)|  |
+
+### Return type
+
+
+[**DisplayUser**](../sdk_kotlin_index#DisplayUser)
+
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = UsersApi()
+    val id : java.util.UUID = 38400000-8cf0-11bd-b23e-10b96e4ef00d // java.util.UUID | 
+try {
+val result : DisplayUser = apiInstance.delete(id)
+    println(result)
+} catch (e: ClientException) {
+println("4xx response calling UsersApi#delete")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling UsersApi#delete")
+e.printStackTrace()
+}
+```
+
+
+## getAccount
+
+Current user account
+
+#### CurrentUser getAccount()
+
+
+Displays the currently logged in user account details.
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+
+[**CurrentUser**](../sdk_kotlin_index#CurrentUser)
+
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = UsersApi()
+try {
+val result : CurrentUser = apiInstance.getAccount()
+    println(result)
+} catch (e: ClientException) {
+println("4xx response calling UsersApi#getAccount")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling UsersApi#getAccount")
+e.printStackTrace()
+}
+```
+
+
+## getAllUsers
+
+List users
+
+#### getAllUsers()
+
+
+NOTE: user should have scope &#x60;UserList&#x60;
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+null (empty response body)
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
 
 ### HTTP request headers
 
@@ -307,14 +205,131 @@ No authorization required
 // import com.tarilabs.client.models.*
 
 val apiInstance = UsersApi()
-    val body : RegisterUserParameters =  // RegisterUserParameters | 
 try {
-apiInstance.usersPost(body)
+apiInstance.getAllUsers()
 } catch (e: ClientException) {
-println("4xx response calling UsersApi#usersPost")
+println("4xx response calling UsersApi#getAllUsers")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling UsersApi#usersPost")
+println("5xx response calling UsersApi#getAllUsers")
+e.printStackTrace()
+}
+```
+
+
+## update
+
+Update the currently logged in user
+
+#### CurrentUser update(body)
+
+
+NOTE: user should have scope &#x60;UserWriteSelf&#x60;
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**UpdateUserParameters**](../sdk_kotlin_index#UpdateUserParameters)|  |
+
+### Return type
+
+
+[**CurrentUser**](../sdk_kotlin_index#CurrentUser)
+
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+Configure apiKey:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = UsersApi()
+    val body : UpdateUserParameters =  // UpdateUserParameters | 
+try {
+val result : CurrentUser = apiInstance.update(body)
+    println(result)
+} catch (e: ClientException) {
+println("4xx response calling UsersApi#update")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling UsersApi#update")
+e.printStackTrace()
+}
+```
+
+
+## updateUser
+
+Update a user as an admin
+
+#### DisplayUser updateUser(id, body)
+
+
+NOTE: user should have scope &#x60;UserWrite&#x60;
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | [**java.util.UUID**](../sdk_kotlin_index#)|  |
+ **body** | [**AdminUpdateUserParameters**](../sdk_kotlin_index#AdminUpdateUserParameters)|  |
+
+### Return type
+
+
+[**DisplayUser**](../sdk_kotlin_index#DisplayUser)
+
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+Configure apiKey:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = UsersApi()
+    val id : java.util.UUID = 38400000-8cf0-11bd-b23e-10b96e4ef00d // java.util.UUID | 
+    val body : AdminUpdateUserParameters =  // AdminUpdateUserParameters | 
+try {
+val result : DisplayUser = apiInstance.updateUser(id, body)
+    println(result)
+} catch (e: ClientException) {
+println("4xx response calling UsersApi#updateUser")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling UsersApi#updateUser")
 e.printStackTrace()
 }
 ```

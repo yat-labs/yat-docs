@@ -8,7 +8,7 @@ module.exports = {
   url: 'https://docs.y.at',
   baseUrl: '/',
   onBrokenLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   organizationName: 'Tari Labs', // Usually your GitHub org/user name.
   projectName: 'yat-docs', // Usually your repo name.
   themeConfig: {
@@ -23,12 +23,6 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
-          label: 'Docs',
-          position: 'left',
-        },
-        {
           href: 'https://github.com/tari-labs/tari-docs',
           label: 'GitHub',
           position: 'right',
@@ -37,35 +31,12 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Telegram',
-              href: 'https://t.me/tarilabs',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/tarilabs',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/tari-labs/tari-docs',
-            },
-          ],
-        },
-      ],
+      links: [],
       copyright: `Copyright © ${new Date().getFullYear()} Tari Labs, Pty. Ltd. Built with the help of Docusaurus. 🦕`,
+    },
+    prism: {
+      theme: require('prism-react-renderer/themes/dracula'),
+      additionalLanguages: ['kotlin', 'swift']
     },
   },
   plugins: [
@@ -74,7 +45,7 @@ module.exports = {
           {
             generateApiReference: false,
             generateSDks: false,
-            specification: "swagger.json",
+            specification: "http://localhost:3001/swagger",
             apiRefPath: "docs/api_reference/api.md",
             sdkPath: "sdks",
             sdkDocPath: "docs/sdks",

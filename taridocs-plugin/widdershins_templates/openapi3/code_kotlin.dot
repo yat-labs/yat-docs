@@ -1,8 +1,43 @@
 <TabItem value="kotlin">
 
 ```kotlin
-// PUT A KOTLIN TEMPLATE HERE
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val apiBaseURL = "https://api.y.at"
+    val httpClient = OkHttpClient(){{?data.bodyParameter.present}}
+    val requestBody = 
+        """
+{{=data.bodyParameter.exampleValues.json}}
+        """.toRequestBody("application/json; charset=utf-8".toMediaType()){{?}}
+    val request = Request.Builder()
+        .url("$apiBaseURL{{=data.url}}{{=data.requiredQueryString}}")
+        .{{=data.methodUpper.toLowerCase()}}({{?data.bodyParameter.present}}requestBody{{?}})
+        .build()
+    httpClient.newCall(request).enqueue(object : Callback {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body != null) {
+                    println("Successful (${response.code}) with response: " + response.body?.string())
+                } else {
+                    println("Successful (${response.code}) with empty response.")
+                }
+            } else {
+                println("Failed with status code: ${response.code}")
+            }
+        }
+        override fun onFailure(call: Call, e: IOException) {
+            println("Request failed: $e")
+        }
+    })
+}
 ```
 
 </TabItem>
-

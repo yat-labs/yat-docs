@@ -16,5 +16,5 @@ generate:
 build: clean-all generate
 	cd $(DOCS) && npm run build
 
-preview: build
+preview:
 	cd $(DOCS) && npm run serve

@@ -3,6 +3,11 @@ id: sdk_nodejs_index
 title: Node / Javascript SDK
 ---
 
+:::caution
+The SDK code and documetnation are in ALPHA state and are under heavy development. As a result, the apis are still in
+flux, and the documentation may be out of date with the code.
+:::
+
 {{#appDescriptionWithNewLines}}
 {{{appDescriptionWithNewLines}}}
 {{/appDescriptionWithNewLines}}
@@ -25,53 +30,14 @@ For more information, please visit [{{{infoUrl}}}]({{{infoUrl}}})
 
 #### npm
 
-To publish the library as a [npm](https://www.npmjs.com/), please follow the procedure in ["Publishing npm packages"](https://docs.npmjs.com/getting-started/publishing-npm-packages).
-
-Then install it via:
-
 ```shell
-npm install {{{projectName}}} --save
+npm install yatjs --save
 ```
 
 Finally, you need to build the module:
 
 ```shell
 npm run build
-```
-
-##### Local development
-
-To use the library locally without publishing to a remote npm registry, first install the dependencies by changing into the directory containing `package.json` (and this README). Let's call this `JAVASCRIPT_CLIENT_DIR`. Then run:
-
-```shell
-npm install
-```
-
-Next, [link](https://docs.npmjs.com/cli/link) it globally in npm with the following, also from `JAVASCRIPT_CLIENT_DIR`:
-
-```shell
-npm link
-```
-
-To use the link you just defined in your project, switch to the directory you want to use your {{{projectName}}} from, and run:
-
-```shell
-npm link /path/to/<JAVASCRIPT_CLIENT_DIR>
-```
-
-Finally, you need to build the module:
-
-```shell
-npm run build
-```
-
-#### git
-
-If the library is hosted at a git repository, e.g.https://github.com/{{#gitUserId}}{{.}}{{/gitUserId}}{{^gitUserId}}YOUR_USERNAME{{/gitUserId}}/{{#gitRepoId}}{{.}}{{/gitRepoId}}{{^gitRepoId}}{{projectName}}{{/gitRepoId}}
-then install it via:
-
-```shell
-    npm install {{#gitUserId}}{{.}}{{/gitUserId}}{{^gitUserId}}YOUR_USERNAME{{/gitUserId}}/{{#gitRepoId}}{{.}}{{/gitRepoId}}{{^gitRepoId}}{{projectName}}{{/gitRepoId}} --save
 ```
 
 ### For browser
@@ -88,8 +54,7 @@ Then include *bundle.js* in the HTML pages.
 
 ### Webpack Configuration
 
-Using Webpack you may encounter the following error: "Module not found: Error:
-Cannot resolve module", most certainly you should disable AMD loader. Add/merge
+Using Webpack you may encounter the following error: "Module not found: Error: Cannot resolve module". In this case you should disable AMD loader. Add/merge
 the following section to your webpack config:
 
 ```javascript
@@ -109,82 +74,48 @@ module: {
 Please follow the [installation](#installation) instruction and execute the following JS code:
 
 ```javascript
-var {{{moduleName}}} = require('{{{projectName}}}');
-{{#apiInfo}}{{#apis}}{{#-first}}{{#operations}}{{#operation}}{{#-first}}
-{{#hasAuthMethods}}
-var defaultClient = {{{moduleName}}}.ApiClient.instance;
-{{#authMethods}}
-{{#isBasic}}
-{{#isBasicBasic}}
-// Configure HTTP basic authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.username = 'YOUR USERNAME'
-{{{name}}}.password = 'YOUR PASSWORD'
-{{/isBasicBasic}}
-{{#isBasicBearer}}
-// Configure Bearer{{#bearerFormat}} ({{{.}}}){{/bearerFormat}} access token for authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.accessToken = "YOUR ACCESS TOKEN"
-{{/isBasicBearer}}
-{{/isBasic}}
-{{#isApiKey}}
-// Configure API key authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.apiKey = "YOUR API KEY"
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//{{{name}}}.apiKeyPrefix['{{{keyParamName}}}'] = "Token"
-{{/isApiKey}}
-{{#isOAuth}}
-// Configure OAuth2 access token for authorization: {{{name}}}
-var {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.accessToken = "YOUR ACCESS TOKEN"
-{{/isOAuth}}
-{{/authMethods}}
-{{/hasAuthMethods}}
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-var api = new {{{moduleName}}}.{{{classname}}}()
-{{#hasParams}}
-{{#requiredParams}}
-var {{{paramName}}} = {{{example}}}; // {{=< >=}}{<&dataType>}<={{ }}=> {{{description}}}
-{{/requiredParams}}
-{{#optionalParams}}
-{{#-first}}
-var opts = {
-{{/-first}}
-  '{{{paramName}}}': {{{example}}}{{^-last}},{{/-last}} // {{=< >=}}{<&dataType>}<={{ }}=> {{{description}}}
-{{#-last}}
-};
-{{/-last}}
-{{/optionalParams}}
-{{/hasParams}}
-{{#usePromises}}
-api.{{{operationId}}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}}).then(function({{#returnType}}data{{/returnType}}) {
-  {{#returnType}}console.log('API called successfully. Returned data: ' + data);{{/returnType}}{{^returnType}}console.log('API called successfully.');{{/returnType}}
-}, function(error) {
-  console.error(error);
-});
+async function runDemo() {
+    console.log(`Yat API calls will be made to ${api.basePath}`);
+    api.basePath = 'https://y.at/api;
+    console.log(`Changed base path. Now Yat API calls will be made to ${api.basePath}`);
+    try {
+        let res = await api.login("bob@example.com", "wrong_password");
+        console.log("Logged in (Should not see this): ", res);
+    } catch (res) {
+        console.log(`Could not log in: ${res.error}`);
+        try {
+            await api.users().getAccount(); // Not logged in, should throw an error
+        } catch (res) {
+            console.log(`Cannot access account: ${res.error}`);
+        }
+    }
+    try {
+        await api.login("test@tari.com", "real_password");
+        console.log("Logged in.");
+        let account = await api.users().getAccount();
+        console.log("Account data:", account);
+    } catch (res) {
+        console.log(`Could not log in: ${res.error}`);
+    }
+}
 
-{{/usePromises}}
-{{^usePromises}}
-var callback = function(error, data, response) {
-  if (error) {
-    console.error(error);
-  } else {
-    {{#returnType}}console.log('API called successfully. Returned data: ' + data);{{/returnType}}{{^returnType}}console.log('API called successfully.');{{/returnType}}
-  }
-};
-api.{{{operationId}}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}}{{#hasParams}}, {{/hasParams}}callback);
-{{/usePromises}}
-{{/-first}}{{/operation}}{{/operations}}{{/-first}}{{/apis}}{{/apiInfo}}
+runDemo()
+    .then(() => console.log("Bye"))
+    .catch(console.error);
 ```
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *{{basePath}}*
+Once you have a YatJs instance, all the sub-APIs are accessed through getters, for example, the cart api is available as
+`yat.cart()`. A full list of sub-APIs and their methods is:
 
-Class | Method | HTTP request | Description
------------- | ------------- | ------------- | -------------
-{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}*{{moduleName}}.{{classname}}* | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationId}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}}
+
+API accessor | Method |  Description
+------------ | ------------- | -------------
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}() | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationId}}) | {{#summary}}{{summary}}{{/summary}}
 {{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
 
 ## Documentation for Models

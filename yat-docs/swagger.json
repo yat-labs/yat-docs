@@ -4,21 +4,26 @@
     "AdminUpdateUserParameters": {
       "properties": {
         "free_limit": {
+          "description": "Optional: Free limit for how many yats the user may purchase",
           "type": "integer",
           "format": "int32"
         },
         "is_active": {
+          "description": "Optional: If the user is active, updating to true triggers user activation related events",
           "type": "boolean"
         },
         "user_parameters": {
           "properties": {
             "email": {
+              "description": "Optional: Email",
               "type": "string"
             },
             "first_name": {
+              "description": "Optional: First name",
               "type": "string"
             },
             "last_name": {
+              "description": "Optional: Last name",
               "type": "string"
             }
           }
@@ -66,6 +71,290 @@
       "required": [
         "code",
         "refresh_token"
+      ]
+    },
+    "CurrentUser": {
+      "properties": {
+        "global_scopes": {
+          "description": "A list of fine-grained permissions the user may perform.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "AdminEmojiRegister",
+              "AdminEmojiWrite",
+              "CartShow",
+              "CartUpdate",
+              "CodeDelete",
+              "CodeRead",
+              "CodeWrite",
+              "EmojiGroupsDelete",
+              "EmojiGroupsRead",
+              "EmojiGroupsWrite",
+              "OrderRead",
+              "OrderReadSelf",
+              "OrderRefund",
+              "OrderRefundOverride",
+              "OrderResendConfirmation",
+              "OrganizationAdmin",
+              "OrganizationEmojiList",
+              "OrganizationEmojiWrite",
+              "OrganizationListRead",
+              "OrganizationRead",
+              "OrganizationUserAdmin",
+              "OrganizationUserRead",
+              "OrganizationWrite",
+              "PaymentMethodDestroy",
+              "PaymentMethodRead",
+              "PaymentMethodSetDefault",
+              "RefundRead",
+              "TokenRefresh",
+              "TwoFactorAuth",
+              "UserDelete",
+              "UserDeleteSelf",
+              "UserEmojiList",
+              "UserInterestDelete",
+              "UserInterestRead",
+              "UserInterestWrite",
+              "UserList",
+              "UserPubkeyList",
+              "UserPubkeyWrite",
+              "UserWrite",
+              "UserWriteSelf"
+            ]
+          }
+        },
+        "organization_roles": {
+          "description": "The role this user has in each organisation. Organisations are currently not used, but are reserved for\n future operations.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "enum": [
+              "Admin",
+              "OrgController",
+              "OrgMember",
+              "OrgOwner",
+              "Super",
+              "User"
+            ]
+          }
+        },
+        "organization_scopes": {
+          "description": "The scopes that are granted to this user for each organisation. Organisations are currently not used, but are\n reserved for future operations.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "AdminEmojiRegister",
+                "AdminEmojiWrite",
+                "CartShow",
+                "CartUpdate",
+                "CodeDelete",
+                "CodeRead",
+                "CodeWrite",
+                "EmojiGroupsDelete",
+                "EmojiGroupsRead",
+                "EmojiGroupsWrite",
+                "OrderRead",
+                "OrderReadSelf",
+                "OrderRefund",
+                "OrderRefundOverride",
+                "OrderResendConfirmation",
+                "OrganizationAdmin",
+                "OrganizationEmojiList",
+                "OrganizationEmojiWrite",
+                "OrganizationListRead",
+                "OrganizationRead",
+                "OrganizationUserAdmin",
+                "OrganizationUserRead",
+                "OrganizationWrite",
+                "PaymentMethodDestroy",
+                "PaymentMethodRead",
+                "PaymentMethodSetDefault",
+                "RefundRead",
+                "TokenRefresh",
+                "TwoFactorAuth",
+                "UserDelete",
+                "UserDeleteSelf",
+                "UserEmojiList",
+                "UserInterestDelete",
+                "UserInterestRead",
+                "UserInterestWrite",
+                "UserList",
+                "UserPubkeyList",
+                "UserPubkeyWrite",
+                "UserWrite",
+                "UserWriteSelf"
+              ]
+            }
+          }
+        },
+        "pubkeys": {
+          "description": "A list of this user's public keys. When yats are deployed to the blockchain, users prove ownership of their\n Yats with digital signatures, proving knowledge of the private keys that \"own\" the yat. In the centralised\n implementation of Yat, the server will custody the users' wallets and private keys, but in other respects the\n ownership model is the same.",
+          "type": "array",
+          "items": {
+            "description": "Public key",
+            "type": "string",
+            "example": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f"
+          }
+        },
+        "role": {
+          "description": "The role assigned to this user. Roles grant authority to user accounts to perform certain actions.",
+          "type": "string",
+          "enum": [
+            "Admin",
+            "OrgController",
+            "OrgMember",
+            "OrgOwner",
+            "Super",
+            "User"
+          ]
+        },
+        "user": {
+          "description": "The current user's details",
+          "properties": {
+            "alternate_id": {
+              "type": "string"
+            },
+            "created_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "deactivated_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "email": {
+              "type": "string"
+            },
+            "first_name": {
+              "type": "string"
+            },
+            "free_limit": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "id": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "is_active": {
+              "type": "boolean"
+            },
+            "last_name": {
+              "type": "string"
+            },
+            "remaining_free_emoji": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "role": {
+              "type": "string",
+              "enum": [
+                "Admin",
+                "OrgController",
+                "OrgMember",
+                "OrgOwner",
+                "Super",
+                "User"
+              ]
+            },
+            "source": {
+              "type": "string"
+            },
+            "two_factor_auth": {},
+            "updated_at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "required": [
+            "created_at",
+            "free_limit",
+            "id",
+            "is_active",
+            "remaining_free_emoji",
+            "role",
+            "updated_at"
+          ]
+        }
+      },
+      "required": [
+        "global_scopes",
+        "organization_roles",
+        "organization_scopes",
+        "pubkeys",
+        "role",
+        "user"
+      ]
+    },
+    "DisplayUser": {
+      "properties": {
+        "alternate_id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deactivated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "email": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "free_limit": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "is_active": {
+          "type": "boolean"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "remaining_free_emoji": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "Admin",
+            "OrgController",
+            "OrgMember",
+            "OrgOwner",
+            "Super",
+            "User"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "two_factor_auth": {},
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "created_at",
+        "free_limit",
+        "id",
+        "is_active",
+        "remaining_free_emoji",
+        "role",
+        "updated_at"
       ]
     },
     "EditRequest": {
@@ -119,8 +408,12 @@
     },
     "LoginRequest": {
       "properties": {
+        "alternate_id": {
+          "description": "Alternate identifier",
+          "type": "string"
+        },
         "email": {
-          "description": "Requred: Email",
+          "description": "Email",
           "type": "string"
         },
         "g-recaptcha-response": {
@@ -133,7 +426,6 @@
         }
       },
       "required": [
-        "email",
         "password"
       ]
     },
@@ -222,16 +514,6 @@
         }
       }
     },
-    "MagicLinkLoginResponse": {
-      "properties": {
-        "message": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "message"
-      ]
-    },
     "NewUserInterestParameters": {
       "properties": {
         "eid": {
@@ -255,6 +537,7 @@
           "type": "string",
           "enum": [
             "Microlink",
+            "RestPack",
             "Echo"
           ]
         }
@@ -292,8 +575,12 @@
     },
     "RegisterUserParameters": {
       "properties": {
+        "alternate_id": {
+          "description": "Alternate identifier",
+          "type": "string"
+        },
         "email": {
-          "description": "Required: email address",
+          "description": "Email address",
           "type": "string"
         },
         "first_name": {
@@ -311,11 +598,12 @@
         "password": {
           "description": "Optional: password",
           "type": "string"
+        },
+        "source": {
+          "description": "Required when registering with `alternate_id`, source for non custodial user",
+          "type": "string"
         }
-      },
-      "required": [
-        "email"
-      ]
+      }
     },
     "SearchResult": {
       "properties": {
@@ -324,6 +612,17 @@
           "type": "array",
           "items": {
             "properties": {
+              "availability": {
+                "description": "The availability state of this emoji",
+                "type": "string",
+                "enum": [
+                  "Available",
+                  "Taken",
+                  "InCart",
+                  "ComingSoon",
+                  "NoPrice"
+                ]
+              },
               "available": {
                 "description": "Whether the EID is available for purchase",
                 "type": "boolean"
@@ -350,6 +649,7 @@
               }
             },
             "required": [
+              "availability",
               "available",
               "discounted_price",
               "eid",
@@ -361,6 +661,17 @@
         "result": {
           "description": "The specific Emoji ID that the user requests",
           "properties": {
+            "availability": {
+              "description": "The availability state of this emoji",
+              "type": "string",
+              "enum": [
+                "Available",
+                "Taken",
+                "InCart",
+                "ComingSoon",
+                "NoPrice"
+              ]
+            },
             "available": {
               "description": "Whether the EID is available for purchase",
               "type": "boolean"
@@ -387,6 +698,7 @@
             }
           },
           "required": [
+            "availability",
             "available",
             "discounted_price",
             "eid",
@@ -398,6 +710,16 @@
       "required": [
         "alternates",
         "result"
+      ]
+    },
+    "SuccessResponse": {
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
       ]
     },
     "TokenResponse": {
@@ -454,12 +776,15 @@
     "UpdateUserParameters": {
       "properties": {
         "email": {
+          "description": "Optional: Email",
           "type": "string"
         },
         "first_name": {
+          "description": "Optional: First name",
           "type": "string"
         },
         "last_name": {
+          "description": "Optional: Last name",
           "type": "string"
         }
       }
@@ -468,10 +793,8 @@
   "paths": {
     "/account": {
       "get": {
-        "tags": [
-          "Users"
-        ],
-        "summary": " Current user account",
+        "operationId": "getAccount",
+        "summary": "Current user account",
         "description": "Displays the currently logged in user account details.",
         "security": [
           {
@@ -479,6 +802,12 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CurrentUser"
+            }
+          },
           "400": {
             "description": "Bad request: Request body or parameters are not in the expected format."
           },
@@ -491,13 +820,15 @@
           "500": {
             "description": "Internal server error."
           }
-        }
-      },
-      "patch": {
+        },
         "tags": [
           "Users"
-        ],
-        "summary": " Update the currently logged in user",
+        ]
+      },
+      "patch": {
+        "operationId": "update",
+        "summary": "Update the currently logged in user",
+        "description": "NOTE: user should have scope `UserWriteSelf`",
         "security": [
           {
             "JWT": []
@@ -507,6 +838,12 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CurrentUser"
+            }
+          },
           "400": {
             "description": "Bad request: Request body or parameters are not in the expected format."
           },
@@ -529,15 +866,16 @@
               "$ref": "#/definitions/UpdateUserParameters"
             }
           }
+        ],
+        "tags": [
+          "Users"
         ]
       }
     },
     "/auth/2fa": {
       "post": {
-        "tags": [
-          "User Authentication"
-        ],
-        "summary": " Two factor authentication",
+        "operationId": "twoFactorAuthentication",
+        "summary": "Two factor authentication",
         "description": "Complete login flow when user requires 2FA. `refresh_token` obtained from a call to `/token` or `/token/refresh` should be used to complete authentication. **Note:** 2FA token has expiration timeout, which is when expired sensitive operations would require authentication via 2fa once again.",
         "responses": {
           "200": {
@@ -568,21 +906,22 @@
               "$ref": "#/definitions/Confirm2Fa"
             }
           }
+        ],
+        "tags": [
+          "User Authentication"
         ]
       }
     },
     "/auth/magic_link": {
       "post": {
-        "tags": [
-          "User Authentication"
-        ],
-        "summary": " Generate magic link for login",
+        "operationId": "magicLinkLogin",
+        "summary": "Generate magic link for login",
         "description": "Will generate and send magic link to provided user's email. Assuming the email address corresponds to a valid user",
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/MagicLinkLoginResponse"
+              "$ref": "#/definitions/SuccessResponse"
             }
           },
           "400": {
@@ -607,15 +946,16 @@
               "$ref": "#/definitions/MagicLinkLoginRequest"
             }
           }
+        ],
+        "tags": [
+          "User Authentication"
         ]
       }
     },
     "/auth/token": {
       "post": {
-        "tags": [
-          "User Authentication"
-        ],
-        "summary": " Login via password",
+        "operationId": "login",
+        "summary": "Login via password",
         "description": "Login via username/password. Will return access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /auth/2fa`.",
         "responses": {
           "200": {
@@ -646,15 +986,16 @@
               "$ref": "#/definitions/LoginRequest"
             }
           }
+        ],
+        "tags": [
+          "User Authentication"
         ]
       }
     },
     "/auth/token/refresh": {
       "post": {
-        "tags": [
-          "User Authentication"
-        ],
-        "summary": " Refreshes access token",
+        "operationId": "refreshToken",
+        "summary": "Refreshes access token",
         "description": "Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /2fa`",
         "responses": {
           "200": {
@@ -685,16 +1026,17 @@
               "$ref": "#/definitions/RefreshRequest"
             }
           }
+        ],
+        "tags": [
+          "User Authentication"
         ]
       }
     },
     "/cart": {
       "get": {
-        "tags": [
-          "Cart"
-        ],
-        "summary": " Return cart content",
-        "description": "User requires scope `CartShow`.",
+        "operationId": "getItems",
+        "summary": "Return cart content",
+        "description": "NOTE: user should have scope `CartShow`",
         "security": [
           {
             "JWT": []
@@ -713,14 +1055,15 @@
           "500": {
             "description": "Internal server error."
           }
-        }
-      },
-      "put": {
+        },
         "tags": [
           "Cart"
-        ],
-        "summary": " Replace cart items",
-        "description": "User requires scope `CartUpdate`.",
+        ]
+      },
+      "put": {
+        "operationId": "replaceItems",
+        "summary": "Replace cart items",
+        "description": "NOTE: user should have scope `CartUpdate`",
         "security": [
           {
             "JWT": []
@@ -749,14 +1092,15 @@
               "$ref": "#/definitions/UpdateCartRequest"
             }
           }
+        ],
+        "tags": [
+          "Cart"
         ]
       },
       "post": {
-        "tags": [
-          "Cart"
-        ],
-        "summary": " Update cart items",
-        "description": "Will add new items to the cart. User requires scope `CartUpdate`.",
+        "operationId": "add",
+        "summary": "Update cart items by adding new items to the cart",
+        "description": "NOTE: user should have scope `CartUpdate`",
         "security": [
           {
             "JWT": []
@@ -785,14 +1129,15 @@
               "$ref": "#/definitions/UpdateCartRequest"
             }
           }
+        ],
+        "tags": [
+          "Cart"
         ]
       },
       "delete": {
-        "tags": [
-          "Cart"
-        ],
-        "summary": " Clean up cart",
-        "description": "User requires scope `CartUpdate`.",
+        "operationId": "clear",
+        "summary": "Remove all items from cart",
+        "description": "NOTE: user should have scope `CartUpdate`",
         "security": [
           {
             "JWT": []
@@ -811,16 +1156,17 @@
           "500": {
             "description": "Internal server error."
           }
-        }
+        },
+        "tags": [
+          "Cart"
+        ]
       }
     },
     "/cart/checkout": {
       "post": {
-        "tags": [
-          "Cart"
-        ],
-        "summary": " Checkout cart",
-        "description": "Submit order with provided payment details.",
+        "operationId": "checkout",
+        "summary": "Checkout cart with provided payment details",
+        "description": "NOTE: user should have scope `CartUpdate`",
         "security": [
           {
             "JWT": []
@@ -849,15 +1195,16 @@
               "$ref": "#/definitions/CheckoutCartRequest"
             }
           }
+        ],
+        "tags": [
+          "Cart"
         ]
       }
     },
     "/emoji": {
       "get": {
-        "tags": [
-          "Emoji"
-        ],
-        "summary": " List emojis",
+        "operationId": "list",
+        "summary": "List emojis",
         "description": "If no parameters provided will return all emojis of current user. When `user_id` or `organization_id` specified will return emojis owned by specified user or organization, requires Admin or organization power user access. Result is array of emojis `[\"🍗\",\"🌈\"]`",
         "security": [
           {
@@ -893,15 +1240,16 @@
             "type": "string",
             "format": "uuid"
           }
+        ],
+        "tags": [
+          "Emoji"
         ]
       }
     },
     "/emoji/search": {
       "get": {
-        "tags": [
-          "Emoji"
-        ],
-        "summary": " Search for EmojiID",
+        "operationId": "search",
+        "summary": "Search for EmojiID",
         "description": "Returns price, availability and other information on emoji and its alternates (similar EmojiIDs that are currently available)",
         "responses": {
           "200": {
@@ -937,15 +1285,16 @@
             "name": "redemption_code",
             "type": "string"
           }
+        ],
+        "tags": [
+          "Emoji"
         ]
       }
     },
     "/emoji/{eid}": {
       "get": {
-        "tags": [
-          "Emoji"
-        ],
-        "summary": " Lookup EmojiId",
+        "operationId": "lookup",
+        "summary": "Lookup EmojiId",
         "description": "Will filter and return data from supplied tags, If tags filter is not supplied will return all tags attached. It will also try to get views for the past month, if not available will return -1. This method is called when a user wants to look up an EID's records such as a crypto address or a redirect",
         "responses": {
           "200": {
@@ -969,18 +1318,25 @@
         },
         "parameters": [
           {
+            "in": "path",
+            "name": "eid",
+            "required": true,
+            "type": "string"
+          },
+          {
             "description": "Comma-separated list of tags to display, skip it to display all, e.g. `?tags=0x0001,0x1001`",
             "in": "query",
             "name": "tags",
             "type": "string"
           }
+        ],
+        "tags": [
+          "Emoji"
         ]
       },
       "patch": {
-        "tags": [
-          "Emoji"
-        ],
-        "summary": " Edit EmojiId",
+        "operationId": "edit",
+        "summary": "Edit EmojiId",
         "description": "Add and remove records in EmojiId, update merkle_root and signature too. Access notes: user expected to own the emoji's pubkey, have Admin role or be power member of organization if pubkey belongs to organization, otherwise operation will fail.",
         "security": [
           {
@@ -1010,6 +1366,12 @@
         },
         "parameters": [
           {
+            "in": "path",
+            "name": "eid",
+            "required": true,
+            "type": "string"
+          },
+          {
             "in": "body",
             "name": "body",
             "required": true,
@@ -1017,23 +1379,16 @@
               "$ref": "#/definitions/EditRequest"
             }
           }
+        ],
+        "tags": [
+          "Emoji"
         ]
-      },
-      "parameters": [
-        {
-          "in": "path",
-          "name": "eid",
-          "required": true,
-          "type": "string"
-        }
-      ]
+      }
     },
     "/proxy": {
       "post": {
-        "tags": [
-          "Proxy"
-        ],
-        "summary": " Calls a pre-defined proxy service with the provided data",
+        "operationId": "callProxy",
+        "summary": "Calls a pre-defined proxy service with the provided data",
         "description": "Returns the response from the proxied service as a string",
         "security": [
           {
@@ -1069,15 +1424,16 @@
               "$ref": "#/definitions/ProxyCallParameters"
             }
           }
+        ],
+        "tags": [
+          "Proxy"
         ]
       }
     },
     "/pubkeys": {
       "get": {
-        "tags": [
-          "Key Management"
-        ],
-        "summary": " Retrieve pubkeys",
+        "operationId": "getPubkeys",
+        "summary": "Retrieve pubkeys",
         "description": "Retrieves pubkeys owned by currently authenticated user. This call expects empty body.",
         "security": [
           {
@@ -1106,13 +1462,14 @@
           "500": {
             "description": "Internal server error."
           }
-        }
-      },
-      "post": {
+        },
         "tags": [
           "Key Management"
-        ],
-        "summary": " Generate custodial wallet",
+        ]
+      },
+      "post": {
+        "operationId": "createWallet",
+        "summary": "Generate custodial wallet",
         "description": "Generates custodial wallet with pubkey for currently authenticated user. This call expects empty body.",
         "security": [
           {
@@ -1141,15 +1498,16 @@
           "500": {
             "description": "Internal server error."
           }
-        }
+        },
+        "tags": [
+          "Key Management"
+        ]
       }
     },
     "/pubkeys/{pubkey}": {
       "post": {
-        "tags": [
-          "Key Management"
-        ],
-        "summary": " Add pubkey for current user",
+        "operationId": "addPubkey",
+        "summary": "Add pubkey for current user",
         "description": "This call expects empty body",
         "security": [
           {
@@ -1160,6 +1518,12 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Pubkey"
+            }
+          },
           "400": {
             "description": "Bad request: Request body or parameters are not in the expected format."
           },
@@ -1180,16 +1544,17 @@
             "required": true,
             "type": "string"
           }
+        ],
+        "tags": [
+          "Key Management"
         ]
       }
     },
     "/user_interests": {
       "get": {
-        "tags": [
-          "User Interest"
-        ],
-        "summary": " Returns a paginated list of user interest records associated with the user",
-        "description": "User requires scope `UserInterestRead`.",
+        "operationId": "getInterestedUsers",
+        "summary": "Returns a paginated list of user interest records associated with the user",
+        "description": "NOTE: user should have scope `UserInterestRead`",
         "security": [
           {
             "JWT": []
@@ -1208,14 +1573,15 @@
           "500": {
             "description": "Internal server error."
           }
-        }
-      },
-      "post": {
+        },
         "tags": [
           "User Interest"
-        ],
-        "summary": " Create new interest in emoji to be notified when available",
-        "description": "User requires scope `UserInterestWrite`.",
+        ]
+      },
+      "post": {
+        "operationId": "registerInterest",
+        "summary": "Create new interest in emoji to be notified when available",
+        "description": "NOTE: user should have scope `UserInterestWrite`",
         "security": [
           {
             "JWT": []
@@ -1244,16 +1610,17 @@
               "$ref": "#/definitions/NewUserInterestParameters"
             }
           }
+        ],
+        "tags": [
+          "User Interest"
         ]
       }
     },
     "/user_interests/{eid}": {
       "get": {
-        "tags": [
-          "User Interest"
-        ],
-        "summary": " Given an EmojiId returns information about the user interest if a record exists for this user",
-        "description": "User requires scope `UserInterestRead`.",
+        "operationId": "getUserInterestForYat",
+        "summary": "Given an EmojiId returns information about the user interest if a record exists for this user",
+        "description": "NOTE: user should have scope `UserInterestRead`",
         "security": [
           {
             "JWT": []
@@ -1272,14 +1639,23 @@
           "500": {
             "description": "Internal server error."
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "eid",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User Interest"
+        ]
       },
       "delete": {
-        "tags": [
-          "User Interest"
-        ],
-        "summary": " Destroys the user interest preventing this eid's notification emails from being sent for this user",
-        "description": "User requires scope `UserInterestDelete`.",
+        "operationId": "deleteUserInterest",
+        "summary": "Destroys the user interest preventing this eid's notification emails from being sent for this user",
+        "description": "NOTE: user should have scope `UserInterestDelete`",
         "security": [
           {
             "JWT": []
@@ -1298,24 +1674,25 @@
           "500": {
             "description": "Internal server error."
           }
-        }
-      },
-      "parameters": [
-        {
-          "in": "path",
-          "name": "eid",
-          "required": true,
-          "type": "string"
-        }
-      ]
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "eid",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "User Interest"
+        ]
+      }
     },
     "/users": {
       "get": {
-        "tags": [
-          "Users"
-        ],
-        "summary": " List users",
-        "description": "This is an admin endpoint",
+        "operationId": "getAllUsers",
+        "summary": "List users",
+        "description": "NOTE: user should have scope `UserList`",
         "security": [
           {
             "JWT": []
@@ -1334,15 +1711,22 @@
           "500": {
             "description": "Internal server error."
           }
-        }
-      },
-      "post": {
+        },
         "tags": [
           "Users"
-        ],
-        "summary": " Register a User",
+        ]
+      },
+      "post": {
+        "operationId": "createUser",
+        "summary": "Register a User",
         "description": "Create a user and a custodial wallet",
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CurrentUser"
+            }
+          },
           "400": {
             "description": "Bad request: Request body or parameters are not in the expected format."
           },
@@ -1365,50 +1749,29 @@
               "$ref": "#/definitions/RegisterUserParameters"
             }
           }
+        ],
+        "tags": [
+          "Users"
         ]
       }
     },
     "/users/{id}": {
       "delete": {
-        "tags": [
-          "Users"
-        ],
-        "summary": " Delete a user",
+        "operationId": "delete",
+        "summary": "Delete a user",
+        "description": "NOTE: user should have scope `UserDeleteSelf` if deleting themselves, `UserDelete` is needed for other users",
         "security": [
           {
             "JWT": []
           }
         ],
         "responses": {
-          "400": {
-            "description": "Bad request: Request body or parameters are not in the expected format."
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DisplayUser"
+            }
           },
-          "401": {
-            "description": "Unauthorized: Access token not found or invalid."
-          },
-          "422": {
-            "description": "Unprocessable Entity: Duplicate record."
-          },
-          "500": {
-            "description": "Internal server error."
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Users"
-        ],
-        "summary": " Update a user as an admin",
-        "description": "Note: Requires UserWrite Scope",
-        "security": [
-          {
-            "JWT": []
-          },
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
           "400": {
             "description": "Bad request: Request body or parameters are not in the expected format."
           },
@@ -1424,6 +1787,58 @@
         },
         "parameters": [
           {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      },
+      "patch": {
+        "operationId": "updateUser",
+        "summary": "Update a user as an admin",
+        "description": "NOTE: user should have scope `UserWrite`",
+        "security": [
+          {
+            "JWT": []
+          },
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DisplayUser"
+            }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
             "in": "body",
             "name": "body",
             "required": true,
@@ -1431,24 +1846,16 @@
               "$ref": "#/definitions/AdminUpdateUserParameters"
             }
           }
+        ],
+        "tags": [
+          "Users"
         ]
-      },
-      "parameters": [
-        {
-          "in": "path",
-          "name": "id",
-          "required": true,
-          "type": "string",
-          "format": "uuid"
-        }
-      ]
+      }
     },
     "/users/{user_id}/pubkeys": {
       "get": {
-        "tags": [
-          "Key Management"
-        ],
-        "summary": " Retrieve pubkeys by user_id",
+        "operationId": "getPubkeysForUser",
+        "summary": "Retrieve pubkeys by user_id",
         "description": "NOTE: user should have scope `UserPubkeyList`",
         "security": [
           {
@@ -1486,15 +1893,16 @@
             "type": "string",
             "format": "uuid"
           }
+        ],
+        "tags": [
+          "Key Management"
         ]
       }
     },
     "/users/{user_id}/pubkeys/{pubkey}": {
       "post": {
-        "tags": [
-          "Key Management"
-        ],
-        "summary": " Add pubkey for user by user_id",
+        "operationId": "addPubkeyForUser",
+        "summary": "Add pubkey for user by user_id",
         "description": "NOTE: user should have scope `UserPubkeyWrite` This call expects empty body",
         "security": [
           {
@@ -1505,6 +1913,12 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Pubkey"
+            }
+          },
           "400": {
             "description": "Bad request: Request body or parameters are not in the expected format."
           },
@@ -1534,6 +1948,9 @@
             "type": "string",
             "format": "uuid"
           }
+        ],
+        "tags": [
+          "Key Management"
         ]
       }
     }
@@ -1578,9 +1995,9 @@
       "description": "Manage a user's public keys"
     }
   ],
-  "host": "localhost:3001",
   "info": {
-    "version": "v1.0.0",
-    "title": "Yat"
+    "version": "0.1.33",
+    "title": "Emoji ID API server",
+    "description": "Emoji ID is a directory service that associates almost\n            any type of structured data with a short, memorable identifier the emoji id."
   }
 }

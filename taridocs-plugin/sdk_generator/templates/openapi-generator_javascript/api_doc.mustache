@@ -20,13 +20,21 @@ Method | HTTP request | Description
 
 ### {{operationId}}
 
-> {{#returnType}}{{returnType}} {{/returnType}}{{operationId}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}})
+```js
+/**
+* {{#returnType}} @returns {{returnType}} {{/returnType}}
+**/
+function {{operationId}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}})
+```
 
-{{summary}}{{#notes}}
+{{summary}}
 
-{{notes}}{{/notes}}
+{{#notes}}
+#### Notes:
+{{notes}}
+{{/notes}}
 
-> Example
+#### Example
 
 ```javascript
 import {{{moduleName}}} from '{{{projectName}}}';

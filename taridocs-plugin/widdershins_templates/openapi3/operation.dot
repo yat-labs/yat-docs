@@ -19,6 +19,10 @@
 <a id="opId{{=data.operation.operationId}}"></a>
 {{?}}
 
+{{? data.operation.summary && !data.options.tocSummary}}*{{= data.operation.summary }}*{{?}}
+
+{{? data.operation.description}}{{= data.operation.description }}{{?}}
+
 {{? data.options.codeSamples || data.operation["x-code-samples"] }}
 #### Example
   `{{= data.methodUpper}} {{=data.method.path}}`
@@ -38,12 +42,9 @@
 
 </Tabs>
 
-{{? data.operation.summary && !data.options.tocSummary}}*{{= data.operation.summary }}*{{?}}
-
-{{? data.operation.description}}{{= data.operation.description }}{{?}}
-
 {{? data.operation.requestBody}}
-> Body parameter
+
+#### Body parameter
 
 {{? data.bodyParameter.exampleValues.description }}
 > {{= data.bodyParameter.exampleValues.description }}
