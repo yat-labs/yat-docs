@@ -27,7 +27,7 @@ The yat consists of a string of one to six emoji, that the user can personalise 
 * **Emoji id category** - Emoji id record types are grouped into categories to aid data management and record discovery.
   Examples include cryptocurrency addresses, web properties, DNS records, location data.
 * **Emoji id tag** - Emoji id categories are subdivided into specific data types that have specific data formats,
-  represented by their Category Tag. Examples include Bitcoin addresses, DNS A records, web URLs and Lat-Long
+  represented by their Category Tag. Examples include Bitcoin addresses, DNS 'A' records, web URLs and Lat-Long
   coordinates.
 * **Canonical format** - The unambiguous, official representation of a yat. See
   [Emoji id formats](#emoji-id-formats) for further discussion.
@@ -86,20 +86,15 @@ will provide clarification where necessary.
 
 ## Emoji selection guidelines
 
-Not all emoji are eligible to be included in yats. It is necessary to exclude many emoji from the official yat emoji list to minimize confusion, and spoofing attempts using similar yats.
+Not all emoji are eligible to be included in yats. It is necessary to exclude many emoji from the official yat emoji list to minimize confusion and spoofing attempts with similar yats.
 
 ### Unicode 8 and lower only
 
-Unicode 8 is Supported by Android 6.0.1+, which means all the selected emoji will render for ~97%+ of users.
-
-### No gender-modifiable emoji allowed
-
-You'd be surprised which emoji are gender-modifiable to promote inclusivity. Man with turban now has a corresponding
-woman with turban, for example.
+Android 6.0.1+ supports Unicode 8, which means all the selected emoji will render for ~97%+ of users.
 
 ### Look an animal in the face, don't judge it by its body
 
-Most animals come in both a face version (e.g. dog face) _and_ a full body version (e.g. dog body). Since the body
+Most animals come in both a face version (e.g. dog face), _and_ a full body version (e.g. dog body). Since the body
 versions are generally very tiny and easy to mix up with one another, and are not as frequently used as the face emoji,
 we've decided to only include animal face emoji (except in cases where ONLY a full body is available and so there's no ambiguity).
 
@@ -117,7 +112,7 @@ for example, which could cause confusion for the listener.
 We can't prevent that, but if we restrict the set to just one color, accidental input of any other color will return an
 error message, which is not ideal, but is far preferable to sending money, a message, etc. to the wrong person.
 
-###  For groups of similar LOOKING emoji, or similarly DESCRIBED emoji, pick either one or none
+###  For groups of similar LOOKING, or similarly DESCRIBED emoji, pick one or none
 
 This guideline reduces ambiguity in the emoji set.
 We considered not just the visual similarity of the entire group, but how users may describe them and which are used more frequently in other apps (if relevant).
@@ -153,7 +148,7 @@ non-binary gender identities, and Yat would inherit those constraints.
 For example, some 55% of Android users are still on 7/8/9, which do not support gender-neutral emoji, and there are
 still a significant number of users on Android 6, which do not support male/female emoji.
 
-### An example:
+### An example
 
 On an Android 6 device, only the gender-neutral Person Walking is supported -- not Man Walking, not Woman Walking.
 Then, on Android 7/8/9, they removed the gender-neutral emoji altogether, so only Man Walking and Woman Walking were supported,
