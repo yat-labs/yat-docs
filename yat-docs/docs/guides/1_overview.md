@@ -81,5 +81,93 @@ the yat, and the user will see the yat he or she expects.
 When taking a yat as input into an API call, the yat will be automatically converted to canonical form. Therefore, lookups
 for 🤟🏾🤟🏾🤟🏾 and 🤟🏽🤟🏽🤟🏽 will resolve to the same yat (🤟🤟🤟).
 
-When yats are _returned_ from endpoints, the _display format_ will usually be returned, but the endpoint documentation  
+When yats are _returned_ from endpoints, the _display format_ will usually be returned, but the endpoint documentation
 will provide clarification where necessary.
+
+## Emoji selection guidelines
+
+Not all emoji are eligible to be included in yats. It is necessary to exclude many emoji from the official yat emoji list to minimize confusion, and spoofing attempts using similar yats.
+
+### Unicode 8 and lower only
+
+Unicode 8 is Supported by Android 6.0.1+, which means all the selected emoji will render for ~97%+ of users.
+
+### No gender-modifiable emoji allowed
+
+You'd be surprised which emoji are gender-modifiable to promote inclusivity. Man with turban now has a corresponding
+woman with turban, for example.
+
+### Look an animal in the face, don't judge it by its body
+
+Most animals come in both a face version (e.g. dog face) _and_ a full body version (e.g. dog body). Since the body
+versions are generally very tiny and easy to mix up with one another, and are not as frequently used as the face emoji,
+we've decided to only include animal face emoji (except in cases where ONLY a full body is available and so there's no ambiguity).
+
+### If you're on the fence, exclude it
+
+We erred on the side of conservatism. It is easy to add emoji to the supported set anytime, but we can never remove emoji from the set.
+
+### For identical emoji in different colors, select one color
+
+10% of men are colorblind so color is a phishing attack vector. For example, we included ❤️. So we should exclude other colors like 💙 and 💜.
+
+We also need to assume some people will do a poor job describing emoji, and may just say "heart" instead of "purple heart",
+for example, which could cause confusion for the listener.
+
+We can't prevent that, but if we restrict the set to just one color, accidental input of any other color will return an
+error message, which is not ideal, but is far preferable to sending money, a message, etc. to the wrong person.
+
+###  For groups of similar LOOKING emoji, or similarly DESCRIBED emoji, pick either one or none
+
+This guideline reduces ambiguity in the emoji set.
+We considered not just the visual similarity of the entire group, but how users may describe them and which are used more frequently in other apps (if relevant).
+
+Not including any emoji from the group provides the best user experience in the sense that it constrains the user to
+emoji that are less susceptible to user confusion, frustration, and error. For example, if someone tells you "globe"
+you're probably going to feel frustrated when you see there are 3 globes in your keyboard 🌎 🌍 🌏 and even more
+frustrated when you don't guess the right one and get an error, because you only have a 1 in 3 chance of getting it right the first time.
+
+### Thinking about attacks
+
+Many attacks (e.g. Nigerian Prince emails) are completely obvious to the majority of individuals, but are still effective
+if just a few people fall for them. Put yourself in the mind of an attacker. Many mix-ups, of course, will not be due to
+attacks but innocent human error, but with Yat those mix-ups could lead to real money being sent to the wrong person.
+
+Some factors we consider:
+- Many people get their left and right mixed up, so directional emoji (arrows, pointing fingers) could be easily mixed up with one another and therefore have been excluded.
+- Some emoji look completely different but would be described the same way, for example diamond (the gem) and diamond (the card suit), which creates ambiguity.
+- Some emoji are more difficult to describe and people may have wildly different understandings of the description, e.g. the devil vs. the red ogre thing, so it's best to pick either one or none of those.
+- We shouldn't include more than 1 of any emoji that can be both singular or plural. For example, the single sword vs. crossed swords, because if someone tells you "swords" you may just hear "sword" and select the single sword when you see it on the keyboard.
+
+## Gendered emoji
+
+The Yat emoji set does not support _any_ gender-modifiable emoji. This is purely a technical decision to minimise ambiguity
+and confusion among users.
+
+Android has a dark and sordid history around their [handling of emoji genders](https://blog.emojipedia.org/android-10-0-emoji-changelog/).
+As it stands, most users are still on an OS version that either supports ONLY male/female emoji (no gender-neutral), or _only_ gender-neutral emoji (no male/female).
+
+Older versions of Android simply do not promote inclusivity, which by its modern day definition includes both binary and
+non-binary gender identities, and Yat would inherit those constraints.
+
+For example, some 55% of Android users are still on 7/8/9, which do not support gender-neutral emoji, and there are
+still a significant number of users on Android 6, which do not support male/female emoji.
+
+### An example:
+
+On an Android 6 device, only the gender-neutral Person Walking is supported -- not Man Walking, not Woman Walking.
+Then, on Android 7/8/9, they removed the gender-neutral emoji altogether, so only Man Walking and Woman Walking were supported,
+but _not_ Person Walking.
+
+Android 7/8/9 behave much like Telegram does when faced with a gender-neutral emoji; it modifies it unilaterally it by
+appending one of the two gender modifiers.
+
+_But_ with Android 10+, all three gender identities (person, male, female walking) are supported, along with a bunch of
+new gender-neutral emoji that were only previously available in gendered flavors on 7/8/9 (and not at all on 6).
+
+The UI patterns are not consistent either across OSes or platforms. *New* Android devices treat gender like skintones:
+long press on a gender-neutral emoji to see the gender options for it. Unlike Android, iOS always shows all 3 genders
+separately (even if behind the scenes it's the same emoji with a modifier).
+
+Until devices and operating systems handle gendered emoji in a consistent and predictable way, it is much safer to leave
+all gendered emoji from the Yat list altogether.
