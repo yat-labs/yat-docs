@@ -22,7 +22,7 @@ over their Yats. This would require a centralized server that would route all re
 # Signing up a new user
 
 To create a new account at y.at, register a user with a `POST` query to the
-[`/users`](api_reference/index#users) end-point.
+[`/users`](/docs/api-ref#users) end-point.
 
 The only mandatory field for registration is an email address, but the user's name and last name can be provided as
 well.

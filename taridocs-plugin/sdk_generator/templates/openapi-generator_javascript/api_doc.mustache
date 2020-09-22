@@ -12,7 +12,7 @@ All URIs are relative to *{{basePath}}*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-{{#operations}}{{#operation}}[**{{operationId}}**]({{classname}}.md#{{operationId}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}}
+{{#operations}}{{#operation}}[**{{operationId}}**]({{classname}}.md#{{#lambda.lowercase}}{{operationId}}{{/lambda.lowercase}}) | **{{httpMethod}}** {{path}} | {{#summary}}{{summary}}{{/summary}}
 {{/operation}}{{/operations}}
 
 {{#operations}}
@@ -22,44 +22,39 @@ Method | HTTP request | Description
 
 ```js
 /**
-* {{#returnType}} @returns {{returnType}} {{/returnType}}
+* @returns {{#returnType}}{{returnType}}{{/returnType}}{{^returnType}}null{{/returnType}}
 **/
-function {{operationId}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}})
+async function {{operationId}}({{#requiredParams}}{{{paramName}}}: {{{dataType}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}})
 ```
 
 {{summary}}
 
 {{#notes}}
 #### Notes:
-{{notes}}
+{{{notes}}}
 {{/notes}}
 
 #### Example
 
 ```javascript
-import {{{moduleName}}} from '{{{projectName}}}';
+const yat = require('yatjs');
+const api = new yat.YatJs();
+
 {{#hasAuthMethods}}
-let defaultClient = {{{moduleName}}}.ApiClient.instance;
 {{#authMethods}}
 {{#isBasic}}
 {{#isBasicBasic}}
 // Configure HTTP basic authorization: {{{name}}}
-let {{{name}}} = defaultClient.authentications['{{{name}}}'];
+let {{{name}}} = api.client.authentications['{{{name}}}'];
 {{{name}}}.username = 'YOUR USERNAME';
 {{{name}}}.password = 'YOUR PASSWORD';
 {{/isBasicBasic}}
 {{#isBasicBearer}}
-// Configure Bearer{{#bearerFormat}} ({{{.}}}){{/bearerFormat}} access token for authorization: {{{name}}}
-let {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.accessToken = "YOUR ACCESS TOKEN"
+{{^hasMore}}await api.login("your@email.com", "your_password");{{/hasMore}}
 {{/isBasicBearer}}
 {{/isBasic}}
 {{#isApiKey}}
-// Configure API key authorization: {{{name}}}
-let {{{name}}} = defaultClient.authentications['{{{name}}}'];
-{{{name}}}.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//{{{name}}}.apiKeyPrefix = 'Token';
+{{^hasMore}}await api.login("your@email.com", "your_password");{{/hasMore}}
 {{/isApiKey}}
 {{#isOAuth}}
 // Configure OAuth2 access token for authorization: {{{name}}}
@@ -69,9 +64,10 @@ let {{{name}}} = defaultClient.authentications['{{{name}}}'];
 {{/authMethods}}
 {{/hasAuthMethods}}
 
-let apiInstance = new {{{moduleName}}}.{{{classname}}}();
 {{#requiredParams}}
-let {{{paramName}}} = {{{example}}}; // {{{dataType}}} | {{{description}}}
+let {{{paramName}}} = {{{example}}}; // {{{dataType}}} {{#description}}| {{{description}}}{{/description}}
+// populate {{{paramName}}}...
+
 {{/requiredParams}}
 {{#optionalParams}}
 {{#-first}}
@@ -83,11 +79,13 @@ let opts = {
 {{/-last}}
 {{/optionalParams}}
 {{#usePromises}}
-apiInstance.{{{operationId}}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}}).then(({{#returnType}}data{{/returnType}}) => {
-  {{#returnType}}console.log('API called successfully. Returned data: ' + data);{{/returnType}}{{^returnType}}console.log('API called successfully.');{{/returnType}}
-}, (error) => {
+try {
+  {{#returnType}}let res = {{/returnType}}await api.{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}().{{{operationId}}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/requiredParams}}{{#optionalParams}}{{#-last}}{{#hasRequiredParams}}, {{/hasRequiredParams}}opts{{/-last}}{{/optionalParams}});
+  {{#returnType}}// res is of type {{returnType}}
+  console.log('API called successfully. Result: ', res);{{/returnType}}{{^returnType}}console.log('API called successfully.');{{/returnType}}
+} catch (error) {
   console.error(error);
-});
+}
 
 {{/usePromises}}
 {{^usePromises}}
@@ -103,11 +101,11 @@ apiInstance.{{{operationId}}}({{#requiredParams}}{{{paramName}}}{{^-last}}, {{/-
 
 #### Parameters
 
-{{^allParams}}This endpoint does not need any parameter.{{/allParams}}{{#allParams}}{{#-last}}
+{{^allParams}}This endpoint does not have any parameters.{{/allParams}}{{#allParams}}{{#-last}}
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------{{/-last}}{{/allParams}}
 {{#allParams}}
-**{{paramName}}** | {{#isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isFile}}**{{dataType}}**{{/isFile}}{{^isFile}}[**{{dataType}}**](../sdk_nodejs_index#{{baseType}})
+**{{paramName}}** | {{#isPrimitiveType}}**{{dataType}}**{{/isPrimitiveType}}{{^isPrimitiveType}}{{#isFile}}**{{dataType}}**{{/isFile}}{{^isFile}}[**{{dataType}}**](../sdk_nodejs_index#{{#lambda.lowercase}}{{baseType}}{{/lambda.lowercase}})
 {{/isFile}}{{/isPrimitiveType}}| {{description}} | {{^required}}[optional] {{/required}}{{#defaultValue}}[default to {{defaultValue}}]{{/defaultValue}}
 {{/allParams}}
 

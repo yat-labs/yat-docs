@@ -7,11 +7,11 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**addPubkey**](KeyManagementApi.md#addPubkey) | **POST** /pubkeys/{pubkey} | Add pubkey for current user
-[**addPubkeyForUser**](KeyManagementApi.md#addPubkeyForUser) | **POST** /users/{user_id}/pubkeys/{pubkey} | Add pubkey for user by user_id
-[**createWallet**](KeyManagementApi.md#createWallet) | **POST** /pubkeys | Generate custodial wallet
-[**getPubkeys**](KeyManagementApi.md#getPubkeys) | **GET** /pubkeys | Retrieve pubkeys
-[**getPubkeysForUser**](KeyManagementApi.md#getPubkeysForUser) | **GET** /users/{user_id}/pubkeys | Retrieve pubkeys by user_id
+[**addPubkey**](KeyManagementApi.md#addpubkey) | **POST** /pubkeys/{pubkey} | Add pubkey for current user
+[**addPubkeyForUser**](KeyManagementApi.md#addpubkeyforuser) | **POST** /users/{user_id}/pubkeys/{pubkey} | Add pubkey for user by user_id
+[**createWallet**](KeyManagementApi.md#createwallet) | **POST** /pubkeys | Generate custodial wallet
+[**getPubkeys**](KeyManagementApi.md#getpubkeys) | **GET** /pubkeys | Retrieve pubkeys
+[**getPubkeysForUser**](KeyManagementApi.md#getpubkeysforuser) | **GET** /users/{user_id}/pubkeys | Retrieve pubkeys by user_id
 
 
 
@@ -19,9 +19,9 @@ Method | HTTP request | Description
 
 ```js
 /**
-*  @returns String 
+* @returns String
 **/
-function addPubkey(pubkey)
+async function addPubkey(pubkey: String)
 ```
 
 Add pubkey for current user
@@ -32,26 +32,22 @@ This call expects empty body
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
-// Configure API key authorization: apiKey
-let apiKey = defaultClient.authentications['apiKey'];
-apiKey.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//apiKey.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.KeyManagementApi();
-let pubkey = "pubkey_example"; // String | 
-apiInstance.addPubkey(pubkey).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+await api.login("your@email.com", "your_password");
+
+let pubkey = "pubkey_example"; // String 
+// populate pubkey...
+
+try {
+  let res = await api.keyManagement().addPubkey(pubkey);
+  // res is of type String
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -81,40 +77,38 @@ Name | Type | Description  | Notes
 
 ```js
 /**
-*  @returns String 
+* @returns String
 **/
-function addPubkeyForUser(userId, pubkey)
+async function addPubkeyForUser(userId: String, pubkey: String)
 ```
 
 Add pubkey for user by user_id
 
 #### Notes:
-NOTE: user should have scope &#x60;UserPubkeyWrite&#x60; This call expects empty body
+NOTE: user should have scope `UserPubkeyWrite` This call expects empty body
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
-// Configure API key authorization: apiKey
-let apiKey = defaultClient.authentications['apiKey'];
-apiKey.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//apiKey.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.KeyManagementApi();
+
+await api.login("your@email.com", "your_password");
+
 let userId = "userId_example"; // String | Public key to add
+// populate userId...
+
 let pubkey = null; // String | `user_id` to grant public key ownership to
-apiInstance.addPubkeyForUser(userId, pubkey).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+// populate pubkey...
+
+try {
+  let res = await api.keyManagement().addPubkeyForUser(userId, pubkey);
+  // res is of type String
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -146,9 +140,9 @@ Name | Type | Description  | Notes
 
 ```js
 /**
-*  @returns String 
+* @returns String
 **/
-function createWallet()
+async function createWallet()
 ```
 
 Generate custodial wallet
@@ -159,31 +153,25 @@ Generates custodial wallet with pubkey for currently authenticated user. This ca
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
-// Configure API key authorization: apiKey
-let apiKey = defaultClient.authentications['apiKey'];
-apiKey.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//apiKey.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.KeyManagementApi();
-apiInstance.createWallet().then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+await api.login("your@email.com", "your_password");
+
+try {
+  let res = await api.keyManagement().createWallet();
+  // res is of type String
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
 #### Parameters
 
-This endpoint does not need any parameter.
+This endpoint does not have any parameters.
 
 #### Return type
 
@@ -204,9 +192,9 @@ This endpoint does not need any parameter.
 
 ```js
 /**
-*  @returns [String] 
+* @returns [String]
 **/
-function getPubkeys()
+async function getPubkeys()
 ```
 
 Retrieve pubkeys
@@ -217,26 +205,24 @@ Retrieves pubkeys owned by currently authenticated user. This call expects empty
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.KeyManagementApi();
-apiInstance.getPubkeys().then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+try {
+  let res = await api.keyManagement().getPubkeys();
+  // res is of type [String]
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
 #### Parameters
 
-This endpoint does not need any parameter.
+This endpoint does not have any parameters.
 
 #### Return type
 
@@ -257,34 +243,34 @@ This endpoint does not need any parameter.
 
 ```js
 /**
-*  @returns [String] 
+* @returns [String]
 **/
-function getPubkeysForUser(userId)
+async function getPubkeysForUser(userId: String)
 ```
 
 Retrieve pubkeys by user_id
 
 #### Notes:
-NOTE: user should have scope &#x60;UserPubkeyList&#x60;
+NOTE: user should have scope `UserPubkeyList`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.KeyManagementApi();
-let userId = null; // String | 
-apiInstance.getPubkeysForUser(userId).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+let userId = null; // String 
+// populate userId...
+
+try {
+  let res = await api.keyManagement().getPubkeysForUser(userId);
+  // res is of type [String]
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 

@@ -64,7 +64,7 @@ tone modifiers, and the "designated emoji" modifier.
 
 The designated emoji modifier, `0xFE0F`, is a modifier for an existing unicode character that looks like an emoji, but is
 really just a character in a font set. The modifiers tell renderers to use the emoji glyph for the preceding character
-rather than the 'webding' or standard Unicode character. An example is the sun emoji (`0x2600 0xFE0F`), or ☀, vs ☀️.
+rather than the 'webding' or standard Unicode character. An example is the sun emoji (`0x2600 0xFE0F`), or `☀`, vs ☀️.
 
 When a user claims a yat, the yat is converted into canonical format. Canonical format is an unambiguous representation
 of a yat and is used as the key in the emoji id key-value lookup database. Yat are converted to canonical format by
@@ -166,3 +166,13 @@ separately (even if behind the scenes it's the same emoji with a modifier).
 
 Until devices and operating systems handle gendered emoji in a consistent and predictable way, it is much safer to leave
 all gendered emoji from the Yat list altogether.
+
+###  Similarity
+
+The male and female and gender-neutral versions of many emojis look awfully similar (compare 🚶🏼‍♀️ and 🚶🏼‍♂️).
+
+Country Flag emojis have the same problem (compare 🇮🇪, 🇨🇮, 🇮🇹, 🇬🇳 and 🇫🇷 or 🇹🇩, 🇧🇪 and 🇩🇪 and of course 🇦🇺 and 🇳🇿).  
+It would be unfair to include _some_ country flags and not others, so we leave them all out.
+
+By the way, those flags are for Ireland, Ivory Coast, Italy, Guinea, France, Chad, Belgium, Germany, Australia and New Zealand.
+

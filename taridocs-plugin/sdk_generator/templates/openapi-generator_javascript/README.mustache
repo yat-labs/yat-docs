@@ -26,6 +26,10 @@ For more information, please visit [{{{infoUrl}}}]({{{infoUrl}}})
 
 ## Installation
 
+:::note
+Until y.at is launched publically, the NPM package will not be available. You can contact the Yat team to obtain a copy of the javascript SDK while the project is in Alpha.
+:::
+
 ### For [Node.js](https://nodejs.org/)
 
 #### npm
@@ -115,7 +119,7 @@ Once you have a YatJs instance, all the sub-APIs are accessed through getters, f
 
 API accessor | Method |  Description
 ------------ | ------------- | -------------
-{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}() | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationId}}) | {{#summary}}{{summary}}{{/summary}}
+{{#apiInfo}}{{#apis}}{{#operations}}{{#operation}}[{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}()]({{apiDocPath}}{{classname}}.md) | [**{{operationId}}**]({{apiDocPath}}{{classname}}.md#{{operationId}}) | {{#summary}}{{summary}}{{/summary}}
 {{/operation}}{{/operations}}{{/apis}}{{/apiInfo}}
 
 ## Documentation for Models

@@ -1,6 +1,6 @@
 <TabItem value="swift5">
 
-```swift5
+```swift
 import Foundation
 
 let apiBaseURL = "https://api.y.at"

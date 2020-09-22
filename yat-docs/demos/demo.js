@@ -26,6 +26,7 @@
 const yat = require('yatjs');
 const api = new yat.YatJs();
 
+// Basic login demo
 async function runDemo() {
     console.log(`Yat API calls will be made to ${api.basePath}`);
     api.basePath = 'http://localhost:3001';

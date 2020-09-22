@@ -7,12 +7,12 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**callDelete**](UsersApi.md#callDelete) | **DELETE** /users/{id} | Delete a user
-[**createUser**](UsersApi.md#createUser) | **POST** /users | Register a User
-[**getAccount**](UsersApi.md#getAccount) | **GET** /account | Current user account
-[**getAllUsers**](UsersApi.md#getAllUsers) | **GET** /users | List users
+[**callDelete**](UsersApi.md#calldelete) | **DELETE** /users/{id} | Delete a user
+[**createUser**](UsersApi.md#createuser) | **POST** /users | Register a User
+[**getAccount**](UsersApi.md#getaccount) | **GET** /account | Current user account
+[**getAllUsers**](UsersApi.md#getallusers) | **GET** /users | List users
 [**update**](UsersApi.md#update) | **PATCH** /account | Update the currently logged in user
-[**updateUser**](UsersApi.md#updateUser) | **PATCH** /users/{id} | Update a user as an admin
+[**updateUser**](UsersApi.md#updateuser) | **PATCH** /users/{id} | Update a user as an admin
 
 
 
@@ -20,34 +20,34 @@ Method | HTTP request | Description
 
 ```js
 /**
-*  @returns DisplayUser 
+* @returns DisplayUser
 **/
-function callDelete(id)
+async function callDelete(id: String)
 ```
 
 Delete a user
 
 #### Notes:
-NOTE: user should have scope &#x60;UserDeleteSelf&#x60; if deleting themselves, &#x60;UserDelete&#x60; is needed for other users
+NOTE: user should have scope `UserDeleteSelf` if deleting themselves, `UserDelete` is needed for other users
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UsersApi();
-let id = null; // String | 
-apiInstance.callDelete(id).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+let id = null; // String 
+// populate id...
+
+try {
+  let res = await api.users().callDelete(id);
+  // res is of type DisplayUser
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -79,9 +79,9 @@ Name | Type | Description  | Notes
 
 ```js
 /**
-*  @returns CurrentUser 
+* @returns CurrentUser
 **/
-function createUser(body)
+async function createUser(body: RegisterUserParameters)
 ```
 
 Register a User
@@ -92,15 +92,20 @@ Create a user and a custodial wallet
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UsersApi();
-let body = new YatJs.RegisterUserParameters(); // RegisterUserParameters | 
-apiInstance.createUser(body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+let body = new YatJs.RegisterUserParameters(); // RegisterUserParameters 
+// populate body...
+
+try {
+  let res = await api.users().createUser(body);
+  // res is of type CurrentUser
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -109,7 +114,7 @@ apiInstance.createUser(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**RegisterUserParameters**](../sdk_nodejs_index#RegisterUserParameters)
+**body** | [**RegisterUserParameters**](../sdk_nodejs_index#registeruserparameters)
 |  | 
 
 #### Return type
@@ -132,9 +137,9 @@ No authorization required
 
 ```js
 /**
-*  @returns CurrentUser 
+* @returns CurrentUser
 **/
-function getAccount()
+async function getAccount()
 ```
 
 Current user account
@@ -145,26 +150,24 @@ Displays the currently logged in user account details.
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UsersApi();
-apiInstance.getAccount().then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+try {
+  let res = await api.users().getAccount();
+  // res is of type CurrentUser
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
 #### Parameters
 
-This endpoint does not need any parameter.
+This endpoint does not have any parameters.
 
 #### Return type
 
@@ -186,43 +189,43 @@ This endpoint does not need any parameter.
 
 ```js
 /**
-* 
+* @returns Payload
 **/
-function getAllUsers()
+async function getAllUsers()
 ```
 
 List users
 
 #### Notes:
-NOTE: user should have scope &#x60;UserList&#x60;
+NOTE: user should have scope `UserList`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UsersApi();
-apiInstance.getAllUsers().then(() => {
-  console.log('API called successfully.');
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+try {
+  let res = await api.users().getAllUsers();
+  // res is of type Payload
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
 #### Parameters
 
-This endpoint does not need any parameter.
+This endpoint does not have any parameters.
 
 #### Return type
 
-null (empty response body)
+
+[**Payload**](../sdk_nodejs_index#Payload)
+
 
 #### Authorization
 
@@ -231,46 +234,42 @@ null (empty response body)
 #### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: */*
 
 
 ### update
 
 ```js
 /**
-*  @returns CurrentUser 
+* @returns CurrentUser
 **/
-function update(body)
+async function update(body: UpdateUserParameters)
 ```
 
 Update the currently logged in user
 
 #### Notes:
-NOTE: user should have scope &#x60;UserWriteSelf&#x60;
+NOTE: user should have scope `UserWriteSelf`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
-// Configure API key authorization: apiKey
-let apiKey = defaultClient.authentications['apiKey'];
-apiKey.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//apiKey.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UsersApi();
-let body = new YatJs.UpdateUserParameters(); // UpdateUserParameters | 
-apiInstance.update(body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+await api.login("your@email.com", "your_password");
+
+let body = new YatJs.UpdateUserParameters(); // UpdateUserParameters 
+// populate body...
+
+try {
+  let res = await api.users().update(body);
+  // res is of type CurrentUser
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -279,7 +278,7 @@ apiInstance.update(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**UpdateUserParameters**](../sdk_nodejs_index#UpdateUserParameters)
+**body** | [**UpdateUserParameters**](../sdk_nodejs_index#updateuserparameters)
 |  | 
 
 #### Return type
@@ -302,40 +301,38 @@ Name | Type | Description  | Notes
 
 ```js
 /**
-*  @returns DisplayUser 
+* @returns DisplayUser
 **/
-function updateUser(id, body)
+async function updateUser(id: String, body: AdminUpdateUserParameters)
 ```
 
 Update a user as an admin
 
 #### Notes:
-NOTE: user should have scope &#x60;UserWrite&#x60;
+NOTE: user should have scope `UserWrite`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
-// Configure API key authorization: apiKey
-let apiKey = defaultClient.authentications['apiKey'];
-apiKey.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//apiKey.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UsersApi();
-let id = null; // String | 
-let body = new YatJs.AdminUpdateUserParameters(); // AdminUpdateUserParameters | 
-apiInstance.updateUser(id, body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+await api.login("your@email.com", "your_password");
+
+let id = null; // String 
+// populate id...
+
+let body = new YatJs.AdminUpdateUserParameters(); // AdminUpdateUserParameters 
+// populate body...
+
+try {
+  let res = await api.users().updateUser(id, body);
+  // res is of type DisplayUser
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -346,7 +343,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **id** | [**String**](../sdk_nodejs_index#)
 |  | 
-**body** | [**AdminUpdateUserParameters**](../sdk_nodejs_index#AdminUpdateUserParameters)
+**body** | [**AdminUpdateUserParameters**](../sdk_nodejs_index#adminupdateuserparameters)
 |  | 
 
 #### Return type

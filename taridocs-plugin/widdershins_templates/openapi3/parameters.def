@@ -4,7 +4,7 @@
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-{{~ data.parameters :p}}|{{=p.name}}|{{=p.in}}|{{=p.safeType}}|{{=p.required}}|{{=p.shortDesc || 'none'}}|
+{{~ data.parameters :p}}|{{=p.name}}|{{=p.in}}|{{=p.safeType.replace('schema','')}}|{{=p.required}}|{{=p.shortDesc || 'none'}}|
 {{~}}
 
 {{? data.longDescs }}

@@ -7,7 +7,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**callProxy**](ProxyApi.md#callProxy) | **POST** /proxy | Calls a pre-defined proxy service with the provided data
+[**callProxy**](ProxyApi.md#callproxy) | **POST** /proxy | Calls a pre-defined proxy service with the provided data
 
 
 
@@ -15,9 +15,9 @@ Method | HTTP request | Description
 
 ```js
 /**
-*  @returns ProxyResult 
+* @returns ProxyResult
 **/
-function callProxy(body)
+async function callProxy(body: ProxyCallParameters)
 ```
 
 Calls a pre-defined proxy service with the provided data
@@ -28,21 +28,21 @@ Returns the response from the proxied service as a string
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.ProxyApi();
-let body = new YatJs.ProxyCallParameters(); // ProxyCallParameters | 
-apiInstance.callProxy(body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+let body = new YatJs.ProxyCallParameters(); // ProxyCallParameters 
+// populate body...
+
+try {
+  let res = await api.proxy().callProxy(body);
+  // res is of type ProxyResult
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -51,7 +51,7 @@ apiInstance.callProxy(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**ProxyCallParameters**](../sdk_nodejs_index#ProxyCallParameters)
+**body** | [**ProxyCallParameters**](../sdk_nodejs_index#proxycallparameters)
 |  | 
 
 #### Return type

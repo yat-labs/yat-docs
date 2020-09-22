@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 Update cart items by adding new items to the cart
 
-#### add(body)
+#### DisplayOrder add(body)
 
 
 NOTE: user should have scope &#x60;CartUpdate&#x60;
@@ -28,7 +28,9 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_kotlin_index#DisplayOrder)
+
 
 ### Authorization
 
@@ -40,7 +42,7 @@ Configure JWT:
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: */*
 
 ### Example
 
@@ -52,7 +54,8 @@ Configure JWT:
 val apiInstance = CartApi()
     val body : UpdateCartRequest =  // UpdateCartRequest | 
 try {
-apiInstance.add(body)
+val result : DisplayOrder = apiInstance.add(body)
+    println(result)
 } catch (e: ClientException) {
 println("4xx response calling CartApi#add")
 e.printStackTrace()
@@ -67,7 +70,7 @@ e.printStackTrace()
 
 Checkout cart with provided payment details
 
-#### checkout(body)
+#### DisplayOrder checkout(body)
 
 
 NOTE: user should have scope &#x60;CartUpdate&#x60;
@@ -80,7 +83,9 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_kotlin_index#DisplayOrder)
+
 
 ### Authorization
 
@@ -92,7 +97,7 @@ Configure JWT:
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: */*
 
 ### Example
 
@@ -104,7 +109,8 @@ Configure JWT:
 val apiInstance = CartApi()
     val body : CheckoutCartRequest =  // CheckoutCartRequest | 
 try {
-apiInstance.checkout(body)
+val result : DisplayOrder = apiInstance.checkout(body)
+    println(result)
 } catch (e: ClientException) {
 println("4xx response calling CartApi#checkout")
 e.printStackTrace()
@@ -119,7 +125,7 @@ e.printStackTrace()
 
 Remove all items from cart
 
-#### clear()
+#### DisplayOrder clear()
 
 
 NOTE: user should have scope &#x60;CartUpdate&#x60;
@@ -129,7 +135,9 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_kotlin_index#DisplayOrder)
+
 
 ### Authorization
 
@@ -141,7 +149,7 @@ Configure JWT:
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: */*
 
 ### Example
 
@@ -152,7 +160,8 @@ Configure JWT:
 
 val apiInstance = CartApi()
 try {
-apiInstance.clear()
+val result : DisplayOrder = apiInstance.clear()
+    println(result)
 } catch (e: ClientException) {
 println("4xx response calling CartApi#clear")
 e.printStackTrace()
@@ -167,7 +176,7 @@ e.printStackTrace()
 
 Return cart content
 
-#### getItems()
+#### DisplayOrder getItems()
 
 
 NOTE: user should have scope &#x60;CartShow&#x60;
@@ -177,7 +186,9 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_kotlin_index#DisplayOrder)
+
 
 ### Authorization
 
@@ -189,7 +200,7 @@ Configure JWT:
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: */*
 
 ### Example
 
@@ -200,7 +211,8 @@ Configure JWT:
 
 val apiInstance = CartApi()
 try {
-apiInstance.getItems()
+val result : DisplayOrder = apiInstance.getItems()
+    println(result)
 } catch (e: ClientException) {
 println("4xx response calling CartApi#getItems")
 e.printStackTrace()
@@ -215,7 +227,7 @@ e.printStackTrace()
 
 Replace cart items
 
-#### replaceItems(body)
+#### DisplayOrder replaceItems(body)
 
 
 NOTE: user should have scope &#x60;CartUpdate&#x60;
@@ -228,7 +240,9 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_kotlin_index#DisplayOrder)
+
 
 ### Authorization
 
@@ -240,7 +254,7 @@ Configure JWT:
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: */*
 
 ### Example
 
@@ -252,7 +266,8 @@ Configure JWT:
 val apiInstance = CartApi()
     val body : UpdateCartRequest =  // UpdateCartRequest | 
 try {
-apiInstance.replaceItems(body)
+val result : DisplayOrder = apiInstance.replaceItems(body)
+    println(result)
 } catch (e: ClientException) {
 println("4xx response calling CartApi#replaceItems")
 e.printStackTrace()

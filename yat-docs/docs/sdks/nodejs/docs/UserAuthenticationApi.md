@@ -8,9 +8,9 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**login**](UserAuthenticationApi.md#login) | **POST** /auth/token | Login via password
-[**magicLinkLogin**](UserAuthenticationApi.md#magicLinkLogin) | **POST** /auth/magic_link | Generate magic link for login
-[**refreshToken**](UserAuthenticationApi.md#refreshToken) | **POST** /auth/token/refresh | Refreshes access token
-[**twoFactorAuthentication**](UserAuthenticationApi.md#twoFactorAuthentication) | **POST** /auth/2fa | Two factor authentication
+[**magicLinkLogin**](UserAuthenticationApi.md#magiclinklogin) | **POST** /auth/magic_link | Generate magic link for login
+[**refreshToken**](UserAuthenticationApi.md#refreshtoken) | **POST** /auth/token/refresh | Refreshes access token
+[**twoFactorAuthentication**](UserAuthenticationApi.md#twofactorauthentication) | **POST** /auth/2fa | Two factor authentication
 
 
 
@@ -18,28 +18,33 @@ Method | HTTP request | Description
 
 ```js
 /**
-*  @returns TokenResponse 
+* @returns TokenResponse
 **/
-function login(body)
+async function login(body: LoginRequest)
 ```
 
 Login via password
 
 #### Notes:
-Login via username/password. Will return access and refresh tokens. NOTE: when &#x60;requires_2fa&#x60; is not empty in response, provided \&quot;refresh_token\&quot; should be used to confirm 2FA code via &#x60;POST /auth/2fa&#x60;.
+Login via username/password. Will return access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /auth/2fa`.
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UserAuthenticationApi();
-let body = new YatJs.LoginRequest(); // LoginRequest | 
-apiInstance.login(body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+let body = new YatJs.LoginRequest(); // LoginRequest 
+// populate body...
+
+try {
+  let res = await api.userAuthentication().login(body);
+  // res is of type TokenResponse
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -48,7 +53,7 @@ apiInstance.login(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**LoginRequest**](../sdk_nodejs_index#LoginRequest)
+**body** | [**LoginRequest**](../sdk_nodejs_index#loginrequest)
 |  | 
 
 #### Return type
@@ -71,28 +76,33 @@ No authorization required
 
 ```js
 /**
-*  @returns SuccessResponse 
+* @returns SuccessResponse
 **/
-function magicLinkLogin(body)
+async function magicLinkLogin(body: MagicLinkLoginRequest)
 ```
 
 Generate magic link for login
 
 #### Notes:
-Will generate and send magic link to provided user&#39;s email. Assuming the email address corresponds to a valid user
+Will generate and send magic link to provided user's email. Assuming the email address corresponds to a valid user
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UserAuthenticationApi();
-let body = new YatJs.MagicLinkLoginRequest(); // MagicLinkLoginRequest | 
-apiInstance.magicLinkLogin(body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+let body = new YatJs.MagicLinkLoginRequest(); // MagicLinkLoginRequest 
+// populate body...
+
+try {
+  let res = await api.userAuthentication().magicLinkLogin(body);
+  // res is of type SuccessResponse
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -101,7 +111,7 @@ apiInstance.magicLinkLogin(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**MagicLinkLoginRequest**](../sdk_nodejs_index#MagicLinkLoginRequest)
+**body** | [**MagicLinkLoginRequest**](../sdk_nodejs_index#magiclinkloginrequest)
 |  | 
 
 #### Return type
@@ -124,28 +134,33 @@ No authorization required
 
 ```js
 /**
-*  @returns TokenResponse 
+* @returns TokenResponse
 **/
-function refreshToken(body)
+async function refreshToken(body: RefreshRequest)
 ```
 
 Refreshes access token
 
 #### Notes:
-Will return updated access and refresh tokens. NOTE: when &#x60;requires_2fa&#x60; is not empty in response, provided \&quot;refresh_token\&quot; should be used to confirm 2FA code via &#x60;POST /2fa&#x60;
+Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /2fa`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UserAuthenticationApi();
-let body = new YatJs.RefreshRequest(); // RefreshRequest | 
-apiInstance.refreshToken(body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+let body = new YatJs.RefreshRequest(); // RefreshRequest 
+// populate body...
+
+try {
+  let res = await api.userAuthentication().refreshToken(body);
+  // res is of type TokenResponse
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -154,7 +169,7 @@ apiInstance.refreshToken(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**RefreshRequest**](../sdk_nodejs_index#RefreshRequest)
+**body** | [**RefreshRequest**](../sdk_nodejs_index#refreshrequest)
 |  | 
 
 #### Return type
@@ -177,28 +192,33 @@ No authorization required
 
 ```js
 /**
-*  @returns TokenResponse 
+* @returns TokenResponse
 **/
-function twoFactorAuthentication(body)
+async function twoFactorAuthentication(body: Confirm2Fa)
 ```
 
 Two factor authentication
 
 #### Notes:
-Complete login flow when user requires 2FA. &#x60;refresh_token&#x60; obtained from a call to &#x60;/token&#x60; or &#x60;/token/refresh&#x60; should be used to complete authentication. **Note:** 2FA token has expiration timeout, which is when expired sensitive operations would require authentication via 2fa once again.
+Complete login flow when user requires 2FA. `refresh_token` obtained from a call to `/token` or `/token/refresh` should be used to complete authentication. **Note:** 2FA token has expiration timeout, which is when expired sensitive operations would require authentication via 2fa once again.
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.UserAuthenticationApi();
-let body = new YatJs.Confirm2Fa(); // Confirm2Fa | 
-apiInstance.twoFactorAuthentication(body).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
+
+let body = new YatJs.Confirm2Fa(); // Confirm2Fa 
+// populate body...
+
+try {
+  let res = await api.userAuthentication().twoFactorAuthentication(body);
+  // res is of type TokenResponse
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -207,7 +227,7 @@ apiInstance.twoFactorAuthentication(body).then((data) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**Confirm2Fa**](../sdk_nodejs_index#Confirm2Fa)
+**body** | [**Confirm2Fa**](../sdk_nodejs_index#confirm2fa)
 |  | 
 
 #### Return type

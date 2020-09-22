@@ -10,8 +10,8 @@ Method | HTTP request | Description
 [**add**](CartApi.md#add) | **POST** /cart | Update cart items by adding new items to the cart
 [**checkout**](CartApi.md#checkout) | **POST** /cart/checkout | Checkout cart with provided payment details
 [**clear**](CartApi.md#clear) | **DELETE** /cart | Remove all items from cart
-[**getItems**](CartApi.md#getItems) | **GET** /cart | Return cart content
-[**replaceItems**](CartApi.md#replaceItems) | **PUT** /cart | Replace cart items
+[**getItems**](CartApi.md#getitems) | **GET** /cart | Return cart content
+[**replaceItems**](CartApi.md#replaceitems) | **PUT** /cart | Replace cart items
 
 
 
@@ -19,34 +19,34 @@ Method | HTTP request | Description
 
 ```js
 /**
-* 
+* @returns DisplayOrder
 **/
-function add(body)
+async function add(body: UpdateCartRequest)
 ```
 
 Update cart items by adding new items to the cart
 
 #### Notes:
-NOTE: user should have scope &#x60;CartUpdate&#x60;
+NOTE: user should have scope `CartUpdate`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.CartApi();
-let body = new YatJs.UpdateCartRequest(); // UpdateCartRequest | 
-apiInstance.add(body).then(() => {
-  console.log('API called successfully.');
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+let body = new YatJs.UpdateCartRequest(); // UpdateCartRequest 
+// populate body...
+
+try {
+  let res = await api.cart().add(body);
+  // res is of type DisplayOrder
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -55,12 +55,14 @@ apiInstance.add(body).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**UpdateCartRequest**](../sdk_nodejs_index#UpdateCartRequest)
+**body** | [**UpdateCartRequest**](../sdk_nodejs_index#updatecartrequest)
 |  | 
 
 #### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_nodejs_index#DisplayOrder)
+
 
 #### Authorization
 
@@ -69,41 +71,41 @@ null (empty response body)
 #### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: */*
 
 
 ### checkout
 
 ```js
 /**
-* 
+* @returns DisplayOrder
 **/
-function checkout(body)
+async function checkout(body: CheckoutCartRequest)
 ```
 
 Checkout cart with provided payment details
 
 #### Notes:
-NOTE: user should have scope &#x60;CartUpdate&#x60;
+NOTE: user should have scope `CartUpdate`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.CartApi();
-let body = new YatJs.CheckoutCartRequest(); // CheckoutCartRequest | 
-apiInstance.checkout(body).then(() => {
-  console.log('API called successfully.');
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+let body = new YatJs.CheckoutCartRequest(); // CheckoutCartRequest 
+// populate body...
+
+try {
+  let res = await api.cart().checkout(body);
+  // res is of type DisplayOrder
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -112,12 +114,14 @@ apiInstance.checkout(body).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**CheckoutCartRequest**](../sdk_nodejs_index#CheckoutCartRequest)
+**body** | [**CheckoutCartRequest**](../sdk_nodejs_index#checkoutcartrequest)
 |  | 
 
 #### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_nodejs_index#DisplayOrder)
+
 
 #### Authorization
 
@@ -126,50 +130,50 @@ null (empty response body)
 #### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: */*
 
 
 ### clear
 
 ```js
 /**
-* 
+* @returns DisplayOrder
 **/
-function clear()
+async function clear()
 ```
 
 Remove all items from cart
 
 #### Notes:
-NOTE: user should have scope &#x60;CartUpdate&#x60;
+NOTE: user should have scope `CartUpdate`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.CartApi();
-apiInstance.clear().then(() => {
-  console.log('API called successfully.');
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+try {
+  let res = await api.cart().clear();
+  // res is of type DisplayOrder
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
 #### Parameters
 
-This endpoint does not need any parameter.
+This endpoint does not have any parameters.
 
 #### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_nodejs_index#DisplayOrder)
+
 
 #### Authorization
 
@@ -178,50 +182,50 @@ null (empty response body)
 #### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: */*
 
 
 ### getItems
 
 ```js
 /**
-* 
+* @returns DisplayOrder
 **/
-function getItems()
+async function getItems()
 ```
 
 Return cart content
 
 #### Notes:
-NOTE: user should have scope &#x60;CartShow&#x60;
+NOTE: user should have scope `CartShow`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.CartApi();
-apiInstance.getItems().then(() => {
-  console.log('API called successfully.');
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+try {
+  let res = await api.cart().getItems();
+  // res is of type DisplayOrder
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
 #### Parameters
 
-This endpoint does not need any parameter.
+This endpoint does not have any parameters.
 
 #### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_nodejs_index#DisplayOrder)
+
 
 #### Authorization
 
@@ -230,41 +234,41 @@ null (empty response body)
 #### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: */*
 
 
 ### replaceItems
 
 ```js
 /**
-* 
+* @returns DisplayOrder
 **/
-function replaceItems(body)
+async function replaceItems(body: UpdateCartRequest)
 ```
 
 Replace cart items
 
 #### Notes:
-NOTE: user should have scope &#x60;CartUpdate&#x60;
+NOTE: user should have scope `CartUpdate`
 
 #### Example
 
 ```javascript
-import YatJs from 'emoji_id_api_server';
-let defaultClient = YatJs.ApiClient.instance;
-// Configure API key authorization: JWT
-let JWT = defaultClient.authentications['JWT'];
-JWT.apiKey = 'YOUR API KEY';
-// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-//JWT.apiKeyPrefix = 'Token';
+const yat = require('yatjs');
+const api = new yat.YatJs();
 
-let apiInstance = new YatJs.CartApi();
-let body = new YatJs.UpdateCartRequest(); // UpdateCartRequest | 
-apiInstance.replaceItems(body).then(() => {
-  console.log('API called successfully.');
-}, (error) => {
+await api.login("your@email.com", "your_password");
+
+let body = new YatJs.UpdateCartRequest(); // UpdateCartRequest 
+// populate body...
+
+try {
+  let res = await api.cart().replaceItems(body);
+  // res is of type DisplayOrder
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
   console.error(error);
-});
+}
 
 ```
 
@@ -273,12 +277,14 @@ apiInstance.replaceItems(body).then(() => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**UpdateCartRequest**](../sdk_nodejs_index#UpdateCartRequest)
+**body** | [**UpdateCartRequest**](../sdk_nodejs_index#updatecartrequest)
 |  | 
 
 #### Return type
 
-null (empty response body)
+
+[**DisplayOrder**](../sdk_nodejs_index#DisplayOrder)
+
 
 #### Authorization
 
@@ -287,5 +293,5 @@ null (empty response body)
 #### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: Not defined
+- **Accept**: */*
 

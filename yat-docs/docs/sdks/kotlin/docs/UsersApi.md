@@ -173,7 +173,7 @@ e.printStackTrace()
 
 List users
 
-#### getAllUsers()
+#### Payload getAllUsers()
 
 
 NOTE: user should have scope &#x60;UserList&#x60;
@@ -183,7 +183,9 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-null (empty response body)
+
+[**Payload**](../sdk_kotlin_index#Payload)
+
 
 ### Authorization
 
@@ -195,7 +197,7 @@ Configure JWT:
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: */*
 
 ### Example
 
@@ -206,7 +208,8 @@ Configure JWT:
 
 val apiInstance = UsersApi()
 try {
-apiInstance.getAllUsers()
+val result : Payload = apiInstance.getAllUsers()
+    println(result)
 } catch (e: ClientException) {
 println("4xx response calling UsersApi#getAllUsers")
 e.printStackTrace()

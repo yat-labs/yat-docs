@@ -9,7 +9,7 @@
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-{{~ data.responses :r}}|{{=r.status}}|{{=r.meaning}}|{{=r.description || 'none'}}|{{=r.schema}}|
+{{~ data.responses :r}}|{{=r.status}}|{{=r.meaning}}|{{=r.description || 'none'}}|{{=r.schema.replace('#schema', '#')}}|
 {{~}}
 
 {{ data.responseSchemas = false; }}

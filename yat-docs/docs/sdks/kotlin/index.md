@@ -47,10 +47,12 @@ Class | Method | HTTP request | Description
 [CartApi](docs/CartApi.md) | [**clear**](docs/CartApi.md#clear) | **DELETE** /cart | Remove all items from cart
 [CartApi](docs/CartApi.md) | [**getItems**](docs/CartApi.md#getitems) | **GET** /cart | Return cart content
 [CartApi](docs/CartApi.md) | [**replaceItems**](docs/CartApi.md#replaceitems) | **PUT** /cart | Replace cart items
-[EmojiApi](docs/EmojiApi.md) | [**edit**](docs/EmojiApi.md#edit) | **PATCH** /emoji/{eid} | Edit EmojiId
-[EmojiApi](docs/EmojiApi.md) | [**list**](docs/EmojiApi.md#list) | **GET** /emoji | List emojis
-[EmojiApi](docs/EmojiApi.md) | [**lookup**](docs/EmojiApi.md#lookup) | **GET** /emoji/{eid} | Lookup EmojiId
-[EmojiApi](docs/EmojiApi.md) | [**search**](docs/EmojiApi.md#search) | **GET** /emoji/search | Search for EmojiID
+[EmojiApi](docs/EmojiApi.md) | [**emojiList**](docs/EmojiApi.md#emojilist) | **GET** /emoji | List of supported emoji characters
+[EmojiApi](docs/EmojiApi.md) | [**random**](docs/EmojiApi.md#random) | **GET** /emoji_id/random | Return random Emoji
+[EmojiIDApi](docs/EmojiIDApi.md) | [**edit**](docs/EmojiIDApi.md#edit) | **PATCH** /emoji_id/{emoji_id} | Edit EmojiId
+[EmojiIDApi](docs/EmojiIDApi.md) | [**list**](docs/EmojiIDApi.md#list) | **GET** /emoji_id | List user's emoji Ids
+[EmojiIDApi](docs/EmojiIDApi.md) | [**lookup**](docs/EmojiIDApi.md#lookup) | **GET** /emoji_id/{emoji_id} | Lookup EmojiId
+[EmojiIDApi](docs/EmojiIDApi.md) | [**search**](docs/EmojiIDApi.md#search) | **GET** /emoji_id/search | Search for EmojiID
 [KeyManagementApi](docs/KeyManagementApi.md) | [**addPubkey**](docs/KeyManagementApi.md#addpubkey) | **POST** /pubkeys/{pubkey} | Add pubkey for current user
 [KeyManagementApi](docs/KeyManagementApi.md) | [**addPubkeyForUser**](docs/KeyManagementApi.md#addpubkeyforuser) | **POST** /users/{user_id}/pubkeys/{pubkey} | Add pubkey for user by user_id
 [KeyManagementApi](docs/KeyManagementApi.md) | [**createWallet**](docs/KeyManagementApi.md#createwallet) | **POST** /pubkeys | Generate custodial wallet
@@ -61,9 +63,9 @@ Class | Method | HTTP request | Description
 [UserAuthenticationApi](docs/UserAuthenticationApi.md) | [**magicLinkLogin**](docs/UserAuthenticationApi.md#magiclinklogin) | **POST** /auth/magic_link | Generate magic link for login
 [UserAuthenticationApi](docs/UserAuthenticationApi.md) | [**refreshToken**](docs/UserAuthenticationApi.md#refreshtoken) | **POST** /auth/token/refresh | Refreshes access token
 [UserAuthenticationApi](docs/UserAuthenticationApi.md) | [**twoFactorAuthentication**](docs/UserAuthenticationApi.md#twofactorauthentication) | **POST** /auth/2fa | Two factor authentication
-[UserInterestApi](docs/UserInterestApi.md) | [**deleteUserInterest**](docs/UserInterestApi.md#deleteuserinterest) | **DELETE** /user_interests/{eid} | Destroys the user interest preventing this eid's notification emails from being sent for this user
+[UserInterestApi](docs/UserInterestApi.md) | [**deleteUserInterest**](docs/UserInterestApi.md#deleteuserinterest) | **DELETE** /user_interests/{emoji_id} | Destroys the user interest preventing this Emoji ID's notification emails from being sent for this user
 [UserInterestApi](docs/UserInterestApi.md) | [**getInterestedUsers**](docs/UserInterestApi.md#getinterestedusers) | **GET** /user_interests | Returns a paginated list of user interest records associated with the user
-[UserInterestApi](docs/UserInterestApi.md) | [**getUserInterestForYat**](docs/UserInterestApi.md#getuserinterestforyat) | **GET** /user_interests/{eid} | Given an EmojiId returns information about the user interest if a record exists for this user
+[UserInterestApi](docs/UserInterestApi.md) | [**getUserInterestForYat**](docs/UserInterestApi.md#getuserinterestforyat) | **GET** /user_interests/{emoji_id} | Given an EmojiId returns information about the user interest if a record exists for this user
 [UserInterestApi](docs/UserInterestApi.md) | [**registerInterest**](docs/UserInterestApi.md#registerinterest) | **POST** /user_interests | Create new interest in emoji to be notified when available
 [UsersApi](docs/UsersApi.md) | [**createUser**](docs/UsersApi.md#createuser) | **POST** /users | Register a User
 [UsersApi](docs/UsersApi.md) | [**delete**](docs/UsersApi.md#delete) | **DELETE** /users/{id} | Delete a user
@@ -105,8 +107,8 @@ Name | Type | Description | Notes
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **method** | [**inline**](#MethodEnum)
- | Payment method | 
-**pubkey** | **kotlin.String** | Optional: user public key |  [optional]
+ | Payment method.   Possible options:&lt;BR&gt;  &#x60;{\&quot;type\&quot;: \&quot;Provider\&quot;, \&quot;provider\&quot;: \&quot;Globee\&quot; | \&quot;Stripe\&quot; | \&quot;Free\&quot;, \&quot;payment_method_id\&quot;: \&quot;UUID\&quot; | null}&#x60;&lt;BR&gt;  &#x60;{\&quot;type\&quot;: \&quot;Card\&quot;, \&quot;token\&quot;: \&quot;string\&quot;, \&quot;provider\&quot;: \&quot;Globee\&quot; | \&quot;Stripe\&quot; | \&quot;Free\&quot;, \&quot;save_payment_method\&quot;: true |  false, \&quot;set_default\&quot;: true | false}&#x60;&lt;BR&gt; &#x60;{\&quot;type\&quot;: \&quot;Default\&quot; | \&quot;Free\&quot;}&#x60;&lt;BR&gt;  &#x60;type &#x3D; \&quot;Free\&quot;&#x60; works only for 0-amount cards. | 
+**pubkey** | **kotlin.String** | Optional: The user&#39;s public key to associate with this emoji id. If provided will use this pubkey otherwise  will default to the first pubkey returned for the user. |  [optional]
 **trackingData** | [**kotlin.Any**](#) | Optional: tracking data |  [optional]
 
 
@@ -198,6 +200,95 @@ role | Admin, OrgController, OrgMember, OrgOwner, Super, User
 
 
 
+### DisplayOrder
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**createdAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) | A UTC timestamp for when this order was initially created. | 
+**eligibleForRefund** | **kotlin.Boolean** | Whether an order is eligible for a refund via an admin. | 
+**id** | [**java.util.UUID**](#java.util.UUID) | The unique identifier for this order | 
+**miscRefundedTotalInCents** | **kotlin.Long** | The total of miscellaneous refund amounts retirned to the order. | 
+**orderItems** | [**kotlin.collections.List&lt;DisplayOrderOrderItems&gt;**](#DisplayOrderOrderItems) | The list of individual line items making up this order. | 
+**orderNumber** | **kotlin.String** | The order number is the last 8 characters of the order&#39;s ID for user display purposes. | 
+**refundedTotalInCents** | **kotlin.Long** | The total of refund amounts for the order. | 
+**status** | [**inline**](#StatusEnum)
+ | The order of the status. Orders start in &#39;Draft&#39; status, then move to &#39;PendingPayment&#39; and finally, &#39;Paid&#39;,  unless they are &#39;Cancelled&#39;. | 
+**totalInCents** | **kotlin.Long** | The sum of all the items in this order, plus fees, in USD cents. | 
+**updatedAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) | A UTC timestamp for the last time any field in this order was modified. | 
+**user** | [**DisplayOrderUser**](#DisplayOrderUser) |  | 
+**userId** | [**java.util.UUID**](#java.util.UUID) | The identifier of the user placing this order | 
+**expiresAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) | Checkout carts have a limited time before they expire. This prevents users from blocking inventory from being  sold to other customers. The expiry time is configurable on the server and is typically 5 minutes. |  [optional]
+**organizationId** | [**java.util.UUID**](#java.util.UUID) | The organization id of the user, if applicable. This will generally be null, unless the purchase is coming via  a referral programme. |  [optional]
+**paidAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) | A UTC timestamp for when payment for this order was received. Will be null if no payment has been made yet. |  [optional]
+**paymentMethodData** | [**kotlin.Any**](#) | Payment method data for payment methods that provide QR code checkout options set via checkout. |  [optional]
+**secondsUntilExpiry** | **kotlin.Int** | A convenience field indicating how long before &#x60;expires_at&#x60; is reached. |  [optional]
+
+
+#### Enum: status
+Name | Value
+---- | -----
+status | Cancelled, Draft, Paid, PendingPayment
+
+
+
+### DisplayOrderOrderItems
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**clientFeeInCents** | **kotlin.Long** | The fee attributable to the referral partner, in addition to the nominal unit price, in USD cents. | 
+**companyFeeInCents** | **kotlin.Long** | The fee attributable to the service host or company, in addition to the nominal unit price, in USD cents. | 
+**createdAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) | A UTC timestamp for when this order item was created. | 
+**id** | [**java.util.UUID**](#java.util.UUID) | A unique identifier for this order item | 
+**itemType** | [**inline**](#ItemTypeEnum)
+ | The type of order. Current enumerations are EmojiId and Discount | 
+**orderId** | [**java.util.UUID**](#java.util.UUID) | The id of the order this order item | 
+**quantity** | **kotlin.Long** | The number of items in the line order. For emoji id sales, this should always be one. | 
+**refundedQuantity** | **kotlin.Long** |  | 
+**unitPriceInCents** | **kotlin.Long** | The nominal, non-discounted price of the item, in USD cents. | 
+**updatedAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) | A UTC timestamp for when ny field in the order item was modified. | 
+**codeId** | [**java.util.UUID**](#java.util.UUID) | The code associated with this order item for providing a discount. |  [optional]
+**emojiId** | **kotlin.String** | The emoji id that is being purchased |  [optional]
+**parentId** | [**java.util.UUID**](#java.util.UUID) | Parent order item&#39;s ID, set for discounts and fees |  [optional]
+
+
+#### Enum: item_type
+Name | Value
+---- | -----
+itemType | Discount, EmojiId
+
+
+
+### DisplayOrderUser
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**createdAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  | 
+**freeLimit** | **kotlin.Int** |  | 
+**id** | [**java.util.UUID**](#java.util.UUID) |  | 
+**isActive** | **kotlin.Boolean** |  | 
+**remainingFreeEmoji** | **kotlin.Int** |  | 
+**role** | [**inline**](#RoleEnum)
+ |  | 
+**updatedAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  | 
+**alternateId** | **kotlin.String** |  |  [optional]
+**deactivatedAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  |  [optional]
+**email** | **kotlin.String** |  |  [optional]
+**firstName** | **kotlin.String** |  |  [optional]
+**lastName** | **kotlin.String** |  |  [optional]
+**source** | **kotlin.String** |  |  [optional]
+**twoFactorAuth** | [**kotlin.Any**](#) |  |  [optional]
+
+
+#### Enum: role
+Name | Value
+---- | -----
+role | Admin, OrgController, OrgMember, OrgOwner, Super, User
+
+
+
 ### DisplayUser
 
 #### Properties
@@ -232,10 +323,10 @@ role | Admin, OrgController, OrgMember, OrgOwner, Super, User
 #### Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**delete** | [**kotlin.collections.List&lt;java.io.File&gt;**](#java.io.File) | Optional: hashes of records to delete |  [optional]
+**delete** | **kotlin.collections.List&lt;kotlin.String&gt;** | Optional: hashes of records to delete |  [optional]
 **insert** | [**kotlin.collections.List&lt;EditRequestInsert&gt;**](#EditRequestInsert) | Optional: list of records to add |  [optional]
-**merkleRoot** | [**java.io.File**](#java.io.File) | Optional: merkle root (use WASM to generate) |  [optional]
-**signature** | [**java.io.File**](#java.io.File) | Optional: signature (use WASM to generate) |  [optional]
+**merkleRoot** | **kotlin.String** | Optional: merkle root (use WASM to generate) |  [optional]
+**signature** | **kotlin.String** | Optional: signature (use WASM to generate) |  [optional]
 
 
 
@@ -266,23 +357,14 @@ Name | Type | Description | Notes
 #### Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**response** | [**LookupResponseResponse**](#LookupResponseResponse) |  | 
-**viewsPastMonth** | **kotlin.Long** | Number of times emoji viewed during past month | 
-
-
-
-### LookupResponseResponse
-
-#### Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
 **status** | **kotlin.Boolean** | Response status.  If true, the requested data will be in the result field, null otherwise | 
-**error** | [**LookupResponseResponseError**](#LookupResponseResponseError) |  |  [optional]
-**result** | [**kotlin.collections.List&lt;LookupResponseResponseResult&gt;**](#LookupResponseResponseResult) | Records associated with EmojiID |  [optional]
+**error** | [**LookupResponseError**](#LookupResponseError) |  |  [optional]
+**result** | [**kotlin.collections.List&lt;LookupResponseResult&gt;**](#LookupResponseResult) | Records associated with EmojiID |  [optional]
+**viewsPastMonth** | **kotlin.Long** | Number of times emoji viewed during past month |  [optional]
 
 
 
-### LookupResponseResponseError
+### LookupResponseError
 
 #### Properties
 Name | Type | Description | Notes
@@ -292,13 +374,13 @@ Name | Type | Description | Notes
 
 
 
-### LookupResponseResponseResult
+### LookupResponseResult
 
 #### Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **data** | **kotlin.String** | Category data in text or hex encoded formats | 
-**hash** | [**java.io.File**](#java.io.File) | Hash identifies record, can be used to delete records | 
+**hash** | **kotlin.String** | Hash identifies record, can be used to delete records | 
 **tag** | **kotlin.String** | Category as a hex string number | 
 
 
@@ -319,7 +401,67 @@ Name | Type | Description | Notes
 #### Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**eid** | **kotlin.String** | EmojiID to express interest in | 
+**emojiId** | **kotlin.String** | Emoji ID to express interest in | 
+
+
+
+### Payload
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**data** | [**kotlin.collections.List&lt;PayloadData&gt;**](#PayloadData) |  | 
+**paging** | [**PayloadPaging**](#PayloadPaging) |  | 
+
+
+
+### PayloadData
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**createdAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  | 
+**freeLimit** | **kotlin.Int** |  | 
+**id** | [**java.util.UUID**](#java.util.UUID) |  | 
+**isActive** | **kotlin.Boolean** |  | 
+**remainingFreeEmoji** | **kotlin.Int** |  | 
+**role** | [**inline**](#RoleEnum)
+ |  | 
+**updatedAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  | 
+**alternateId** | **kotlin.String** |  |  [optional]
+**deactivatedAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  |  [optional]
+**email** | **kotlin.String** |  |  [optional]
+**firstName** | **kotlin.String** |  |  [optional]
+**lastName** | **kotlin.String** |  |  [optional]
+**source** | **kotlin.String** |  |  [optional]
+**twoFactorAuth** | [**kotlin.Any**](#) |  |  [optional]
+
+
+#### Enum: role
+Name | Value
+---- | -----
+role | Admin, OrgController, OrgMember, OrgOwner, Super, User
+
+
+
+### PayloadPaging
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**dir** | [**inline**](#DirEnum)
+ |  | 
+**limit** | **kotlin.Int** |  | 
+**page** | **kotlin.Int** |  | 
+**sort** | **kotlin.String** |  | 
+**tags** | [**kotlin.collections.Map&lt;kotlin.String, kotlin.Any&gt;**](#kotlin.Any) |  | 
+**total** | **kotlin.Long** |  | 
+
+
+#### Enum: dir
+Name | Value
+---- | -----
+dir | Asc, Desc
 
 
 
@@ -336,7 +478,7 @@ Name | Type | Description | Notes
 #### Enum: service
 Name | Value
 ---- | -----
-service | Microlink, RestPack, Echo, Scraper
+service | RestPack, Echo, Scraper
 
 
 
@@ -346,6 +488,36 @@ service | Microlink, RestPack, Echo, Scraper
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **value** | **kotlin.String** | The response from the proxied service as a String | 
+
+
+
+### RandomResult
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**result** | [**kotlin.collections.List&lt;RandomResultResult&gt;**](#RandomResultResult) | Random Emoji IDs | 
+
+
+
+### RandomResultResult
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**availability** | [**inline**](#AvailabilityEnum)
+ | The availability state of this emoji | 
+**available** | **kotlin.Boolean** | Whether the Emoji ID is available for purchase | 
+**discountedPrice** | **kotlin.Long** | Pricing in US cents, e.g. 1024 is 10.24 USD.  Discounted price is 0 if the emoji is not available | 
+**emojiId** | **kotlin.String** | Emoji ID in canonical form | 
+**price** | **kotlin.Long** | Pricing in US cents, e.g. 1024 is 10.24 USD.  Price is 0 if the emoji is not available | 
+**viewsPastMonth** | **kotlin.Long** | Total lookups using this API, if someone is viewing this Emoji ID  using their own self hosted node, it will not be counted here | 
+
+
+#### Enum: availability
+Name | Value
+---- | -----
+availability | Available, Taken, InCart, ComingSoon, NoPrice
 
 
 
@@ -378,29 +550,8 @@ Name | Type | Description | Notes
 #### Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**alternates** | [**kotlin.collections.List&lt;SearchResultAlternates&gt;**](#SearchResultAlternates) | Alternative Emoji IDs | 
+**alternates** | [**kotlin.collections.List&lt;RandomResultResult&gt;**](#RandomResultResult) | Alternative Emoji IDs | 
 **result** | [**SearchResultResult**](#SearchResultResult) |  | 
-
-
-
-### SearchResultAlternates
-
-#### Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**availability** | [**inline**](#AvailabilityEnum)
- | The availability state of this emoji | 
-**available** | **kotlin.Boolean** | Whether the EID is available for purchase | 
-**discountedPrice** | **kotlin.Long** | Pricing in US cents, e.g. 1024 is 10.24 USD.  Discounted price is 0 if the emoji is not available | 
-**eid** | **kotlin.String** | Emoji ID in percent url-encoded form | 
-**price** | **kotlin.Long** | Pricing in US cents, e.g. 1024 is 10.24 USD.  Price is 0 if the emoji is not available | 
-**viewsPastMonth** | **kotlin.Long** | Total lookups using this API, if someone is viewing this EID  using their own self hosted node, it will not be counted here | 
-
-
-#### Enum: availability
-Name | Value
----- | -----
-availability | Available, Taken, InCart, ComingSoon, NoPrice
 
 
 
@@ -411,11 +562,11 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **availability** | [**inline**](#AvailabilityEnum)
  | The availability state of this emoji | 
-**available** | **kotlin.Boolean** | Whether the EID is available for purchase | 
+**available** | **kotlin.Boolean** | Whether the Emoji ID is available for purchase | 
 **discountedPrice** | **kotlin.Long** | Pricing in US cents, e.g. 1024 is 10.24 USD.  Discounted price is 0 if the emoji is not available | 
-**eid** | **kotlin.String** | Emoji ID in percent url-encoded form | 
+**emojiId** | **kotlin.String** | Emoji ID in canonical form | 
 **price** | **kotlin.Long** | Pricing in US cents, e.g. 1024 is 10.24 USD.  Price is 0 if the emoji is not available | 
-**viewsPastMonth** | **kotlin.Long** | Total lookups using this API, if someone is viewing this EID  using their own self hosted node, it will not be counted here | 
+**viewsPastMonth** | **kotlin.Long** | Total lookups using this API, if someone is viewing this Emoji ID  using their own self hosted node, it will not be counted here | 
 
 
 #### Enum: availability
@@ -460,7 +611,7 @@ Name | Type | Description | Notes
 #### Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**eid** | **kotlin.String** | EmojiID to buy | 
+**emojiId** | **kotlin.String** | EmojiID to buy | 
 **redemptionCode** | **kotlin.String** | Redemption Code if applicable |  [optional]
 
 
@@ -473,6 +624,19 @@ Name | Type | Description | Notes
 **email** | **kotlin.String** | Optional: Email |  [optional]
 **firstName** | **kotlin.String** | Optional: First name |  [optional]
 **lastName** | **kotlin.String** | Optional: Last name |  [optional]
+
+
+
+### UserInterest
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**createdAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  | 
+**emojiId** | **kotlin.String** |  | 
+**id** | [**java.util.UUID**](#java.util.UUID) |  | 
+**updatedAt** | [**java.time.OffsetDateTime**](#java.time.OffsetDateTime) |  | 
+**userId** | [**java.util.UUID**](#java.util.UUID) |  | 
 
 
 
