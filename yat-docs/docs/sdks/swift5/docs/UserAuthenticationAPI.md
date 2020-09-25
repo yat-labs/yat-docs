@@ -11,7 +11,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**login**](UserAuthenticationAPI.md#login) | **POST** /auth/token | Login via password
 [**magicLinkLogin**](UserAuthenticationAPI.md#magiclinklogin) | **POST** /auth/magic_link | Generate magic link for login
-[**refreshToken**](UserAuthenticationAPI.md#refreshtoken) | **POST** /auth/token/refresh | Refreshes access token
+[**refreshToken**](UserAuthenticationAPI.md#refreshtoken) | **POST** /auth/token/refresh | Refresh access token
 [**twoFactorAuthentication**](UserAuthenticationAPI.md#twofactorauthentication) | **POST** /auth/2fa | Two factor authentication
 
 
@@ -114,7 +114,7 @@ No authorization required
     internal class func refreshToken( body: RefreshRequest) -> Promise<TokenResponse>
 ```
 
-Refreshes access token
+Refresh access token
 
 Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /2fa`
 
@@ -125,7 +125,7 @@ import YatSDK
 
 let body = RefreshRequest(refreshToken: "refreshToken_example") // RefreshRequest | 
 
-// Refreshes access token
+// Refresh access token
 UserAuthenticationAPI.refreshToken(body: body).then {
          // when the promise is fulfilled
      }.always {

@@ -189,9 +189,9 @@ This endpoint does not have any parameters.
 
 ```js
 /**
-* @returns Payload
+* @returns ListOfDisplayUser
 **/
-async function getAllUsers()
+async function getAllUsers(opts)
 ```
 
 List users
@@ -207,9 +207,15 @@ const api = new yat.YatJs();
 
 await api.login("your@email.com", "your_password");
 
+let opts = {
+  'dir': "dir_example", // String | 
+  'limit': 56, // Number | 
+  'page': 56, // Number | 
+  'sort': "sort_example" // String | 
+};
 try {
-  let res = await api.users().getAllUsers();
-  // res is of type Payload
+  let res = await api.users().getAllUsers(opts);
+  // res is of type ListOfDisplayUser
   console.log('API called successfully. Result: ', res);
 } catch (error) {
   console.error(error);
@@ -219,12 +225,18 @@ try {
 
 #### Parameters
 
-This endpoint does not have any parameters.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**dir** | **String**|  | [optional] 
+**limit** | **Number**|  | [optional] 
+**page** | **Number**|  | [optional] 
+**sort** | **String**|  | [optional] 
 
 #### Return type
 
 
-[**Payload**](../sdk_nodejs_index#Payload)
+[**ListOfDisplayUser**](../sdk_nodejs_index#ListOfDisplayUser)
 
 
 #### Authorization
@@ -289,7 +301,7 @@ Name | Type | Description  | Notes
 
 #### Authorization
 
-[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [Two factor authentication](../sdk_nodejs_index#Two factor authentication)
 
 #### HTTP request headers
 
@@ -354,7 +366,7 @@ Name | Type | Description  | Notes
 
 #### Authorization
 
-[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [Two factor authentication](../sdk_nodejs_index#Two factor authentication)
 
 #### HTTP request headers
 

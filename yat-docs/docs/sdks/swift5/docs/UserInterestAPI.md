@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 
 # **getInterestedUsers**
 ```swift
-    internal class func getInterestedUsers() -> Promise<Payload>
+    internal class func getInterestedUsers( dir: Dir_getInterestedUsers? = nil,  limit: Int? = nil,  page: Int? = nil,  sort: String? = nil) -> Promise<ListOfUserInterest>
 ```
 
 Returns a paginated list of user interest records associated with the user
@@ -76,9 +76,13 @@ NOTE: user should have scope `UserInterestRead`
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import YatSDK
 
+let dir = "dir_example" // String |  (optional)
+let limit = 987 // Int |  (optional)
+let page = 987 // Int |  (optional)
+let sort = "sort_example" // String |  (optional)
 
 // Returns a paginated list of user interest records associated with the user
-UserInterestAPI.getInterestedUsers().then {
+UserInterestAPI.getInterestedUsers(dir: dir, limit: limit, page: page, sort: sort).then {
          // when the promise is fulfilled
      }.always {
          // regardless of whether the promise is fulfilled, or rejected
@@ -88,11 +92,17 @@ UserInterestAPI.getInterestedUsers().then {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **dir** | **String** |  | [optional] 
+ **limit** | **Int** |  | [optional] 
+ **page** | **Int** |  | [optional] 
+ **sort** | **String** |  | [optional] 
 
 ### Return type
 
-[**Payload**](Payload.md)
+[**ListOfUserInterest**](ListOfUserInterest.md)
 
 ### Authorization
 

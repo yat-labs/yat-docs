@@ -9,16 +9,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**add**](CartAPI.md#add) | **POST** /cart | Update cart items by adding new items to the cart
+[**addItems**](CartAPI.md#additems) | **POST** /cart | Update cart items by adding new items to the cart
 [**checkout**](CartAPI.md#checkout) | **POST** /cart/checkout | Checkout cart with provided payment details
 [**clear**](CartAPI.md#clear) | **DELETE** /cart | Remove all items from cart
 [**getItems**](CartAPI.md#getitems) | **GET** /cart | Return cart content
 [**replaceItems**](CartAPI.md#replaceitems) | **PUT** /cart | Replace cart items
 
 
-# **add**
+# **addItems**
 ```swift
-    internal class func add( body: UpdateCartRequest) -> Promise<DisplayOrder>
+    internal class func addItems( body: UpdateCartRequest) -> Promise<DisplayOrder>
 ```
 
 Update cart items by adding new items to the cart
@@ -33,7 +33,7 @@ import YatSDK
 let body = UpdateCartRequest(items: [UpdateCartRequest_items(emojiId: "emojiId_example", redemptionCode: "redemptionCode_example")], trackingData: 123) // UpdateCartRequest | 
 
 // Update cart items by adding new items to the cart
-CartAPI.add(body: body).then {
+CartAPI.addItems(body: body).then {
          // when the promise is fulfilled
      }.always {
          // regardless of whether the promise is fulfilled, or rejected
@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 # **checkout**
 ```swift
-    internal class func checkout( body: CheckoutCartRequest) -> Promise<DisplayOrder>
+    internal class func checkout( body: CheckoutCartRequestBody) -> Promise<DisplayOrder>
 ```
 
 Checkout cart with provided payment details
@@ -77,7 +77,7 @@ NOTE: user should have scope `CartUpdate`
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import YatSDK
 
-let body = CheckoutCartRequest(method: "method_example", pubkey: "pubkey_example", trackingData: 123) // CheckoutCartRequest | 
+let body = CheckoutCartRequestBody(method: "method_example", paymentMethodId: 123, provider: "provider_example", pubkey: "pubkey_example", savePaymentMethod: false, setDefault: false, token: "token_example", trackingData: 123) // CheckoutCartRequestBody | 
 
 // Checkout cart with provided payment details
 CartAPI.checkout(body: body).then {
@@ -93,7 +93,7 @@ CartAPI.checkout(body: body).then {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**CheckoutCartRequest**](CheckoutCartRequest.md) |  | 
+ **body** | [**CheckoutCartRequestBody**](CheckoutCartRequestBody.md) |  | 
 
 ### Return type
 

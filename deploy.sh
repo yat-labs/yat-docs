@@ -30,4 +30,4 @@ declare ${deploy_env}_CDN
 export AWS_ACCESS_KEY_ID=${!key}
 export AWS_SECRET_ACCESS_KEY=${!secret}
 
-s3deploy -bucket ${!bucket} -region $REGION  -source $DIST -distribution-id ${!cdn} ${force}
+s3deploy -bucket ${!bucket} -region $REGION -source $DIST -distribution-id ${!cdn} ${force}

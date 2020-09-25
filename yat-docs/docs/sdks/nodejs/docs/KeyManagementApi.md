@@ -65,7 +65,7 @@ Name | Type | Description  | Notes
 
 #### Authorization
 
-[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [Two factor authentication](../sdk_nodejs_index#Two factor authentication)
 
 #### HTTP request headers
 
@@ -128,7 +128,7 @@ Name | Type | Description  | Notes
 
 #### Authorization
 
-[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [Two factor authentication](../sdk_nodejs_index#Two factor authentication)
 
 #### HTTP request headers
 
@@ -180,7 +180,7 @@ This endpoint does not have any parameters.
 
 #### Authorization
 
-[JWT](../sdk_nodejs_index#JWT), [apiKey](../sdk_nodejs_index#apiKey)
+[JWT](../sdk_nodejs_index#JWT), [Two factor authentication](../sdk_nodejs_index#Two factor authentication)
 
 #### HTTP request headers
 

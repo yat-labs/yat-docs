@@ -30,7 +30,7 @@ const features = [
     imageUrl: 'img/feature_img3.png',
     description: (
       <>
-        We have SDK libraries and <a href="/docs/sdks/nodejs/sdk_nodejs_index">documentation</a> for several langauges.
+        We have SDK libraries and <a href="/docs/sdks/nodejs/sdk_nodejs_index">documentation</a> for several languages.
       </>
     ),
   },

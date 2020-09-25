@@ -17,9 +17,8 @@ module.exports = {
         ],
         'User Guides': [
             'guides/overview',
-            'guides/login',
-            'guides/register',
-            'guides/managing',
+            'guides/integration_general',
+            'guides/advanced_topics',
             'guides/categories'
         ],
         'Links': [{
@@ -31,6 +30,7 @@ module.exports = {
     sdk_nodejs: [
         'sdks/nodejs/sdk_nodejs_index',
         'sdks/nodejs/docs/cartapi',
+        'sdks/nodejs/docs/discountsapi',
         'sdks/nodejs/docs/emojiapi',
         'sdks/nodejs/docs/emojiidapi',
         'sdks/nodejs/docs/keymanagementapi',
@@ -42,6 +42,7 @@ module.exports = {
     sdk_kotlin: [
         'sdks/kotlin/sdk_kotlin_index',
         'sdks/kotlin/docs/cartapi',
+        'sdks/kotlin/docs/discountsapi',
         'sdks/kotlin/docs/emojiapi',
         'sdks/kotlin/docs/emojiidapi',
         'sdks/kotlin/docs/keymanagementapi',
@@ -50,9 +51,10 @@ module.exports = {
         'sdks/kotlin/docs/userinterestapi',
         'sdks/kotlin/docs/usersapi'
     ],
-    sdk_kotlin: [
+    sdk_swift5: [
         'sdks/swift5/sdk_swift5_index',
         'sdks/swift5/docs/cartapi',
+        'sdks/swift5/docs/discountsapi',
         'sdks/swift5/docs/emojiapi',
         'sdks/swift5/docs/emojiidapi',
         'sdks/swift5/docs/keymanagementapi',

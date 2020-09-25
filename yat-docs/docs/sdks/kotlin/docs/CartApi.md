@@ -8,14 +8,14 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**add**](CartApi.md#add) | **POST** /cart | Update cart items by adding new items to the cart[**checkout**](CartApi.md#checkout) | **POST** /cart/checkout | Checkout cart with provided payment details[**clear**](CartApi.md#clear) | **DELETE** /cart | Remove all items from cart[**getItems**](CartApi.md#getItems) | **GET** /cart | Return cart content[**replaceItems**](CartApi.md#replaceItems) | **PUT** /cart | Replace cart items
+[**addItems**](CartApi.md#addItems) | **POST** /cart | Update cart items by adding new items to the cart[**checkout**](CartApi.md#checkout) | **POST** /cart/checkout | Checkout cart with provided payment details[**clear**](CartApi.md#clear) | **DELETE** /cart | Remove all items from cart[**getItems**](CartApi.md#getItems) | **GET** /cart | Return cart content[**replaceItems**](CartApi.md#replaceItems) | **PUT** /cart | Replace cart items
 
 
-## add
+## addItems
 
 Update cart items by adding new items to the cart
 
-#### DisplayOrder add(body)
+#### DisplayOrder addItems(body)
 
 
 NOTE: user should have scope &#x60;CartUpdate&#x60;
@@ -54,13 +54,13 @@ Configure JWT:
 val apiInstance = CartApi()
     val body : UpdateCartRequest =  // UpdateCartRequest | 
 try {
-val result : DisplayOrder = apiInstance.add(body)
+val result : DisplayOrder = apiInstance.addItems(body)
     println(result)
 } catch (e: ClientException) {
-println("4xx response calling CartApi#add")
+println("4xx response calling CartApi#addItems")
 e.printStackTrace()
 } catch (e: ServerException) {
-println("5xx response calling CartApi#add")
+println("5xx response calling CartApi#addItems")
 e.printStackTrace()
 }
 ```
@@ -79,7 +79,7 @@ NOTE: user should have scope &#x60;CartUpdate&#x60;
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**CheckoutCartRequest**](../sdk_kotlin_index#CheckoutCartRequest)|  |
+ **body** | [**CheckoutCartRequestBody**](../sdk_kotlin_index#CheckoutCartRequestBody)|  |
 
 ### Return type
 
@@ -107,7 +107,7 @@ Configure JWT:
 // import com.tarilabs.client.models.*
 
 val apiInstance = CartApi()
-    val body : CheckoutCartRequest =  // CheckoutCartRequest | 
+    val body : CheckoutCartRequestBody =  // CheckoutCartRequestBody | 
 try {
 val result : DisplayOrder = apiInstance.checkout(body)
     println(result)

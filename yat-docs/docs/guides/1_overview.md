@@ -8,13 +8,13 @@ title: Using the Yat SDKs
 The integration libraries and documentation for Yat are still in _Alpha_. They are not yet feature complete, and there are likely bugs in the implementation.
 :::
 
-## What are Yats / Emoji ids?
+## What are Yats and Emoji Id?
 
 Emoji id is a key-value lookup system that allows individuals, organizations, or entities to unify their presence on the internet.
 
-Emoji ids connect keys (the _yat_) to data (URLs, social media handles, payment addresses and more) that have been associated to that key by the key’s owner, or in some cases by an authorised proxy.
+Emoji ids connect keys (the _yat_) to data (URLs, social media handles, payment addresses and more) that have been associated with that key by the key’s owner, or in some cases by an authorised proxy.
 
-The yat consists of a string of one to six emoji, that the user can personalise to tell a story about their identity, lifestyle, or brand.
+The yat consists of a string of one to six emoji that the user can personalise to tell a story about their identity, lifestyle, or brand.
 
 ## Terminology
 
@@ -27,10 +27,11 @@ The yat consists of a string of one to six emoji, that the user can personalise 
 * **Emoji id category** - Emoji id record types are grouped into categories to aid data management and record discovery.
   Examples include cryptocurrency addresses, web properties, DNS records, location data.
 * **Emoji id tag** - Emoji id categories are subdivided into specific data types that have specific data formats,
-  represented by their Category Tag. Examples include Bitcoin addresses, DNS 'A' records, web URLs and Lat-Long
+  represented by their [category tag](/docs/categories). Examples include Bitcoin addresses, DNS 'A' records, web URLs and Lat-Long
   coordinates.
-* **Canonical format** - The unambiguous, official representation of a yat. See
+* **Canonical format** - The unambiguous, official representation of a yat. Typically, any visual modifiers, such as skin tone have been stripped from the yat in the canonical representation. See
   [Emoji id formats](#emoji-id-formats) for further discussion.
+
 * **Display format** - The yat format including any modifiers chosen by the owner. See
   [Emoji id formats](#emoji-id-formats) for further discussion.
 
@@ -49,7 +50,8 @@ Yat records are grouped into categories for simpler classification. This list ma
 * Domain Name System (DNS) fields
 * Arbitrary text data
 
-Each category is be further divided into precise category fields. For example, there are record tags in the cryptocurrency category for Bitcoin addresses, Monero addresses, Tari addresses, Ethereum addresses and so on.
+Each category is be further divided into precise category fields. For example, there are record [tags](/docs/categories) in the cryptocurrency
+category for Bitcoin addresses, Monero addresses, Tari addresses, Ethereum addresses and so on.
 
 ## Emoji id formats
 
@@ -59,18 +61,18 @@ gender, hair colour, skin tone and more are added with every emoji set release.
 Some of these modified emoji are very subtle, and cannot be easily differentiated in isolation, (compare 🤟🏾, and 🤟🏽)
 and so for that reason, Emoji id cannot include modifiers beyond a strict set of rules.
 
-The current set of yats _do not include any emoji_ that accept modifiers, including gender modifiers, except for skin
-tone modifiers, and the "designated emoji" modifier.
+Besides skin tones, which do not affect the glyph icon and therefore can be managed, the current set of yats _do not
+include any emoji_ that accept modifiers, including gender modifiers.
 
 The designated emoji modifier, `0xFE0F`, is a modifier for an existing unicode character that looks like an emoji, but is
 really just a character in a font set. The modifiers tell renderers to use the emoji glyph for the preceding character
 rather than the 'webding' or standard Unicode character. An example is the sun emoji (`0x2600 0xFE0F`), or `☀`, vs ☀️.
 
-When a user claims a yat, the yat is converted into canonical format. Canonical format is an unambiguous representation
+When a user claims a yat, the yat is converted into canonical format. The canonical format is an unambiguous representation
 of a yat and is used as the key in the emoji id key-value lookup database. Yat are converted to canonical format by
 
 * Removing all modifiers from every emoji character, except for `0xFE0f` in some cases.
-* All emoji glyphs are forced into a "fully qualified" representation. This entails adding the `0xFE0F` modifier in cases where it has been specified in the Unicode specification, and removing it where it has not.
+* Converting emoji into their "fully qualified" representation. This entails adding the `0xFE0F` modifier in cases where it has been specified in the Unicode specification, and removing it where it has not.
 
 See [the Unicode specification](https://unicode.org/Public/emoji/13.0/emoji-test.txt) for the complete list.
 
@@ -79,14 +81,19 @@ character and yat. Anytime the yat is requested for _display purposes_, as oppos
 the yat, and the user will see the yat he or she expects.
 
 When taking a yat as input into an API call, the yat will be automatically converted to canonical form. Therefore, lookups
-for 🤟🏾🤟🏾🤟🏾 and 🤟🏽🤟🏽🤟🏽 will resolve to the same yat (🤟🤟🤟).
+for 🤟🏾🤟🏾🤟🏾 and 🤟🏽🤟🏽🤟🏽 will resolve to the same canonical yat (🤟🤟🤟).
 
 When yats are _returned_ from endpoints, the _display format_ will usually be returned, but the endpoint documentation
 will provide clarification where necessary.
 
 ## Emoji selection guidelines
 
-Not all emoji are eligible to be included in yats. It is necessary to exclude many emoji from the official yat emoji list to minimize confusion and spoofing attempts with similar yats.
+We would have loved to have allowed any emoji to be used in your yat. But it was necessary to exclude many emoji from the official
+list to protect users from both unintentional and malicious confusion amongst similar-looking yats.
+
+We considered many aspects of the user experience and deliberated at length of such issues as inclusivity, adoption levels,
+confusion amongst similar looking emoji, colour blindness and cultural specifics. A set of guidelines emerged from these
+conversations that are used to determine whether a particular emoji is included into the Yat set or not.
 
 ### Unicode 8 and lower only
 
@@ -148,9 +155,7 @@ non-binary gender identities, and Yat would inherit those constraints.
 For example, some 55% of Android users are still on 7/8/9, which do not support gender-neutral emoji, and there are
 still a significant number of users on Android 6, which do not support male/female emoji.
 
-### An example
-
-On an Android 6 device, only the gender-neutral Person Walking is supported -- not Man Walking, not Woman Walking.
+For example, on an Android 6 device, only the gender-neutral Person Walking is supported -- not Man Walking, not Woman Walking.
 Then, on Android 7/8/9, they removed the gender-neutral emoji altogether, so only Man Walking and Woman Walking were supported,
 but _not_ Person Walking.
 
@@ -169,10 +174,10 @@ all gendered emoji from the Yat list altogether.
 
 ###  Similarity
 
-The male and female and gender-neutral versions of many emojis look awfully similar (compare 🚶🏼‍♀️ and 🚶🏼‍♂️).
+The male and female and gender-neutral versions of many emojis look awfully similar. Consider 🚶🏼‍♀️ and 🚶🏼‍♂️.
 
-Country Flag emojis have the same problem (compare 🇮🇪, 🇨🇮, 🇮🇹, 🇬🇳 and 🇫🇷 or 🇹🇩, 🇧🇪 and 🇩🇪 and of course 🇦🇺 and 🇳🇿).  
+Country Flag emojis have the same problem. Compare 🇮🇪, 🇨🇮, 🇮🇹, 🇬🇳 and 🇫🇷 or 🇹🇩, 🇧🇪 and 🇩🇪 and of course 🇦🇺 and 🇳🇿.
 It would be unfair to include _some_ country flags and not others, so we leave them all out.
 
-By the way, those flags are for Ireland, Ivory Coast, Italy, Guinea, France, Chad, Belgium, Germany, Australia and New Zealand.
+_By the way_, those flags are for Ireland, Ivory Coast, Italy, Guinea, France, Chad, Belgium, Germany, Australia and New Zealand. Could you differentiate them all?
 

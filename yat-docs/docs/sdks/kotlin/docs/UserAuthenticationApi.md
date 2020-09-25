@@ -8,7 +8,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**login**](UserAuthenticationApi.md#login) | **POST** /auth/token | Login via password[**magicLinkLogin**](UserAuthenticationApi.md#magicLinkLogin) | **POST** /auth/magic_link | Generate magic link for login[**refreshToken**](UserAuthenticationApi.md#refreshToken) | **POST** /auth/token/refresh | Refreshes access token[**twoFactorAuthentication**](UserAuthenticationApi.md#twoFactorAuthentication) | **POST** /auth/2fa | Two factor authentication
+[**login**](UserAuthenticationApi.md#login) | **POST** /auth/token | Login via password[**magicLinkLogin**](UserAuthenticationApi.md#magicLinkLogin) | **POST** /auth/magic_link | Generate magic link for login[**refreshToken**](UserAuthenticationApi.md#refreshToken) | **POST** /auth/token/refresh | Refresh access token[**twoFactorAuthentication**](UserAuthenticationApi.md#twoFactorAuthentication) | **POST** /auth/2fa | Two factor authentication
 
 
 ## login
@@ -117,7 +117,7 @@ e.printStackTrace()
 
 ## refreshToken
 
-Refreshes access token
+Refresh access token
 
 #### TokenResponse refreshToken(body)
 

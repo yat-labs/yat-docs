@@ -173,18 +173,24 @@ e.printStackTrace()
 
 List users
 
-#### Payload getAllUsers()
+#### ListOfDisplayUser getAllUsers(dir, limit, page, sort)
 
 
 NOTE: user should have scope &#x60;UserList&#x60;
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **dir** | **kotlin.String**|  | [optional] [enum: Asc, Desc]
+ **limit** | **kotlin.Int**|  | [optional]
+ **page** | **kotlin.Int**|  | [optional]
+ **sort** | **kotlin.String**|  | [optional]
 
 ### Return type
 
 
-[**Payload**](../sdk_kotlin_index#Payload)
+[**ListOfDisplayUser**](../sdk_kotlin_index#ListOfDisplayUser)
 
 
 ### Authorization
@@ -207,8 +213,12 @@ Configure JWT:
 // import com.tarilabs.client.models.*
 
 val apiInstance = UsersApi()
+    val dir : kotlin.String = dir_example // kotlin.String | 
+    val limit : kotlin.Int = 56 // kotlin.Int | 
+    val page : kotlin.Int = 56 // kotlin.Int | 
+    val sort : kotlin.String = sort_example // kotlin.String | 
 try {
-val result : Payload = apiInstance.getAllUsers()
+val result : ListOfDisplayUser = apiInstance.getAllUsers(dir, limit, page, sort)
     println(result)
 } catch (e: ClientException) {
 println("4xx response calling UsersApi#getAllUsers")
@@ -247,7 +257,7 @@ Name | Type | Description  | Notes
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure apiKey:
+Configure Two factor authentication:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 
@@ -306,7 +316,7 @@ Name | Type | Description  | Notes
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure apiKey:
+Configure Two factor authentication:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 

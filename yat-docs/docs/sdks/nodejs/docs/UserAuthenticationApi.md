@@ -9,7 +9,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**login**](UserAuthenticationApi.md#login) | **POST** /auth/token | Login via password
 [**magicLinkLogin**](UserAuthenticationApi.md#magiclinklogin) | **POST** /auth/magic_link | Generate magic link for login
-[**refreshToken**](UserAuthenticationApi.md#refreshtoken) | **POST** /auth/token/refresh | Refreshes access token
+[**refreshToken**](UserAuthenticationApi.md#refreshtoken) | **POST** /auth/token/refresh | Refresh access token
 [**twoFactorAuthentication**](UserAuthenticationApi.md#twofactorauthentication) | **POST** /auth/2fa | Two factor authentication
 
 
@@ -139,7 +139,7 @@ No authorization required
 async function refreshToken(body: RefreshRequest)
 ```
 
-Refreshes access token
+Refresh access token
 
 #### Notes:
 Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided \"refresh_token\" should be used to confirm 2FA code via `POST /2fa`

@@ -7,7 +7,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**add**](CartApi.md#add) | **POST** /cart | Update cart items by adding new items to the cart
+[**addItems**](CartApi.md#additems) | **POST** /cart | Update cart items by adding new items to the cart
 [**checkout**](CartApi.md#checkout) | **POST** /cart/checkout | Checkout cart with provided payment details
 [**clear**](CartApi.md#clear) | **DELETE** /cart | Remove all items from cart
 [**getItems**](CartApi.md#getitems) | **GET** /cart | Return cart content
@@ -15,13 +15,13 @@ Method | HTTP request | Description
 
 
 
-### add
+### addItems
 
 ```js
 /**
 * @returns DisplayOrder
 **/
-async function add(body: UpdateCartRequest)
+async function addItems(body: UpdateCartRequest)
 ```
 
 Update cart items by adding new items to the cart
@@ -41,7 +41,7 @@ let body = new YatJs.UpdateCartRequest(); // UpdateCartRequest
 // populate body...
 
 try {
-  let res = await api.cart().add(body);
+  let res = await api.cart().addItems(body);
   // res is of type DisplayOrder
   console.log('API called successfully. Result: ', res);
 } catch (error) {
@@ -80,7 +80,7 @@ Name | Type | Description  | Notes
 /**
 * @returns DisplayOrder
 **/
-async function checkout(body: CheckoutCartRequest)
+async function checkout(body: CheckoutCartRequestBody)
 ```
 
 Checkout cart with provided payment details
@@ -96,7 +96,7 @@ const api = new yat.YatJs();
 
 await api.login("your@email.com", "your_password");
 
-let body = new YatJs.CheckoutCartRequest(); // CheckoutCartRequest 
+let body = new YatJs.CheckoutCartRequestBody(); // CheckoutCartRequestBody 
 // populate body...
 
 try {
@@ -114,7 +114,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**body** | [**CheckoutCartRequest**](../sdk_nodejs_index#checkoutcartrequest)
+**body** | [**CheckoutCartRequestBody**](../sdk_nodejs_index#checkoutcartrequestbody)
 |  | 
 
 #### Return type

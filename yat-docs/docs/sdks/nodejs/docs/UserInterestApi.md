@@ -76,9 +76,9 @@ Name | Type | Description  | Notes
 
 ```js
 /**
-* @returns Payload
+* @returns ListOfUserInterest
 **/
-async function getInterestedUsers()
+async function getInterestedUsers(opts)
 ```
 
 Returns a paginated list of user interest records associated with the user
@@ -94,9 +94,15 @@ const api = new yat.YatJs();
 
 await api.login("your@email.com", "your_password");
 
+let opts = {
+  'dir': "dir_example", // String | 
+  'limit': 56, // Number | 
+  'page': 56, // Number | 
+  'sort': "sort_example" // String | 
+};
 try {
-  let res = await api.userInterest().getInterestedUsers();
-  // res is of type Payload
+  let res = await api.userInterest().getInterestedUsers(opts);
+  // res is of type ListOfUserInterest
   console.log('API called successfully. Result: ', res);
 } catch (error) {
   console.error(error);
@@ -106,12 +112,18 @@ try {
 
 #### Parameters
 
-This endpoint does not have any parameters.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**dir** | **String**|  | [optional] 
+**limit** | **Number**|  | [optional] 
+**page** | **Number**|  | [optional] 
+**sort** | **String**|  | [optional] 
 
 #### Return type
 
 
-[**Payload**](../sdk_nodejs_index#Payload)
+[**ListOfUserInterest**](../sdk_nodejs_index#ListOfUserInterest)
 
 
 #### Authorization

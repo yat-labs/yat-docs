@@ -156,7 +156,7 @@ This endpoint does not need any parameter.
 
 # **getAllUsers**
 ```swift
-    internal class func getAllUsers() -> Promise<Payload>
+    internal class func getAllUsers( dir: Dir_getAllUsers? = nil,  limit: Int? = nil,  page: Int? = nil,  sort: String? = nil) -> Promise<ListOfDisplayUser>
 ```
 
 List users
@@ -168,9 +168,13 @@ NOTE: user should have scope `UserList`
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import YatSDK
 
+let dir = "dir_example" // String |  (optional)
+let limit = 987 // Int |  (optional)
+let page = 987 // Int |  (optional)
+let sort = "sort_example" // String |  (optional)
 
 // List users
-UsersAPI.getAllUsers().then {
+UsersAPI.getAllUsers(dir: dir, limit: limit, page: page, sort: sort).then {
          // when the promise is fulfilled
      }.always {
          // regardless of whether the promise is fulfilled, or rejected
@@ -180,11 +184,17 @@ UsersAPI.getAllUsers().then {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **dir** | **String** |  | [optional] 
+ **limit** | **Int** |  | [optional] 
+ **page** | **Int** |  | [optional] 
+ **sort** | **String** |  | [optional] 
 
 ### Return type
 
-[**Payload**](Payload.md)
+[**ListOfDisplayUser**](ListOfDisplayUser.md)
 
 ### Authorization
 
@@ -235,7 +245,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[JWT](../README.md#JWT), [apiKey](../README.md#apiKey)
+[JWT](../README.md#JWT), [Two factor authentication](../README.md#Two factor authentication)
 
 ### HTTP request headers
 
@@ -259,7 +269,7 @@ NOTE: user should have scope `UserWrite`
 import YatSDK
 
 let id = 987 // UUID | 
-let body = AdminUpdateUserParameters(userParameters: AdminUpdateUserParameters_user_parameters(email: "email_example", firstName: "firstName_example", lastName: "lastName_example"), freeLimit: 123, isActive: false) // AdminUpdateUserParameters | 
+let body = AdminUpdateUserParameters(email: "email_example", firstName: "firstName_example", freeLimit: 123, isActive: false, lastName: "lastName_example") // AdminUpdateUserParameters | 
 
 // Update a user as an admin
 UsersAPI.updateUser(id: id, body: body).then {
@@ -284,7 +294,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[JWT](../README.md#JWT), [apiKey](../README.md#apiKey)
+[JWT](../README.md#JWT), [Two factor authentication](../README.md#Two factor authentication)
 
 ### HTTP request headers
 

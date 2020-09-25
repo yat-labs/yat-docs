@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 ## General information
 
 ### Description
-**Version:** 0.1.34
+**Version:** 0.1.125
 
 Emoji ID is a directory service that associates almost any type of structured data with a short, memorable identifier the emoji id.
 
@@ -27,8 +27,8 @@ Emoji ID is a directory service that associates almost any type of structured da
 * API Key (JWT)
     - Parameter Name: **Authorization**, in: header. Use format `Bearer TOKEN`
 
-* API Key (apiKey)
-    - Parameter Name: **Authorization**, in: header. When user has 2FA configured: JWT token in `Bearer TOKEN` format which has not expired 2FA timeout
+* API Key (Two_factor_authentication)
+    - Parameter Name: **Authorization**, in: header. Optional: JWT token in `Bearer TOKEN` with 2FA scope
 
 ----
 
@@ -589,11 +589,11 @@ task.resume()
 This operation does not require authentication
 :::
 
-### Refreshes access token
+### Refresh access token
 
 <a id="opIdrefreshToken"></a>
 
-*Refreshes access token*
+*Refresh access token*
 
 Will return updated access and refresh tokens. NOTE: when `requires_2fa` is not empty in response, provided "refresh_token" should be used to confirm 2FA code via `POST /2fa`
 
@@ -1123,7 +1123,7 @@ JWT
 
 ### Update cart items by adding new items to the cart
 
-<a id="opIdadd"></a>
+<a id="opIdaddItems"></a>
 
 *Update cart items by adding new items to the cart*
 
@@ -1308,7 +1308,7 @@ task.resume()
 |---|---|---|---|---|
 |body|body|[UpdateCartRequest](#updatecartrequest)|true|none|
 
-<h4 id="add-responses">Responses</h4>
+<h4 id="additems-responses">Responses</h4>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
@@ -1501,8 +1501,13 @@ NOTE: user should have scope `CartUpdate`
 ```javascript
 const fetch = require('node-fetch');
 const inputBody = {
-  "method": "Default",
+  "method": "Provider",
+  "payment_method_id": "ec18d2d7-d2e0-41e4-98e4-847f14422d8a",
+  "provider": "Free",
   "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "save_payment_method": true,
+  "set_default": true,
+  "token": "string",
   "tracking_data": {}
 };
 const headers = {
@@ -1544,8 +1549,13 @@ fun main() {
     val requestBody = 
         """
 {
-  "method": "Default",
+  "method": "Provider",
+  "payment_method_id": "ec18d2d7-d2e0-41e4-98e4-847f14422d8a",
+  "provider": "Free",
   "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "save_payment_method": true,
+  "set_default": true,
+  "token": "string",
   "tracking_data": {}
 }
         """.toRequestBody("application/json; charset=utf-8".toMediaType())
@@ -1587,8 +1597,13 @@ request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
 let requestBody = """
 {
-  "method": "Default",
+  "method": "Provider",
+  "payment_method_id": "ec18d2d7-d2e0-41e4-98e4-847f14422d8a",
+  "provider": "Free",
   "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "save_payment_method": true,
+  "set_default": true,
+  "token": "string",
   "tracking_data": {}
 }
 """
@@ -1630,8 +1645,13 @@ task.resume()
 
 ```json
 {
-  "method": "Default",
+  "method": "Provider",
+  "payment_method_id": "ec18d2d7-d2e0-41e4-98e4-847f14422d8a",
+  "provider": "Free",
   "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "save_payment_method": true,
+  "set_default": true,
+  "token": "string",
   "tracking_data": {}
 }
 ```
@@ -1640,7 +1660,7 @@ task.resume()
 
 |Name|In|Type|Required|Description|
 |---|---|---|---|---|
-|body|body|[CheckoutCartRequest](#checkoutcartrequest)|true|none|
+|body|body|[CheckoutCartRequestBody](#checkoutcartrequestbody)|true|none|
 
 <h4 id="checkout-responses">Responses</h4>
 
@@ -2650,7 +2670,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, apiKey
+JWT, Two_factor_authentication
 :::
 
 ----
@@ -2792,11 +2812,27 @@ task.resume()
 
 </Tabs>
 
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|dir|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+|page|query|integer(int32)|false|none|
+|sort|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|dir|Asc|
+|dir|Desc|
+
 <h4 id="getinterestedusers-responses">Responses</h4>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[Payload](#payload)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ListOfUserInterest](#listofuserinterest)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
 |422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
@@ -3630,7 +3666,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, apiKey
+JWT, Two_factor_authentication
 :::
 
 ### List users
@@ -3766,11 +3802,27 @@ task.resume()
 
 </Tabs>
 
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|dir|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+|page|query|integer(int32)|false|none|
+|sort|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|dir|Asc|
+|dir|Desc|
+
 <h4 id="getallusers-responses">Responses</h4>
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[Payload](#payload)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ListOfDisplayUser](#listofdisplayuser)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
 |422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
@@ -4165,13 +4217,11 @@ NOTE: user should have scope `UserWrite`
 ```javascript
 const fetch = require('node-fetch');
 const inputBody = {
+  "email": "string",
+  "first_name": "string",
   "free_limit": 0,
   "is_active": true,
-  "user_parameters": {
-    "email": "string",
-    "first_name": "string",
-    "last_name": "string"
-  }
+  "last_name": "string"
 };
 const headers = {
   'Content-Type':'application/json',
@@ -4212,13 +4262,11 @@ fun main() {
     val requestBody = 
         """
 {
+  "email": "string",
+  "first_name": "string",
   "free_limit": 0,
   "is_active": true,
-  "user_parameters": {
-    "email": "string",
-    "first_name": "string",
-    "last_name": "string"
-  }
+  "last_name": "string"
 }
         """.toRequestBody("application/json; charset=utf-8".toMediaType())
     val request = Request.Builder()
@@ -4259,13 +4307,11 @@ request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
 let requestBody = """
 {
+  "email": "string",
+  "first_name": "string",
   "free_limit": 0,
   "is_active": true,
-  "user_parameters": {
-    "email": "string",
-    "first_name": "string",
-    "last_name": "string"
-  }
+  "last_name": "string"
 }
 """
 request.httpBody = requestBody.data(using: .utf8)
@@ -4306,13 +4352,11 @@ task.resume()
 
 ```json
 {
+  "email": "string",
+  "first_name": "string",
   "free_limit": 0,
   "is_active": true,
-  "user_parameters": {
-    "email": "string",
-    "first_name": "string",
-    "last_name": "string"
-  }
+  "last_name": "string"
 }
 ```
 
@@ -4335,7 +4379,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, apiKey
+JWT, Two_factor_authentication
 :::
 
 ----
@@ -4645,7 +4689,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, apiKey
+JWT, Two_factor_authentication
 :::
 
 ### Add pubkey for current user
@@ -4799,7 +4843,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, apiKey
+JWT, Two_factor_authentication
 :::
 
 ### Retrieve pubkeys by user_id
@@ -5116,7 +5160,489 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, apiKey
+JWT, Two_factor_authentication
+:::
+
+----
+
+## Discounts
+
+### Fetch codes
+
+<a id="opIdlistCodes"></a>
+
+*Fetch codes*
+
+Return codes with their usage and availability information NOTE: user should have scope `OrganizationCodeAdmin` or `CodeRead`
+
+#### Example
+  `GET /codes`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+
+const headers = {
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
+};
+
+fetch('/codes',
+{
+  method: 'GET',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val apiBaseURL = "https://api.y.at"
+    val httpClient = OkHttpClient()
+    val request = Request.Builder()
+        .url("$apiBaseURL/codes")
+        .get()
+        .build()
+    httpClient.newCall(request).enqueue(object : Callback {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body != null) {
+                    println("Successful (${response.code}) with response: " + response.body?.string())
+                } else {
+                    println("Successful (${response.code}) with empty response.")
+                }
+            } else {
+                println("Failed with status code: ${response.code}")
+            }
+        }
+        override fun onFailure(call: Call, e: IOException) {
+            println("Request failed: $e")
+        }
+    })
+}
+```
+
+</TabItem>
+<TabItem value="swift5">
+
+```swift
+import Foundation
+
+let apiBaseURL = "https://api.y.at"
+let url = URL(string: apiBaseURL + "/codes")
+
+var request = URLRequest(url: url!)
+request.httpMethod = "GET"
+request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+let sessionConfiguration = URLSessionConfiguration.default
+let session = URLSession(configuration: sessionConfiguration)
+let task = session.dataTask(with: request) { (data, response, error) in
+    guard error == nil else {
+        print("Request failed: \(String(describing: error))")
+        return
+    }
+    if let response = response as? HTTPURLResponse {
+        if (response.statusCode >= 200
+            && response.statusCode < 300) {
+            print("Successful with status code: \(response.statusCode)")
+        } else {
+            print("Failed with status code: \(response.statusCode)")
+        }
+        // display body
+        if let data = data, let responseBody = String(data: data, encoding: .utf8) {
+            print("Response body:")
+            print(responseBody)
+        } else {
+            print("Empty response body.")
+        }
+    } else {
+        print("Unexpected response type.")
+    }
+}
+task.resume()
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|code_type|query|string|false|Optional: filter by code type|
+|dir|query|string|false|none|
+|limit|query|integer(int32)|false|none|
+|organization_id|query|string(uuid)|false|Optional: filter by organization id|
+|page|query|integer(int32)|false|none|
+|sort|query|string|false|none|
+
+#### Enumerated Values
+
+|Parameter|Value|
+|---|---|
+|code_type|Discount|
+|code_type|RandomYat|
+|dir|Asc|
+|dir|Desc|
+
+<h4 id="listcodes-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[ListOfCodeAvailability](#listofcodeavailability)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+:::info Authentication
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT
+:::
+
+### Add pubkey for code
+
+<a id="opIdaddPubkeyForCode"></a>
+
+*Add pubkey for code*
+
+NOTE: user should have scope `OrganizationCodeAdmin` or `CodeWrite`
+
+#### Example
+  `POST /codes/{code_id}/pubkeys/{pubkey}`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+
+const headers = {
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
+};
+
+fetch('/codes/{code_id}/pubkeys/{pubkey}',
+{
+  method: 'POST',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val apiBaseURL = "https://api.y.at"
+    val httpClient = OkHttpClient()
+    val request = Request.Builder()
+        .url("$apiBaseURL/codes/{code_id}/pubkeys/{pubkey}")
+        .post()
+        .build()
+    httpClient.newCall(request).enqueue(object : Callback {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body != null) {
+                    println("Successful (${response.code}) with response: " + response.body?.string())
+                } else {
+                    println("Successful (${response.code}) with empty response.")
+                }
+            } else {
+                println("Failed with status code: ${response.code}")
+            }
+        }
+        override fun onFailure(call: Call, e: IOException) {
+            println("Request failed: $e")
+        }
+    })
+}
+```
+
+</TabItem>
+<TabItem value="swift5">
+
+```swift
+import Foundation
+
+let apiBaseURL = "https://api.y.at"
+let url = URL(string: apiBaseURL + "/codes/{code_id}/pubkeys/{pubkey}")
+
+var request = URLRequest(url: url!)
+request.httpMethod = "POST"
+request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+let sessionConfiguration = URLSessionConfiguration.default
+let session = URLSession(configuration: sessionConfiguration)
+let task = session.dataTask(with: request) { (data, response, error) in
+    guard error == nil else {
+        print("Request failed: \(String(describing: error))")
+        return
+    }
+    if let response = response as? HTTPURLResponse {
+        if (response.statusCode >= 200
+            && response.statusCode < 300) {
+            print("Successful with status code: \(response.statusCode)")
+        } else {
+            print("Failed with status code: \(response.statusCode)")
+        }
+        // display body
+        if let data = data, let responseBody = String(data: data, encoding: .utf8) {
+            print("Response body:")
+            print(responseBody)
+        } else {
+            print("Empty response body.")
+        }
+    } else {
+        print("Unexpected response type.")
+    }
+}
+task.resume()
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|code_id|path|string(uuid)|true|none|
+|pubkey|path|string|true|Public key to authorize usage of a code|
+
+<h4 id="addpubkeyforcode-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[Pubkey](#pubkey)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+:::info Authentication
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT, Two_factor_authentication
+:::
+
+### Revoke pubkey for code
+
+<a id="opIdrevokePubkeyForCode"></a>
+
+*Revoke pubkey for code*
+
+NOTE: user should have scope `OrganizationCodeAdmin` or `CodeWrite`
+
+#### Example
+  `DELETE /codes/{code_id}/pubkeys/{pubkey}`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+
+const headers = {
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
+};
+
+fetch('/codes/{code_id}/pubkeys/{pubkey}',
+{
+  method: 'DELETE',
+
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val apiBaseURL = "https://api.y.at"
+    val httpClient = OkHttpClient()
+    val request = Request.Builder()
+        .url("$apiBaseURL/codes/{code_id}/pubkeys/{pubkey}")
+        .delete()
+        .build()
+    httpClient.newCall(request).enqueue(object : Callback {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body != null) {
+                    println("Successful (${response.code}) with response: " + response.body?.string())
+                } else {
+                    println("Successful (${response.code}) with empty response.")
+                }
+            } else {
+                println("Failed with status code: ${response.code}")
+            }
+        }
+        override fun onFailure(call: Call, e: IOException) {
+            println("Request failed: $e")
+        }
+    })
+}
+```
+
+</TabItem>
+<TabItem value="swift5">
+
+```swift
+import Foundation
+
+let apiBaseURL = "https://api.y.at"
+let url = URL(string: apiBaseURL + "/codes/{code_id}/pubkeys/{pubkey}")
+
+var request = URLRequest(url: url!)
+request.httpMethod = "DELETE"
+request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+let sessionConfiguration = URLSessionConfiguration.default
+let session = URLSession(configuration: sessionConfiguration)
+let task = session.dataTask(with: request) { (data, response, error) in
+    guard error == nil else {
+        print("Request failed: \(String(describing: error))")
+        return
+    }
+    if let response = response as? HTTPURLResponse {
+        if (response.statusCode >= 200
+            && response.statusCode < 300) {
+            print("Successful with status code: \(response.statusCode)")
+        } else {
+            print("Failed with status code: \(response.statusCode)")
+        }
+        // display body
+        if let data = data, let responseBody = String(data: data, encoding: .utf8) {
+            print("Response body:")
+            print(responseBody)
+        } else {
+            print("Empty response body.")
+        }
+    } else {
+        print("Unexpected response type.")
+    }
+}
+task.resume()
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|code_id|path|string(uuid)|true|none|
+|pubkey|path|string|true|Public key to authorize usage of a code|
+
+<h4 id="revokepubkeyforcode-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[Pubkey](#pubkey)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+:::info Authentication
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT, Two_factor_authentication
 :::
 
 ----
@@ -5315,51 +5841,63 @@ JWT
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
+|email|string|false|none|Optional: Email.|
+|first_name|string|false|none|Optional: First name.|
 |free_limit|integer(int32)|false|none|Optional: Free limit for how many yats the user may purchase.|
 |is_active|boolean|false|none|Optional: If the user is active, updating to true triggers user activation related events.|
-|user_parameters|object|true|none|None.|
-|» email|string|false|none|Optional: Email.|
-|» first_name|string|false|none|Optional: First name.|
-|» last_name|string|false|none|Optional: Last name.|
+|last_name|string|false|none|Optional: Last name.|
 
 #### Example
 
 ```json
 {
+  "email": "string",
+  "first_name": "string",
   "free_limit": 0,
   "is_active": true,
-  "user_parameters": {
-    "email": "string",
-    "first_name": "string",
-    "last_name": "string"
-  }
+  "last_name": "string"
 }
 
 ```
 
-### CheckoutCartRequest
+### CheckoutCartRequestBody
 
 #### Properties
 
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
-|method|string|true|none|Payment method.|
+|method|string|true|none|Payment method type.|
+|payment_method_id|string(uuid)|false|none|Use stored payment method (only with `Provider` method).|
+|provider|string|false|none|Payment provider (required with `Provider` or `Card` methods) payment types.|
 |pubkey|string|false|none|Optional: The user's public key to associate with this emoji id.|
+|save_payment_method|boolean|false|none|Save card payment method.|
+|set_default|boolean|false|none|Set card payment method as default.|
+|token|string|false|none|Card payment token (required with `Card` method).|
 |tracking_data|object|false|none|Optional: tracking data.|
 
 #### Enumerated Values
 
 |Property|Value|
 |---|---|
+|method|Provider|
+|method|Card|
 |method|Default|
 |method|Free|
+|provider|Free|
+|provider|Globee|
+|provider|Stripe|
 
 #### Example
 
 ```json
 {
-  "method": "Default",
+  "method": "Provider",
+  "payment_method_id": "ec18d2d7-d2e0-41e4-98e4-847f14422d8a",
+  "provider": "Free",
   "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "save_payment_method": true,
+  "set_default": true,
+  "token": "string",
   "tracking_data": {}
 }
 
@@ -5410,7 +5948,7 @@ JWT
 |» remaining_free_emoji|integer(int32)|true|none|None.|
 |» role|string|true|none|None.|
 |» source|string|false|none|None.|
-|» two_factor_auth|any|false|none|None.|
+|» two_factor_auth|string|false|none|Two factor authentication backend.|
 |» updated_at|string(date-time)|true|none|None.|
 
 #### Enumerated Values
@@ -5435,13 +5973,14 @@ JWT
 |role|OrgOwner|
 |role|Super|
 |role|User|
+|two_factor_auth|GoogleAuthenticator|
 
 #### Example
 
 ```json
 {
   "global_scopes": [
-    "AdminEmojiRegister"
+    "admin-emoji:register"
   ],
   "organization_roles": {
     "property1": "Admin",
@@ -5449,10 +5988,10 @@ JWT
   },
   "organization_scopes": {
     "property1": [
-      "AdminEmojiRegister"
+      "admin-emoji:register"
     ],
     "property2": [
-      "AdminEmojiRegister"
+      "admin-emoji:register"
     ]
   },
   "pubkeys": [
@@ -5472,7 +6011,7 @@ JWT
     "remaining_free_emoji": 0,
     "role": "Admin",
     "source": "string",
-    "two_factor_auth": null,
+    "two_factor_auth": "GoogleAuthenticator",
     "updated_at": "2019-08-24T14:15:22Z"
   }
 }
@@ -5491,18 +6030,18 @@ JWT
 |id|string(uuid)|true|none|The unique identifier for this order.|
 |misc_refunded_total_in_cents|integer(int64)|true|none|The total of miscellaneous refund amounts retirned to the order.|
 |order_items|[any]|true|none|The list of individual line items making up this order.|
-|» client_fee_in_cents|integer(int64)|true|none|The fee attributable to the referral partner, in addition to the nominal unit price, in USD cents.|
+|» client_fee_in_cents|integer(int32)|true|none|The fee attributable to the referral partner, in addition to the nominal unit price, in USD cents.|
 |» code_id|string(uuid)|false|none|The code associated with this order item for providing a discount.|
-|» company_fee_in_cents|integer(int64)|true|none|The fee attributable to the service host or company, in addition to the nominal unit price, in USD cents.|
+|» company_fee_in_cents|integer(int32)|true|none|The fee attributable to the service host or company, in addition to the nominal unit price, in USD cents.|
 |» created_at|string(date-time)|true|none|A UTC timestamp for when this order item was created.|
 |» emoji_id|string|false|none|The emoji id that is being purchased.|
 |» id|string(uuid)|true|none|A unique identifier for this order item.|
 |» item_type|string|true|none|The type of order.|
 |» order_id|string(uuid)|true|none|The id of the order this order item.|
 |» parent_id|string(uuid)|false|none|Parent order item's ID, set for discounts and fees.|
-|» quantity|integer(int64)|true|none|The number of items in the line order.|
-|» refunded_quantity|integer(int64)|true|none|None.|
-|» unit_price_in_cents|integer(int64)|true|none|The nominal, non-discounted price of the item, in USD cents.|
+|» quantity|integer(int32)|true|none|The number of items in the line order.|
+|» refunded_quantity|integer(int32)|true|none|None.|
+|» unit_price_in_cents|integer(int32)|true|none|The nominal, non-discounted price of the item, in USD cents.|
 |» updated_at|string(date-time)|true|none|A UTC timestamp for when ny field in the order item was modified.|
 |order_number|string|true|none|The order number is the last 8 characters of the order's ID for user display purposes.|
 |organization_id|string(uuid)|false|none|The organization id of the user, if applicable.|
@@ -5526,7 +6065,7 @@ JWT
 |» remaining_free_emoji|integer(int32)|true|none|None.|
 |» role|string|true|none|None.|
 |» source|string|false|none|None.|
-|» two_factor_auth|any|false|none|None.|
+|» two_factor_auth|string|false|none|Two factor authentication backend.|
 |» updated_at|string(date-time)|true|none|None.|
 |user_id|string(uuid)|true|none|The identifier of the user placing this order.|
 
@@ -5546,6 +6085,7 @@ JWT
 |role|OrgOwner|
 |role|Super|
 |role|User|
+|two_factor_auth|GoogleAuthenticator|
 
 #### Example
 
@@ -5595,7 +6135,7 @@ JWT
     "remaining_free_emoji": 0,
     "role": "Admin",
     "source": "string",
-    "two_factor_auth": null,
+    "two_factor_auth": "GoogleAuthenticator",
     "updated_at": "2019-08-24T14:15:22Z"
   },
   "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
@@ -5621,7 +6161,7 @@ JWT
 |remaining_free_emoji|integer(int32)|true|none|None.|
 |role|string|true|none|None.|
 |source|string|false|none|None.|
-|two_factor_auth|any|false|none|None.|
+|two_factor_auth|string|false|none|Two factor authentication backend.|
 |updated_at|string(date-time)|true|none|None.|
 
 #### Enumerated Values
@@ -5634,6 +6174,7 @@ JWT
 |role|OrgOwner|
 |role|Super|
 |role|User|
+|two_factor_auth|GoogleAuthenticator|
 
 #### Example
 
@@ -5651,7 +6192,7 @@ JWT
   "remaining_free_emoji": 0,
   "role": "Admin",
   "source": "string",
-  "two_factor_auth": null,
+  "two_factor_auth": "GoogleAuthenticator",
   "updated_at": "2019-08-24T14:15:22Z"
 }
 
@@ -5706,6 +6247,233 @@ The emoji id is the key value used in the Emoji ID key-value lookup system. As t
 
 ```
 
+### ListOfCodeAvailability
+
+Paginated results.<br/>Item description: 
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|data|[any]|false|none|None.|
+|» activator|string|false|none|None.|
+|» available|integer(int64)|false|none|None.|
+|» code_type|string|false|none|None.|
+|» created_at|string(date-time)|false|none|None.|
+|» deleted_at|string(date-time)|false|none|None.|
+|» discount_as_percentage|integer(int32)|false|none|None.|
+|» discount_in_cents|integer(int32)|false|none|None.|
+|» end_date|string(date-time)|false|none|None.|
+|» id|string(uuid)|false|none|None.|
+|» max_emojis_per_user|integer(int32)|false|none|None.|
+|» max_uses|integer(int32)|false|none|None.|
+|» name|string|false|none|None.|
+|» organization_id|string(uuid)|false|none|None.|
+|» redemption_code|string|false|none|None.|
+|» start_date|string(date-time)|false|none|None.|
+|» total_uses|integer(int64)|true|none|None.|
+|» updated_at|string(date-time)|false|none|None.|
+|paging|object|false|none|Paging information.|
+|» dir|string|true|none|None.|
+|» limit|integer(int32)|true|none|None.|
+|» page|integer(int32)|true|none|None.|
+|» sort|string|true|none|None.|
+|» tags|object|true|none|None.|
+|»» **additionalProperties**|object|false|none|None.|
+|» total|integer(int64)|true|none|None.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|activator|RedemptionCode|
+|activator|SecretKey|
+|code_type|Discount|
+|code_type|RandomYat|
+|dir|Asc|
+|dir|Desc|
+
+#### Example
+
+```json
+{
+  "data": [
+    {
+      "activator": "RedemptionCode",
+      "available": 0,
+      "code_type": "Discount",
+      "created_at": "2019-08-24T14:15:22Z",
+      "deleted_at": "2019-08-24T14:15:22Z",
+      "discount_as_percentage": 0,
+      "discount_in_cents": 0,
+      "end_date": "2019-08-24T14:15:22Z",
+      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+      "max_emojis_per_user": 0,
+      "max_uses": 0,
+      "name": "string",
+      "organization_id": "7c60d51f-b44e-4682-87d6-449835ea4de6",
+      "redemption_code": "string",
+      "start_date": "2019-08-24T14:15:22Z",
+      "total_uses": 0,
+      "updated_at": "2019-08-24T14:15:22Z"
+    }
+  ],
+  "paging": {
+    "dir": "Asc",
+    "limit": 0,
+    "page": 0,
+    "sort": "string",
+    "tags": {
+      "property1": {},
+      "property2": {}
+    },
+    "total": 0
+  }
+}
+
+```
+
+### ListOfDisplayUser
+
+Paginated results.<br/>Item description: User data
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|data|[any]|false|none|None.|
+|» alternate_id|string|false|none|None.|
+|» created_at|string(date-time)|true|none|None.|
+|» deactivated_at|string(date-time)|false|none|None.|
+|» email|string|false|none|None.|
+|» first_name|string|false|none|None.|
+|» free_limit|integer(int32)|true|none|None.|
+|» id|string(uuid)|true|none|None.|
+|» is_active|boolean|true|none|None.|
+|» last_name|string|false|none|None.|
+|» remaining_free_emoji|integer(int32)|true|none|None.|
+|» role|string|true|none|None.|
+|» source|string|false|none|None.|
+|» two_factor_auth|string|false|none|Two factor authentication backend.|
+|» updated_at|string(date-time)|true|none|None.|
+|paging|object|false|none|Paging information.|
+|» dir|string|true|none|None.|
+|» limit|integer(int32)|true|none|None.|
+|» page|integer(int32)|true|none|None.|
+|» sort|string|true|none|None.|
+|» tags|object|true|none|None.|
+|»» **additionalProperties**|object|false|none|None.|
+|» total|integer(int64)|true|none|None.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|role|Admin|
+|role|OrgController|
+|role|OrgMember|
+|role|OrgOwner|
+|role|Super|
+|role|User|
+|two_factor_auth|GoogleAuthenticator|
+|dir|Asc|
+|dir|Desc|
+
+#### Example
+
+```json
+{
+  "data": [
+    {
+      "alternate_id": "string",
+      "created_at": "2019-08-24T14:15:22Z",
+      "deactivated_at": "2019-08-24T14:15:22Z",
+      "email": "string",
+      "first_name": "string",
+      "free_limit": 0,
+      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+      "is_active": true,
+      "last_name": "string",
+      "remaining_free_emoji": 0,
+      "role": "Admin",
+      "source": "string",
+      "two_factor_auth": "GoogleAuthenticator",
+      "updated_at": "2019-08-24T14:15:22Z"
+    }
+  ],
+  "paging": {
+    "dir": "Asc",
+    "limit": 0,
+    "page": 0,
+    "sort": "string",
+    "tags": {
+      "property1": {},
+      "property2": {}
+    },
+    "total": 0
+  }
+}
+
+```
+
+### ListOfUserInterest
+
+Paginated results.<br/>Item description: User interest
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|data|[any]|false|none|None.|
+|» created_at|string(date-time)|true|none|None.|
+|» emoji_id|string|true|none|None.|
+|» id|string(uuid)|true|none|None.|
+|» updated_at|string(date-time)|true|none|None.|
+|» user_id|string(uuid)|true|none|None.|
+|paging|object|false|none|Paging information.|
+|» dir|string|true|none|None.|
+|» limit|integer(int32)|true|none|None.|
+|» page|integer(int32)|true|none|None.|
+|» sort|string|true|none|None.|
+|» tags|object|true|none|None.|
+|»» **additionalProperties**|object|false|none|None.|
+|» total|integer(int64)|true|none|None.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|dir|Asc|
+|dir|Desc|
+
+#### Example
+
+```json
+{
+  "data": [
+    {
+      "created_at": "2019-08-24T14:15:22Z",
+      "emoji_id": "🐱🐉🐋🐴🐵",
+      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
+      "updated_at": "2019-08-24T14:15:22Z",
+      "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
+    }
+  ],
+  "paging": {
+    "dir": "Asc",
+    "limit": 0,
+    "page": 0,
+    "sort": "string",
+    "tags": {
+      "property1": {},
+      "property2": {}
+    },
+    "total": 0
+  }
+}
+
+```
+
 ### LoginRequest
 
 #### Properties
@@ -5742,8 +6510,8 @@ The emoji id is the key value used in the Emoji ID key-value lookup system. As t
 |» data|string|true|none|Category data in text or hex encoded formats.|
 |» hash|string|true|none|Hash identifies record, can be used to delete records.|
 |» tag|string|true|none|Category as a hex string number.|
-|status|boolean|true|none|Response status.|
-|views_past_month|integer(int64)|false|none|Number of times emoji viewed during past month.|
+|status|boolean|false|none|Response status.|
+|views_past_month|integer(int64)|true|none|Number of times emoji viewed during past month.|
 
 #### Example
 
@@ -5761,7 +6529,7 @@ The emoji id is the key value used in the Emoji ID key-value lookup system. As t
     }
   ],
   "status": true,
-  "views_past_month": "42"
+  "views_past_month": 0
 }
 
 ```
@@ -5800,86 +6568,6 @@ The emoji id is the key value used in the Emoji ID key-value lookup system. As t
 ```json
 {
   "emoji_id": "🐱🐉🐋🐴🐵"
-}
-
-```
-
-### Payload
-
-#### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|data|[any]|true|none|None.|
-|» alternate_id|string|false|none|None.|
-|» created_at|string(date-time)|true|none|None.|
-|» deactivated_at|string(date-time)|false|none|None.|
-|» email|string|false|none|None.|
-|» first_name|string|false|none|None.|
-|» free_limit|integer(int32)|true|none|None.|
-|» id|string(uuid)|true|none|None.|
-|» is_active|boolean|true|none|None.|
-|» last_name|string|false|none|None.|
-|» remaining_free_emoji|integer(int32)|true|none|None.|
-|» role|string|true|none|None.|
-|» source|string|false|none|None.|
-|» two_factor_auth|any|false|none|None.|
-|» updated_at|string(date-time)|true|none|None.|
-|paging|object|true|none|None.|
-|» dir|string|true|none|None.|
-|» limit|integer(int32)|true|none|None.|
-|» page|integer(int32)|true|none|None.|
-|» sort|string|true|none|None.|
-|» tags|object|true|none|None.|
-|»» **additionalProperties**|object|false|none|None.|
-|» total|integer(int64)|true|none|None.|
-
-#### Enumerated Values
-
-|Property|Value|
-|---|---|
-|role|Admin|
-|role|OrgController|
-|role|OrgMember|
-|role|OrgOwner|
-|role|Super|
-|role|User|
-|dir|Asc|
-|dir|Desc|
-
-#### Example
-
-```json
-{
-  "data": [
-    {
-      "alternate_id": "string",
-      "created_at": "2019-08-24T14:15:22Z",
-      "deactivated_at": "2019-08-24T14:15:22Z",
-      "email": "string",
-      "first_name": "string",
-      "free_limit": 0,
-      "id": "497f6eca-6276-4993-bfeb-53cbbbba6f08",
-      "is_active": true,
-      "last_name": "string",
-      "remaining_free_emoji": 0,
-      "role": "Admin",
-      "source": "string",
-      "two_factor_auth": null,
-      "updated_at": "2019-08-24T14:15:22Z"
-    }
-  ],
-  "paging": {
-    "dir": "Asc",
-    "limit": 0,
-    "page": 0,
-    "sort": "string",
-    "tags": {
-      "property1": {},
-      "property2": {}
-    },
-    "total": 0
-  }
 }
 
 ```
@@ -5954,9 +6642,9 @@ A hexadecimal representation of a 256-bit public key.
 |result|[any]|true|none|Random Emoji IDs.|
 |» availability|string|true|none|The availability state of this emoji.|
 |» available|boolean|true|none|Whether the Emoji ID is available for purchase.|
-|» discounted_price|integer(int64)|true|none|Pricing in US cents, e.|
+|» discounted_price|integer(int32)|true|none|Pricing in US cents, e.|
 |» emoji_id|string|true|none|Emoji ID in canonical form.|
-|» price|integer(int64)|true|none|Pricing in US cents, e.|
+|» price|integer(int32)|true|none|Pricing in US cents, e.|
 |» views_past_month|integer(int64)|true|none|Total lookups using this API, if someone is viewing this Emoji ID using their own self hosted node, it will not be counted here.|
 
 #### Enumerated Values
@@ -6042,16 +6730,16 @@ A hexadecimal representation of a 256-bit public key.
 |alternates|[any]|true|none|Alternative Emoji IDs.|
 |» availability|string|true|none|The availability state of this emoji.|
 |» available|boolean|true|none|Whether the Emoji ID is available for purchase.|
-|» discounted_price|integer(int64)|true|none|Pricing in US cents, e.|
+|» discounted_price|integer(int32)|true|none|Pricing in US cents, e.|
 |» emoji_id|string|true|none|Emoji ID in canonical form.|
-|» price|integer(int64)|true|none|Pricing in US cents, e.|
+|» price|integer(int32)|true|none|Pricing in US cents, e.|
 |» views_past_month|integer(int64)|true|none|Total lookups using this API, if someone is viewing this Emoji ID using their own self hosted node, it will not be counted here.|
 |result|object|true|none|The specific Emoji ID that the user requests.|
 |» availability|string|true|none|The availability state of this emoji.|
 |» available|boolean|true|none|Whether the Emoji ID is available for purchase.|
-|» discounted_price|integer(int64)|true|none|Pricing in US cents, e.|
+|» discounted_price|integer(int32)|true|none|Pricing in US cents, e.|
 |» emoji_id|string|true|none|Emoji ID in canonical form.|
-|» price|integer(int64)|true|none|Pricing in US cents, e.|
+|» price|integer(int32)|true|none|Pricing in US cents, e.|
 |» views_past_month|integer(int64)|true|none|Total lookups using this API, if someone is viewing this Emoji ID using their own self hosted node, it will not be counted here.|
 
 #### Enumerated Values
@@ -6120,7 +6808,13 @@ A hexadecimal representation of a 256-bit public key.
 |---|---|---|---|---|
 |access_token|string|true|none|Access token.|
 |refresh_token|string|true|none|Refresh token,  only required for 2FA (???).|
-|requires_2fa|any|false|none|Whether has 2FA enabled or not.|
+|requires_2fa|string|false|none|Whether has 2FA enabled or not.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|requires_2fa|GoogleAuthenticator|
 
 #### Example
 
@@ -6128,7 +6822,7 @@ A hexadecimal representation of a 256-bit public key.
 {
   "access_token": "string",
   "refresh_token": "string",
-  "requires_2fa": null
+  "requires_2fa": "GoogleAuthenticator"
 }
 
 ```
