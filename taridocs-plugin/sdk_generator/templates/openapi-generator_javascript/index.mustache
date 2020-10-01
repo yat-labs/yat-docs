@@ -38,7 +38,13 @@ class <moduleName> {
         if (this.client.loggedIn()) {
             return;
         }
-        const body = LoginRequest.constructFromObject({email: username, password});
+        let req = {password};
+        if (username.includes('@')) {
+            req.email = username;
+        } else {
+            req.alternate_id = username;
+        }
+        const body = LoginRequest.constructFromObject(req);
         return this.userAuthentication().login(body).then(res => {
             this.client.authentications['JWT'].apiKey = res.access_token;
             this.client.setToken(res);

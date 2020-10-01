@@ -67,7 +67,7 @@ e.printStackTrace()
 
 Generate magic link for login
 
-#### SuccessResponse magicLinkLogin(body)
+#### MagicLinkLoginResponse magicLinkLogin(body)
 
 
 Will generate and send magic link to provided user&#39;s email. Assuming the email address corresponds to a valid user
@@ -81,7 +81,7 @@ Name | Type | Description  | Notes
 ### Return type
 
 
-[**SuccessResponse**](../sdk_kotlin_index#SuccessResponse)
+[**MagicLinkLoginResponse**](../sdk_kotlin_index#MagicLinkLoginResponse)
 
 
 ### Authorization
@@ -103,7 +103,7 @@ No authorization required
 val apiInstance = UserAuthenticationApi()
     val body : MagicLinkLoginRequest =  // MagicLinkLoginRequest | 
 try {
-val result : SuccessResponse = apiInstance.magicLinkLogin(body)
+val result : MagicLinkLoginResponse = apiInstance.magicLinkLogin(body)
     println(result)
 } catch (e: ClientException) {
 println("4xx response calling UserAuthenticationApi#magicLinkLogin")

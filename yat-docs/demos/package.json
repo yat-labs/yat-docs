@@ -1,0 +1,23 @@
+{
+  "name": "demos",
+  "version": "1.0.0",
+  "description": "Demo code for nodejs SDK",
+  "main": "demo.js",
+  "scripts": {
+    "build": "rm -rf node_modules/yatjs; npm i; cd node_modules/yatjs; npm i; npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tari-labs/tari-docs.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/tari-labs/tari-docs/issues"
+  },
+  "homepage": "https://github.com/tari-labs/tari-docs#readme",
+  "dependencies": {
+    "tari_crypto": "^0.2.1",
+    "yatjs": "../sdks/nodejs"
+  }
+}

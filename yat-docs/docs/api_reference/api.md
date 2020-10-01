@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 ## General information
 
 ### Description
-**Version:** 0.1.125
+**Version:** 0.1.130
 
 Emoji ID is a directory service that associates almost any type of structured data with a short, memorable identifier the emoji id.
 
@@ -27,7 +27,7 @@ Emoji ID is a directory service that associates almost any type of structured da
 * API Key (JWT)
     - Parameter Name: **Authorization**, in: header. Use format `Bearer TOKEN`
 
-* API Key (Two_factor_authentication)
+* API Key (two_factor)
     - Parameter Name: **Authorization**, in: header. Optional: JWT token in `Bearer TOKEN` with 2FA scope
 
 ----
@@ -248,7 +248,7 @@ Will generate and send magic link to provided user's email. Assuming the email a
 const fetch = require('node-fetch');
 const inputBody = {
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
 };
 const headers = {
@@ -290,7 +290,7 @@ fun main() {
         """
 {
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
 }
         """.toRequestBody("application/json; charset=utf-8".toMediaType())
@@ -333,7 +333,7 @@ request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 let requestBody = """
 {
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
 }
 """
@@ -376,7 +376,7 @@ task.resume()
 ```json
 {
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
 }
 ```
@@ -391,7 +391,7 @@ task.resume()
 
 |Status|Meaning|Description|Schema|
 |---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[SuccessResponse](#successresponse)|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[MagicLinkLoginResponse](#magiclinkloginresponse)|
 |400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
 |401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
 |422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
@@ -433,7 +433,7 @@ const fetch = require('node-fetch');
 const inputBody = {
   "alternate_id": "string",
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "password": "string"
 };
 const headers = {
@@ -476,7 +476,7 @@ fun main() {
 {
   "alternate_id": "string",
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "password": "string"
 }
         """.toRequestBody("application/json; charset=utf-8".toMediaType())
@@ -520,7 +520,7 @@ let requestBody = """
 {
   "alternate_id": "string",
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "password": "string"
 }
 """
@@ -564,7 +564,7 @@ task.resume()
 {
   "alternate_id": "string",
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "password": "string"
 }
 ```
@@ -2670,7 +2670,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
 :::
 
 ----
@@ -3666,7 +3666,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
 :::
 
 ### List users
@@ -3866,7 +3866,7 @@ const inputBody = {
   "alternate_id": "string",
   "email": "string",
   "first_name": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "last_name": "string",
   "password": "string",
   "source": "string"
@@ -3912,7 +3912,7 @@ fun main() {
   "alternate_id": "string",
   "email": "string",
   "first_name": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "last_name": "string",
   "password": "string",
   "source": "string"
@@ -3959,7 +3959,7 @@ let requestBody = """
   "alternate_id": "string",
   "email": "string",
   "first_name": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "last_name": "string",
   "password": "string",
   "source": "string"
@@ -4006,7 +4006,7 @@ task.resume()
   "alternate_id": "string",
   "email": "string",
   "first_name": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "last_name": "string",
   "password": "string",
   "source": "string"
@@ -4379,7 +4379,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
 :::
 
 ----
@@ -4689,7 +4689,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
 :::
 
 ### Add pubkey for current user
@@ -4843,7 +4843,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
 :::
 
 ### Retrieve pubkeys by user_id
@@ -5160,7 +5160,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
 :::
 
 ----
@@ -5487,7 +5487,7 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
 :::
 
 ### Revoke pubkey for code
@@ -5642,7 +5642,198 @@ task.resume()
 
 :::info Authentication
 To perform this operation, you must be authenticated by means of one of the following methods:
-JWT, Two_factor_authentication
+JWT, two_factor
+:::
+
+### Use random yat code
+
+<a id="opIdactivateRandomYatCode"></a>
+
+*Use random yat code*
+
+Creates cart with random yat generated according to pattern with applied discount
+
+#### Example
+  `POST /codes/{code_id}/random_yat`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+const inputBody = {
+  "nonce": "string",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "signature": "string",
+  "tracking_data": {}
+};
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
+};
+
+fetch('/codes/{code_id}/random_yat',
+{
+  method: 'POST',
+  body: JSON.stringify(inputBody),
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val apiBaseURL = "https://api.y.at"
+    val httpClient = OkHttpClient()
+    val requestBody = 
+        """
+{
+  "nonce": "string",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "signature": "string",
+  "tracking_data": {}
+}
+        """.toRequestBody("application/json; charset=utf-8".toMediaType())
+    val request = Request.Builder()
+        .url("$apiBaseURL/codes/{code_id}/random_yat")
+        .post(requestBody)
+        .build()
+    httpClient.newCall(request).enqueue(object : Callback {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body != null) {
+                    println("Successful (${response.code}) with response: " + response.body?.string())
+                } else {
+                    println("Successful (${response.code}) with empty response.")
+                }
+            } else {
+                println("Failed with status code: ${response.code}")
+            }
+        }
+        override fun onFailure(call: Call, e: IOException) {
+            println("Request failed: $e")
+        }
+    })
+}
+```
+
+</TabItem>
+<TabItem value="swift5">
+
+```swift
+import Foundation
+
+let apiBaseURL = "https://api.y.at"
+let url = URL(string: apiBaseURL + "/codes/{code_id}/random_yat")
+
+var request = URLRequest(url: url!)
+request.httpMethod = "POST"
+request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+let requestBody = """
+{
+  "nonce": "string",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "signature": "string",
+  "tracking_data": {}
+}
+"""
+request.httpBody = requestBody.data(using: .utf8)
+
+let sessionConfiguration = URLSessionConfiguration.default
+let session = URLSession(configuration: sessionConfiguration)
+let task = session.dataTask(with: request) { (data, response, error) in
+    guard error == nil else {
+        print("Request failed: \(String(describing: error))")
+        return
+    }
+    if let response = response as? HTTPURLResponse {
+        if (response.statusCode >= 200
+            && response.statusCode < 300) {
+            print("Successful with status code: \(response.statusCode)")
+        } else {
+            print("Failed with status code: \(response.statusCode)")
+        }
+        // display body
+        if let data = data, let responseBody = String(data: data, encoding: .utf8) {
+            print("Response body:")
+            print(responseBody)
+        } else {
+            print("Empty response body.")
+        }
+    } else {
+        print("Unexpected response type.")
+    }
+}
+task.resume()
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Body parameter
+
+```json
+{
+  "nonce": "string",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "signature": "string",
+  "tracking_data": {}
+}
+```
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|code_id|path|string(uuid)|true|none|
+|body|body|[RandomYatActivateBody](#randomyatactivatebody)|true|none|
+
+<h4 id="activaterandomyatcode-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[DisplayOrder](#displayorder)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+:::info Authentication
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT
 :::
 
 ----
@@ -5980,7 +6171,7 @@ JWT
 ```json
 {
   "global_scopes": [
-    "admin-emoji:register"
+    "adminEmoji:register"
   ],
   "organization_roles": {
     "property1": "Admin",
@@ -5988,10 +6179,10 @@ JWT
   },
   "organization_scopes": {
     "property1": [
-      "admin-emoji:register"
+      "adminEmoji:register"
     ],
     "property2": [
-      "admin-emoji:register"
+      "adminEmoji:register"
     ]
   },
   "pubkeys": [
@@ -6482,7 +6673,7 @@ Paginated results.<br/>Item description: User interest
 |---|---|---|---|---|
 |alternate_id|string|false|none|Alternate identifier.|
 |email|string|false|none|Email.|
-|g-recaptcha-response|string|false|none|Response from google Recaptcha.|
+|g_recaptcha_response|string|false|none|Response from google Recaptcha.|
 |password|string|true|none|Required: Password.|
 
 #### Example
@@ -6491,7 +6682,7 @@ Paginated results.<br/>Item description: User interest
 {
   "alternate_id": "string",
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "password": "string"
 }
 
@@ -6541,7 +6732,7 @@ Paginated results.<br/>Item description: User interest
 |Name|Type|Required|Restrictions|Description|
 |---|---|---|---|---|
 |email|string|false|none|Email.|
-|g-recaptcha-response|string|false|none|Response from google Recaptcha.|
+|g_recaptcha_response|string|false|none|Response from google Recaptcha.|
 |user_id|string(uuid)|false|none|User ID.|
 
 #### Example
@@ -6549,8 +6740,36 @@ Paginated results.<br/>Item description: User interest
 ```json
 {
   "email": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "user_id": "a169451c-8525-4352-b8ca-070dd449a1a5"
+}
+
+```
+
+### MagicLinkLoginResponse
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|message|string|true|none|Message.|
+|status|string|true|none|Status of requested user after completing the login request.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|status|Active|
+|status|RegisteredInactive|
+|status|RegisteredActive|
+|status|Inactive|
+
+#### Example
+
+```json
+{
+  "message": "string",
+  "status": "Active"
 }
 
 ```
@@ -6675,6 +6894,29 @@ A hexadecimal representation of a 256-bit public key.
 
 ```
 
+### RandomYatActivateBody
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|nonce|string|true|none|Schnorr signature nonce as a hex.|
+|pubkey|string|true|none|Public key to authorize usage of a code.|
+|signature|string|true|none|Schnorr signature as a hex with alternate_id as a challenge.|
+|tracking_data|object|false|none|Custom tracking data to be associated with a purchase.|
+
+#### Example
+
+```json
+{
+  "nonce": "string",
+  "pubkey": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f",
+  "signature": "string",
+  "tracking_data": {}
+}
+
+```
+
 ### RefreshRequest
 
 #### Properties
@@ -6701,7 +6943,7 @@ A hexadecimal representation of a 256-bit public key.
 |alternate_id|string|false|none|Alternate identifier.|
 |email|string|false|none|Email address.|
 |first_name|string|false|none|Optional: first name.|
-|g-recaptcha-response|string|false|none|Response from google Recaptcha.|
+|g_recaptcha_response|string|false|none|Response from google Recaptcha.|
 |last_name|string|false|none|Optional: last name.|
 |password|string|false|none|Optional: password.|
 |source|string|false|none|Required when registering with `alternate_id`, source for non custodial user.|
@@ -6713,7 +6955,7 @@ A hexadecimal representation of a 256-bit public key.
   "alternate_id": "string",
   "email": "string",
   "first_name": "string",
-  "g-recaptcha-response": "string",
+  "g_recaptcha_response": "string",
   "last_name": "string",
   "password": "string",
   "source": "string"
@@ -6779,23 +7021,6 @@ A hexadecimal representation of a 256-bit public key.
     "price": 0,
     "views_past_month": 0
   }
-}
-
-```
-
-### SuccessResponse
-
-#### Properties
-
-|Name|Type|Required|Restrictions|Description|
-|---|---|---|---|---|
-|message|string|true|none|None.|
-
-#### Example
-
-```json
-{
-  "message": "string"
 }
 
 ```

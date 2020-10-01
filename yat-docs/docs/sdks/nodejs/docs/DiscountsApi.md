@@ -7,10 +7,75 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**activateRandomYatCode**](DiscountsApi.md#activaterandomyatcode) | **POST** /codes/{code_id}/random_yat | Use random yat code
 [**addPubkeyForCode**](DiscountsApi.md#addpubkeyforcode) | **POST** /codes/{code_id}/pubkeys/{pubkey} | Add pubkey for code
 [**listCodes**](DiscountsApi.md#listcodes) | **GET** /codes | Fetch codes
 [**revokePubkeyForCode**](DiscountsApi.md#revokepubkeyforcode) | **DELETE** /codes/{code_id}/pubkeys/{pubkey} | Revoke pubkey for code
 
+
+
+### activateRandomYatCode
+
+```js
+/**
+* @returns DisplayOrder
+**/
+async function activateRandomYatCode(codeId: String, body: RandomYatActivateBody)
+```
+
+Use random yat code
+
+#### Notes:
+Creates cart with random yat generated according to pattern with applied discount
+
+#### Example
+
+```javascript
+const yat = require('yatjs');
+const api = new yat.YatJs();
+
+await api.login("your@email.com", "your_password");
+
+let codeId = null; // String 
+// populate codeId...
+
+let body = new YatJs.RandomYatActivateBody(); // RandomYatActivateBody 
+// populate body...
+
+try {
+  let res = await api.discounts().activateRandomYatCode(codeId, body);
+  // res is of type DisplayOrder
+  console.log('API called successfully. Result: ', res);
+} catch (error) {
+  console.error(error);
+}
+
+```
+
+#### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**codeId** | [**String**](../sdk_nodejs_index#)
+|  | 
+**body** | [**RandomYatActivateBody**](../sdk_nodejs_index#randomyatactivatebody)
+|  | 
+
+#### Return type
+
+
+[**DisplayOrder**](../sdk_nodejs_index#DisplayOrder)
+
+
+#### Authorization
+
+[JWT](../sdk_nodejs_index#JWT)
+
+#### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: */*
 
 
 ### addPubkeyForCode
@@ -68,7 +133,7 @@ Name | Type | Description  | Notes
 
 #### Authorization
 
-[JWT](../sdk_nodejs_index#JWT), [Two factor authentication](../sdk_nodejs_index#Two factor authentication)
+[JWT](../sdk_nodejs_index#JWT), [two_factor](../sdk_nodejs_index#two_factor)
 
 #### HTTP request headers
 
@@ -200,7 +265,7 @@ Name | Type | Description  | Notes
 
 #### Authorization
 
-[JWT](../sdk_nodejs_index#JWT), [Two factor authentication](../sdk_nodejs_index#Two factor authentication)
+[JWT](../sdk_nodejs_index#JWT), [two_factor](../sdk_nodejs_index#two_factor)
 
 #### HTTP request headers
 

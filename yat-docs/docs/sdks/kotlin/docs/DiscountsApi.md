@@ -8,7 +8,64 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**addPubkeyForCode**](DiscountsApi.md#addPubkeyForCode) | **POST** /codes/{code_id}/pubkeys/{pubkey} | Add pubkey for code[**listCodes**](DiscountsApi.md#listCodes) | **GET** /codes | Fetch codes[**revokePubkeyForCode**](DiscountsApi.md#revokePubkeyForCode) | **DELETE** /codes/{code_id}/pubkeys/{pubkey} | Revoke pubkey for code
+[**activateRandomYatCode**](DiscountsApi.md#activateRandomYatCode) | **POST** /codes/{code_id}/random_yat | Use random yat code[**addPubkeyForCode**](DiscountsApi.md#addPubkeyForCode) | **POST** /codes/{code_id}/pubkeys/{pubkey} | Add pubkey for code[**listCodes**](DiscountsApi.md#listCodes) | **GET** /codes | Fetch codes[**revokePubkeyForCode**](DiscountsApi.md#revokePubkeyForCode) | **DELETE** /codes/{code_id}/pubkeys/{pubkey} | Revoke pubkey for code
+
+
+## activateRandomYatCode
+
+Use random yat code
+
+#### DisplayOrder activateRandomYatCode(codeId, body)
+
+
+Creates cart with random yat generated according to pattern with applied discount
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **codeId** | [**java.util.UUID**](../sdk_kotlin_index#)|  |
+ **body** | [**RandomYatActivateBody**](../sdk_kotlin_index#RandomYatActivateBody)|  |
+
+### Return type
+
+
+[**DisplayOrder**](../sdk_kotlin_index#DisplayOrder)
+
+
+### Authorization
+
+
+Configure JWT:
+    ApiClient.apiKey["Authorization"] = ""
+    ApiClient.apiKeyPrefix["Authorization"] = ""
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+### Example
+
+```kotlin
+// Import classes:
+// import com.tarilabs.client.infrastructure.*
+// import com.tarilabs.client.models.*
+
+val apiInstance = DiscountsApi()
+    val codeId : java.util.UUID = 38400000-8cf0-11bd-b23e-10b96e4ef00d // java.util.UUID | 
+    val body : RandomYatActivateBody =  // RandomYatActivateBody | 
+try {
+val result : DisplayOrder = apiInstance.activateRandomYatCode(codeId, body)
+    println(result)
+} catch (e: ClientException) {
+println("4xx response calling DiscountsApi#activateRandomYatCode")
+e.printStackTrace()
+} catch (e: ServerException) {
+println("5xx response calling DiscountsApi#activateRandomYatCode")
+e.printStackTrace()
+}
+```
 
 
 ## addPubkeyForCode
@@ -38,7 +95,7 @@ Name | Type | Description  | Notes
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure Two factor authentication:
+Configure two_factor:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 
@@ -162,7 +219,7 @@ Name | Type | Description  | Notes
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure Two factor authentication:
+Configure two_factor:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 

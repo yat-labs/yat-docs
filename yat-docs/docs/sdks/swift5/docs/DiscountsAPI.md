@@ -9,10 +9,60 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**activateRandomYatCode**](DiscountsAPI.md#activaterandomyatcode) | **POST** /codes/{code_id}/random_yat | Use random yat code
 [**addPubkeyForCode**](DiscountsAPI.md#addpubkeyforcode) | **POST** /codes/{code_id}/pubkeys/{pubkey} | Add pubkey for code
 [**listCodes**](DiscountsAPI.md#listcodes) | **GET** /codes | Fetch codes
 [**revokePubkeyForCode**](DiscountsAPI.md#revokepubkeyforcode) | **DELETE** /codes/{code_id}/pubkeys/{pubkey} | Revoke pubkey for code
 
+
+# **activateRandomYatCode**
+```swift
+    internal class func activateRandomYatCode( codeId: UUID,  body: RandomYatActivateBody) -> Promise<DisplayOrder>
+```
+
+Use random yat code
+
+Creates cart with random yat generated according to pattern with applied discount
+
+### Example 
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import YatSDK
+
+let codeId = 987 // UUID | 
+let body = RandomYatActivateBody(nonce: "nonce_example", pubkey: "pubkey_example", signature: "signature_example", trackingData: 123) // RandomYatActivateBody | 
+
+// Use random yat code
+DiscountsAPI.activateRandomYatCode(codeId: codeId, body: body).then {
+         // when the promise is fulfilled
+     }.always {
+         // regardless of whether the promise is fulfilled, or rejected
+     }.catch { errorType in
+         // when the promise is rejected
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **codeId** | [**UUID**](.md) |  | 
+ **body** | [**RandomYatActivateBody**](RandomYatActivateBody.md) |  | 
+
+### Return type
+
+[**DisplayOrder**](DisplayOrder.md)
+
+### Authorization
+
+[JWT](../README.md#JWT)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **addPubkeyForCode**
 ```swift
@@ -54,7 +104,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[JWT](../README.md#JWT), [Two factor authentication](../README.md#Two factor authentication)
+[JWT](../README.md#JWT), [two_factor](../README.md#two_factor)
 
 ### HTTP request headers
 
@@ -160,7 +210,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[JWT](../README.md#JWT), [Two factor authentication](../README.md#Two factor authentication)
+[JWT](../README.md#JWT), [two_factor](../README.md#two_factor)
 
 ### HTTP request headers
 

@@ -64,7 +64,7 @@ No authorization required
 
 # **magicLinkLogin**
 ```swift
-    internal class func magicLinkLogin( body: MagicLinkLoginRequest) -> Promise<SuccessResponse>
+    internal class func magicLinkLogin( body: MagicLinkLoginRequest) -> Promise<MagicLinkLoginResponse>
 ```
 
 Generate magic link for login
@@ -96,7 +96,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SuccessResponse**](SuccessResponse.md)
+[**MagicLinkLoginResponse**](MagicLinkLoginResponse.md)
 
 ### Authorization
 

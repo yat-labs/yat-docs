@@ -1247,6 +1247,32 @@
         "result"
       ]
     },
+    "RandomYatActivateBody": {
+      "properties": {
+        "nonce": {
+          "description": "Schnorr signature nonce as a hex",
+          "type": "string"
+        },
+        "pubkey": {
+          "description": "Public key to authorize usage of a code",
+          "type": "string",
+          "example": "74dfa32b2c227ca2aa9ce3922a735669835443c1c36596795de1f48dbfaf7b2f"
+        },
+        "signature": {
+          "description": "Schnorr signature as a hex with alternate_id as a challenge",
+          "type": "string"
+        },
+        "tracking_data": {
+          "description": "Custom tracking data to be associated with a purchase",
+          "type": "object"
+        }
+      },
+      "required": [
+        "nonce",
+        "pubkey",
+        "signature"
+      ]
+    },
     "RefreshRequest": {
       "properties": {
         "refresh_token": {
@@ -1555,7 +1581,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -2042,7 +2068,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -2094,7 +2120,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -2131,6 +2157,58 @@
             "name": "pubkey",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "Discounts"
+        ]
+      }
+    },
+    "/codes/{code_id}/random_yat": {
+      "post": {
+        "operationId": "activateRandomYatCode",
+        "summary": "Use random yat code",
+        "description": "Creates cart with random yat generated according to pattern with applied discount",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/DisplayOrder"
+            }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code_id",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RandomYatActivateBody"
+            }
           }
         ],
         "tags": [
@@ -2352,7 +2430,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -2485,7 +2563,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -2523,7 +2601,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -2902,7 +2980,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -3004,7 +3082,7 @@
             "JWT": []
           },
           {
-            "Two factor authentication": []
+            "two-factor": []
           }
         ],
         "responses": {
@@ -3057,7 +3135,7 @@
       "in": "header",
       "description": "Use format `Bearer TOKEN`"
     },
-    "Two factor authentication": {
+    "two-factor": {
       "name": "Authorization",
       "type": "apiKey",
       "in": "header",

@@ -76,7 +76,7 @@ No authorization required
 
 ```js
 /**
-* @returns SuccessResponse
+* @returns MagicLinkLoginResponse
 **/
 async function magicLinkLogin(body: MagicLinkLoginRequest)
 ```
@@ -98,7 +98,7 @@ let body = new YatJs.MagicLinkLoginRequest(); // MagicLinkLoginRequest
 
 try {
   let res = await api.userAuthentication().magicLinkLogin(body);
-  // res is of type SuccessResponse
+  // res is of type MagicLinkLoginResponse
   console.log('API called successfully. Result: ', res);
 } catch (error) {
   console.error(error);
@@ -117,7 +117,7 @@ Name | Type | Description  | Notes
 #### Return type
 
 
-[**SuccessResponse**](../sdk_nodejs_index#SuccessResponse)
+[**MagicLinkLoginResponse**](../sdk_nodejs_index#MagicLinkLoginResponse)
 
 
 #### Authorization

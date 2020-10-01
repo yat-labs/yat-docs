@@ -37,7 +37,7 @@ Name | Type | Description  | Notes
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure Two factor authentication:
+Configure two_factor:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 
@@ -95,7 +95,7 @@ Name | Type | Description  | Notes
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure Two factor authentication:
+Configure two_factor:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 
@@ -150,7 +150,7 @@ This endpoint does not need any parameter.
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure Two factor authentication:
+Configure two_factor:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 

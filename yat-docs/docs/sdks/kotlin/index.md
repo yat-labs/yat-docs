@@ -47,6 +47,7 @@ Class | Method | HTTP request | Description
 [CartApi](docs/CartApi.md) | [**clear**](docs/CartApi.md#clear) | **DELETE** /cart | Remove all items from cart
 [CartApi](docs/CartApi.md) | [**getItems**](docs/CartApi.md#getitems) | **GET** /cart | Return cart content
 [CartApi](docs/CartApi.md) | [**replaceItems**](docs/CartApi.md#replaceitems) | **PUT** /cart | Replace cart items
+[DiscountsApi](docs/DiscountsApi.md) | [**activateRandomYatCode**](docs/DiscountsApi.md#activaterandomyatcode) | **POST** /codes/{code_id}/random_yat | Use random yat code
 [DiscountsApi](docs/DiscountsApi.md) | [**addPubkeyForCode**](docs/DiscountsApi.md#addpubkeyforcode) | **POST** /codes/{code_id}/pubkeys/{pubkey} | Add pubkey for code
 [DiscountsApi](docs/DiscountsApi.md) | [**listCodes**](docs/DiscountsApi.md#listcodes) | **GET** /codes | Fetch codes
 [DiscountsApi](docs/DiscountsApi.md) | [**revokePubkeyForCode**](docs/DiscountsApi.md#revokepubkeyforcode) | **DELETE** /codes/{code_id}/pubkeys/{pubkey} | Revoke pubkey for code
@@ -155,7 +156,7 @@ Name | Type | Description | Notes
 #### Enum: global_scopes
 Name | Value
 ---- | -----
-globalScopes | admin-emoji:register, admin-emoji:write, cart:show, cart:update, code:delete, code:read, code:write, emoji-groups:delete, emoji-groups:read, emoji-groups:write, order:read, order:read-self, order:refund, order:refund-override, order:resend-confirmation, organization:admin, organization-code:admin, organization-emoji:list, organization-emoji:write, organization-list:read, organization:read, organization-user:admin, organization-user:read, organization:write, payment-method:destroy, payment-method:read, payment-method:set-default, refund:read, token:refresh, auth:two-factor, user:delete, user:delete-self, user-emoji:list, user-interest:delete, user-interest:read, user-interest:write, user:list, user-pubkeys:list, user-pubkeys:write, user:write, user:write-self
+globalScopes | adminEmoji:register, adminEmoji:write, cart:show, cart:update, code:delete, code:read, code:write, emojiGroups:delete, emojiGroups:read, emojiGroups:write, order:read, order:readSelf, order:refund, order:refundOverride, order:resendConfirmation, organization:admin, organizationCode:admin, organizationEmoji:list, organizationEmoji:write, organizationList:read, organization:read, organizationUser:admin, organizationUser:read, organization:write, paymentMethod:destroy, paymentMethod:read, paymentMethod:setDefault, refund:read, token:refresh, auth:twoFactor, user:delete, user:deleteSelf, userEmoji:list, userInterest:delete, userInterest:read, userInterest:write, user:list, userPubkeys:list, userPubkeys:write, user:write, user:writeSelf
 
 
 #### Enum: organization_roles
@@ -167,7 +168,7 @@ organizationRoles | Admin, OrgController, OrgMember, OrgOwner, Super, User
 #### Enum: organization_scopes
 Name | Value
 ---- | -----
-organizationScopes | admin-emoji:register, admin-emoji:write, cart:show, cart:update, code:delete, code:read, code:write, emoji-groups:delete, emoji-groups:read, emoji-groups:write, order:read, order:read-self, order:refund, order:refund-override, order:resend-confirmation, organization:admin, organization-code:admin, organization-emoji:list, organization-emoji:write, organization-list:read, organization:read, organization-user:admin, organization-user:read, organization:write, payment-method:destroy, payment-method:read, payment-method:set-default, refund:read, token:refresh, auth:two-factor, user:delete, user:delete-self, user-emoji:list, user-interest:delete, user-interest:read, user-interest:write, user:list, user-pubkeys:list, user-pubkeys:write, user:write, user:write-self
+organizationScopes | adminEmoji:register, adminEmoji:write, cart:show, cart:update, code:delete, code:read, code:write, emojiGroups:delete, emojiGroups:read, emojiGroups:write, order:read, order:readSelf, order:refund, order:refundOverride, order:resendConfirmation, organization:admin, organizationCode:admin, organizationEmoji:list, organizationEmoji:write, organizationList:read, organization:read, organizationUser:admin, organizationUser:read, organization:write, paymentMethod:destroy, paymentMethod:read, paymentMethod:setDefault, refund:read, token:refresh, auth:twoFactor, user:delete, user:deleteSelf, userEmoji:list, userInterest:delete, userInterest:read, userInterest:write, user:list, userPubkeys:list, userPubkeys:write, user:write, user:writeSelf
 
 
 #### Enum: role
@@ -514,7 +515,7 @@ Name | Type | Description | Notes
 **password** | **kotlin.String** | Required: Password | 
 **alternateId** | **kotlin.String** | Alternate identifier |  [optional]
 **email** | **kotlin.String** | Email |  [optional]
-**gMinusRecaptchaMinusResponse** | **kotlin.String** | Response from google Recaptcha |  [optional]
+**gRecaptchaResponse** | **kotlin.String** | Response from google Recaptcha |  [optional]
 
 
 
@@ -557,8 +558,25 @@ Name | Type | Description | Notes
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **email** | **kotlin.String** | Email |  [optional]
-**gMinusRecaptchaMinusResponse** | **kotlin.String** | Response from google Recaptcha |  [optional]
+**gRecaptchaResponse** | **kotlin.String** | Response from google Recaptcha |  [optional]
 **userId** | [**java.util.UUID**](#java.util.UUID) | User ID |  [optional]
+
+
+
+### MagicLinkLoginResponse
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**message** | **kotlin.String** | Message | 
+**status** | [**inline**](#StatusEnum)
+ | Status of requested user after completing the login request | 
+
+
+#### Enum: status
+Name | Value
+---- | -----
+status | Active, RegisteredInactive, RegisteredActive, Inactive
 
 
 
@@ -627,6 +645,18 @@ availability | Available, Taken, InCart, ComingSoon, NoPrice
 
 
 
+### RandomYatActivateBody
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**nonce** | **kotlin.String** | Schnorr signature nonce as a hex | 
+**pubkey** | **kotlin.String** | Public key to authorize usage of a code | 
+**signature** | **kotlin.String** | Schnorr signature as a hex with alternate_id as a challenge | 
+**trackingData** | [**kotlin.Any**](#) | Custom tracking data to be associated with a purchase |  [optional]
+
+
+
 ### RefreshRequest
 
 #### Properties
@@ -644,7 +674,7 @@ Name | Type | Description | Notes
 **alternateId** | **kotlin.String** | Alternate identifier |  [optional]
 **email** | **kotlin.String** | Email address |  [optional]
 **firstName** | **kotlin.String** | Optional: first name |  [optional]
-**gMinusRecaptchaMinusResponse** | **kotlin.String** | Response from google Recaptcha |  [optional]
+**gRecaptchaResponse** | **kotlin.String** | Response from google Recaptcha |  [optional]
 **lastName** | **kotlin.String** | Optional: last name |  [optional]
 **password** | **kotlin.String** | Optional: password |  [optional]
 **source** | **kotlin.String** | Required when registering with &#x60;alternate_id&#x60;, source for non custodial user |  [optional]
@@ -679,15 +709,6 @@ Name | Type | Description | Notes
 Name | Value
 ---- | -----
 availability | Available, Taken, InCart, ComingSoon, NoPrice
-
-
-
-### SuccessResponse
-
-#### Properties
-Name | Type | Description | Notes
------------- | ------------- | ------------- | -------------
-**message** | **kotlin.String** |  | 
 
 
 
@@ -766,7 +787,7 @@ Name | Type | Description | Notes
 - **Location**: HTTP header
 
 
-### Two factor authentication
+### two_factor
 
 - **Type**: API key
 - **API key parameter name**: Authorization

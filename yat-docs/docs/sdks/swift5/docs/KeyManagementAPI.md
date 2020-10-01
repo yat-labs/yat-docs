@@ -54,7 +54,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[JWT](../README.md#JWT), [Two factor authentication](../README.md#Two factor authentication)
+[JWT](../README.md#JWT), [two_factor](../README.md#two_factor)
 
 ### HTTP request headers
 
@@ -103,7 +103,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[JWT](../README.md#JWT), [Two factor authentication](../README.md#Two factor authentication)
+[JWT](../README.md#JWT), [two_factor](../README.md#two_factor)
 
 ### HTTP request headers
 
@@ -146,7 +146,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-[JWT](../README.md#JWT), [Two factor authentication](../README.md#Two factor authentication)
+[JWT](../README.md#JWT), [two_factor](../README.md#two_factor)
 
 ### HTTP request headers
 

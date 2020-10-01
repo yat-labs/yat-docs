@@ -39,7 +39,7 @@ Name | Type | Description  | Notes
 Configure JWT:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
-Configure Two factor authentication:
+Configure two_factor:
     ApiClient.apiKey["Authorization"] = ""
     ApiClient.apiKeyPrefix["Authorization"] = ""
 
