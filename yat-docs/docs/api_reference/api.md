@@ -17,7 +17,7 @@ import TabItem from '@theme/TabItem';
 ## General information
 
 ### Description
-**Version:** 0.1.130
+**Version:** 0.1.133
 
 Emoji ID is a directory service that associates almost any type of structured data with a short, memorable identifier the emoji id.
 
@@ -3669,6 +3669,370 @@ To perform this operation, you must be authenticated by means of one of the foll
 JWT, two_factor
 :::
 
+### Update two factor authentication
+
+<a id="opIdupdate2FA"></a>
+
+*Update two factor authentication*
+
+Returning String with SVG QR code when enabling 2FA OR empty String in the case of disabling<br/> NOTE: This call does not take effect until code is confirmed via `POST /account/2fa/confirm`
+
+#### Example
+  `POST /account/2fa`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+const inputBody = {
+  "height": 0,
+  "requires_2fa": "GoogleAuthenticator",
+  "width": 0
+};
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
+};
+
+fetch('/account/2fa',
+{
+  method: 'POST',
+  body: JSON.stringify(inputBody),
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val apiBaseURL = "https://api.y.at"
+    val httpClient = OkHttpClient()
+    val requestBody = 
+        """
+{
+  "height": 0,
+  "requires_2fa": "GoogleAuthenticator",
+  "width": 0
+}
+        """.toRequestBody("application/json; charset=utf-8".toMediaType())
+    val request = Request.Builder()
+        .url("$apiBaseURL/account/2fa")
+        .post(requestBody)
+        .build()
+    httpClient.newCall(request).enqueue(object : Callback {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body != null) {
+                    println("Successful (${response.code}) with response: " + response.body?.string())
+                } else {
+                    println("Successful (${response.code}) with empty response.")
+                }
+            } else {
+                println("Failed with status code: ${response.code}")
+            }
+        }
+        override fun onFailure(call: Call, e: IOException) {
+            println("Request failed: $e")
+        }
+    })
+}
+```
+
+</TabItem>
+<TabItem value="swift5">
+
+```swift
+import Foundation
+
+let apiBaseURL = "https://api.y.at"
+let url = URL(string: apiBaseURL + "/account/2fa")
+
+var request = URLRequest(url: url!)
+request.httpMethod = "POST"
+request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+let requestBody = """
+{
+  "height": 0,
+  "requires_2fa": "GoogleAuthenticator",
+  "width": 0
+}
+"""
+request.httpBody = requestBody.data(using: .utf8)
+
+let sessionConfiguration = URLSessionConfiguration.default
+let session = URLSession(configuration: sessionConfiguration)
+let task = session.dataTask(with: request) { (data, response, error) in
+    guard error == nil else {
+        print("Request failed: \(String(describing: error))")
+        return
+    }
+    if let response = response as? HTTPURLResponse {
+        if (response.statusCode >= 200
+            && response.statusCode < 300) {
+            print("Successful with status code: \(response.statusCode)")
+        } else {
+            print("Failed with status code: \(response.statusCode)")
+        }
+        // display body
+        if let data = data, let responseBody = String(data: data, encoding: .utf8) {
+            print("Response body:")
+            print(responseBody)
+        } else {
+            print("Empty response body.")
+        }
+    } else {
+        print("Unexpected response type.")
+    }
+}
+task.resume()
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Body parameter
+
+```json
+{
+  "height": 0,
+  "requires_2fa": "GoogleAuthenticator",
+  "width": 0
+}
+```
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[Update2FAParameters](#update2faparameters)|true|none|
+
+<h4 id="update2fa-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[Update2FAResponse](#update2faresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+:::info Authentication
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT
+:::
+
+### Confirm two factor authentication update
+
+<a id="opIdconfirm2FA"></a>
+
+*Confirm two factor authentication update*
+
+Match 2FA code and commit two factor authentication setting for user account
+
+#### Example
+  `POST /account/2fa/confirm`
+
+<Tabs
+  defaultValue="nodejs"
+  groupId="operation_code_samples"
+  values={[
+    
+    { label: 'Javascript / NodeJs', value: 'nodejs', },
+    
+    { label: 'Android / Kotlin', value: 'kotlin', },
+    
+    { label: 'iOS / Swift 5', value: 'swift5', },
+    
+  ]
+}>
+
+<TabItem value="nodejs">
+
+```javascript
+const fetch = require('node-fetch');
+const inputBody = {
+  "code": "string"
+};
+const headers = {
+  'Content-Type':'application/json',
+  'Accept':'*/*',
+  'Authorization':'API_KEY'
+};
+
+fetch('/account/2fa/confirm',
+{
+  method: 'POST',
+  body: JSON.stringify(inputBody),
+  headers: headers
+})
+.then(function(res) {
+    return res.json();
+}).then(function(body) {
+    console.log(body);
+});
+```
+
+</TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Callback
+import okhttp3.Response
+import okhttp3.Call
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+
+fun main() {
+    val apiBaseURL = "https://api.y.at"
+    val httpClient = OkHttpClient()
+    val requestBody = 
+        """
+{
+  "code": "string"
+}
+        """.toRequestBody("application/json; charset=utf-8".toMediaType())
+    val request = Request.Builder()
+        .url("$apiBaseURL/account/2fa/confirm")
+        .post(requestBody)
+        .build()
+    httpClient.newCall(request).enqueue(object : Callback {
+        override fun onResponse(call: Call, response: Response) {
+            if (response.isSuccessful) {
+                if (response.body != null) {
+                    println("Successful (${response.code}) with response: " + response.body?.string())
+                } else {
+                    println("Successful (${response.code}) with empty response.")
+                }
+            } else {
+                println("Failed with status code: ${response.code}")
+            }
+        }
+        override fun onFailure(call: Call, e: IOException) {
+            println("Request failed: $e")
+        }
+    })
+}
+```
+
+</TabItem>
+<TabItem value="swift5">
+
+```swift
+import Foundation
+
+let apiBaseURL = "https://api.y.at"
+let url = URL(string: apiBaseURL + "/account/2fa/confirm")
+
+var request = URLRequest(url: url!)
+request.httpMethod = "POST"
+request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+let requestBody = """
+{
+  "code": "string"
+}
+"""
+request.httpBody = requestBody.data(using: .utf8)
+
+let sessionConfiguration = URLSessionConfiguration.default
+let session = URLSession(configuration: sessionConfiguration)
+let task = session.dataTask(with: request) { (data, response, error) in
+    guard error == nil else {
+        print("Request failed: \(String(describing: error))")
+        return
+    }
+    if let response = response as? HTTPURLResponse {
+        if (response.statusCode >= 200
+            && response.statusCode < 300) {
+            print("Successful with status code: \(response.statusCode)")
+        } else {
+            print("Failed with status code: \(response.statusCode)")
+        }
+        // display body
+        if let data = data, let responseBody = String(data: data, encoding: .utf8) {
+            print("Response body:")
+            print(responseBody)
+        } else {
+            print("Empty response body.")
+        }
+    } else {
+        print("Unexpected response type.")
+    }
+}
+task.resume()
+```
+
+</TabItem>
+
+</Tabs>
+
+#### Body parameter
+
+```json
+{
+  "code": "string"
+}
+```
+
+#### Parameters
+
+|Name|In|Type|Required|Description|
+|---|---|---|---|---|
+|body|body|[Confirm2FaUpdate](#confirm2faupdate)|true|none|
+
+<h4 id="confirm2fa-responses">Responses</h4>
+
+|Status|Meaning|Description|Schema|
+|---|---|---|---|
+|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|OK|[SuccessResponse](#successresponse)|
+|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|Bad request: Request body or parameters are not in the expected format.|None|
+|401|[Unauthorized](https://tools.ietf.org/html/rfc7235#section-3.1)|Unauthorized: Access token not found or invalid.|None|
+|422|[Unprocessable Entity](https://tools.ietf.org/html/rfc2518#section-10.3)|Unprocessable Entity: Duplicate record.|None|
+|500|[Internal Server Error](https://tools.ietf.org/html/rfc7231#section-6.6.1)|Internal server error.|None|
+
+:::info Authentication
+To perform this operation, you must be authenticated by means of one of the following methods:
+JWT
+:::
+
 ### List users
 
 <a id="opIdgetAllUsers"></a>
@@ -6113,6 +6477,23 @@ JWT
 
 ```
 
+### Confirm2FaUpdate
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|code|string|true|none|Auth code of newly or previously setup 2FA.|
+
+#### Example
+
+```json
+{
+  "code": "string"
+}
+
+```
+
 ### CurrentUser
 
 #### Properties
@@ -7025,6 +7406,23 @@ A hexadecimal representation of a 256-bit public key.
 
 ```
 
+### SuccessResponse
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|message|string|true|none|None.|
+
+#### Example
+
+```json
+{
+  "message": "string"
+}
+
+```
+
 ### TokenResponse
 
 #### Properties
@@ -7048,6 +7446,52 @@ A hexadecimal representation of a 256-bit public key.
   "access_token": "string",
   "refresh_token": "string",
   "requires_2fa": "GoogleAuthenticator"
+}
+
+```
+
+### Update2FAParameters
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|height|integer(int32)|false|none|Optional heigth of generated QR code.|
+|requires_2fa|string|false|none|Setup 2FA provider (`GoogleAuthenticator`) for account Submit `null` to disable 2FA.|
+|width|integer(int32)|false|none|Optional width of generated QR code.|
+
+#### Enumerated Values
+
+|Property|Value|
+|---|---|
+|requires_2fa|GoogleAuthenticator|
+
+#### Example
+
+```json
+{
+  "height": 0,
+  "requires_2fa": "GoogleAuthenticator",
+  "width": 0
+}
+
+```
+
+### Update2FAResponse
+
+#### Properties
+
+|Name|Type|Required|Restrictions|Description|
+|---|---|---|---|---|
+|qr_code_svg|string|false|none|Secret as QR code in svg image, will be null when code is disabled.|
+|secret|string|false|none|Hex encoded secret, will be null when code is disabled.|
+
+#### Example
+
+```json
+{
+  "qr_code_svg": "string",
+  "secret": "0123456789abcdef"
 }
 
 ```

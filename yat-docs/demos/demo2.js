@@ -4,7 +4,7 @@ const yat = require(packagePath);
 const api = new yat.YatJs();
 api.basePath = 'http://localhost:3001';
 
-const email = "tester@y.at";
+const alternate_id = "tester";
 const password = "yatster";
 
 /**
@@ -15,7 +15,7 @@ async function register() {
     let details = new yat.RegisterUserParameters.constructFromObject({
         first_name: "Testy",
         last_name: "McTesty",
-        email,
+        alternate_id,
         password
     });
     try {
@@ -23,7 +23,7 @@ async function register() {
         console.log("Registered user response:", res);
         return true;
     } catch (err) {
-        const alreadyRegistered = err.status === 422 && err.body.fields.email[0].code === "uniqueness";
+        const alreadyRegistered = err.status === 422 && err.body.fields.alternate_id[0].code === "uniqueness";
         if (!alreadyRegistered) {
             console.log(`Could not register an account: ${err.error}`);
         }
@@ -52,7 +52,7 @@ async function login() {
     try {
         // If login fails after registration, it may be due to y.at still being in closed Alpha. Each registration must be manually
         // approved by an admin before you can continue.
-        let res = await api.login(email, password);
+        let res = await api.login(alternate_id, password);
     } catch (res) {
         console.log(`Could not log in: ${res.error}`);
         throw new Error("Could not login");
@@ -90,9 +90,7 @@ async function purchaseYat() {
     const cart = await api.cart().add(order);
     console.log("Order added to cart: ", cart);
     // Checkout..
-    const result = await api.cart().checkout({
-        method: {type: "Free"}
-    });
+    const result = await api.cart().checkout({ method: "Free" });
     console.log("Checkout succeeded: ", result);
     return myYat;
 }

@@ -65,10 +65,15 @@ async function activate_random_yat(user, code, pubkey, secret) {
     body.nonce = signature.public_nonce;
     body.pubkey = pubkey;
     body.signature = signature.signature;
-    console.log(body);
     let res = await apiUser.discounts().activateRandomYatCode(codeId, body);
     console.log(`Created cart ${res.id}`);
     return res;
+}
+
+async function checkout() {
+    let res = await apiUser.cart().checkout({ method: "Free" });
+    let eid = res.order_items.filter((item) => item.item_type == 'EmojiId')[0].emoji_id;
+    console.log('Congratulations with your free emoji: ', eid);
 }
 
 async function main() {
@@ -102,6 +107,9 @@ async function main() {
         for (const oi of cart.order_items) {
             console.log(`${oi.item_type} ${(oi.emoji_id ? ` ${oi.emoji_id}\t` : "\t\t" )} Value=${oi.unit_price_in_cents}`);
         }
+
+        // Finally acquire emoji for user
+        await checkout();
     } catch (error) {
         console.error(error);
     }

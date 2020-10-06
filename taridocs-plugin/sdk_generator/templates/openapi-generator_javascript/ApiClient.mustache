@@ -112,6 +112,10 @@ class ApiClient {
         }
     }
 
+    getRefreshToken() {
+        return (this.tokens || {}).refresh_token || "";
+    }
+
     {{#emitJSDoc}}/**
     * Returns a string representation for an actual parameter.
     * @param param The actual parameter.
@@ -439,7 +443,7 @@ class ApiClient {
         // Check whether tokens should be refreshed
         if (checkToken && authNames.includes("JWT") && this.jwt && this.jwt.isExpiring(this.tokenTimeout || 30) ) {
             // Access token is about to / has expired. Refresh the token first
-            const body = { refresh_token: (this.tokens || {}).refresh_token || ""};
+            const body = { refresh_token: this.getRefreshToken() };
             return this.callApi('/auth/token/refresh', 'POST', {}, {}, {}, {}, body, [], [], ['*/*'], TokenResponse, null, false)
                 // Then repeat the request
                 .then((res) => {

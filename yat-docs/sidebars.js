@@ -18,6 +18,7 @@ module.exports = {
         'User Guides': [
             'guides/overview',
             'guides/integration_general',
+            'guides/register',
             'guides/advanced_topics',
             'guides/categories'
         ],

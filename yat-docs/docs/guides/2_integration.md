@@ -128,9 +128,7 @@ async function purchaseYat() {
     const cart = await api.cart().add(order);
     console.log("Order added to cart: ", cart);
     // Checkout..
-    const result = await api.cart().checkout({
-        method: {type: "Free"}
-    });
+    const result = await api.cart().checkout({ method: "Free" });
     console.log("Checkout succeeded: ", result);
     return myYat;
 }
@@ -317,8 +315,12 @@ you will need to contact a y.at admin to activate your user account.
 :::
 
 There are a few ways to register a new account. The majority of use cases will make use of y.at's custodial wallet, in which case,
-you just need an email address and password to create a new account. You can also optionally provide some personal details
+you just need an `alternate_id` and `password` to create a new account. You can also optionally provide some personal details
 to personalise your profile, such as first and last name.
+
+It is possible to register without supplying a password. If you register with an `email` only, then all logins will require you to use the  [magic link](/docs/register#magic-links) feature. Magic links provide a great user experience on front-ends, but might not be ideal for pure API access to your yats.
+
+More details on user registration is provided in the [Creating a new user](/docs/register) section.
 
 <Tabs
   defaultValue="nodejs"
@@ -337,7 +339,7 @@ async function register() {
     let details = new yat.RegisterUserParameters.constructFromObject({
         first_name: "Testy",
         last_name: "McTesty",
-        email,
+        alternate_id,
         password
     });
     try {
@@ -345,7 +347,7 @@ async function register() {
         console.log("Registered user response:", res);
         return true;
     } catch (err) {
-        const alreadyRegistered = err.status === 422 && err.body.fields.email[0].code === "uniqueness";
+        const alreadyRegistered = err.status === 422 && err.body.fields.alternate_id[0].code === "uniqueness";
         if (!alreadyRegistered) {
             console.log(`Could not register an account: ${err.error}`);
         }
@@ -557,6 +559,8 @@ The recommended claim process is:
 * Add an item to the cart with the relevant Promo code
 * Checkout with the `Free` payment provider.
 
+More details and use cases of acquiring yats for account can be found in [Advanced integration topics](/docs/advanced_topics).
+
 This flow is achieved with three consecutive calls to the API:
 
 <Tabs
@@ -586,9 +590,7 @@ async function claimYat(myYat) {
     const cart = await api.cart().add(order);
     console.log("Order added to cart: ", cart);
     // Checkout..
-    const result = await api.cart().checkout({
-        method: {type: "Free"}
-    });
+    const result = await api.cart().checkout({ method: "Free" });
     console.log("Checkout succeeded: ", result);
     return myYat;
 }

@@ -47,6 +47,25 @@ class <moduleName> {
         const body = LoginRequest.constructFromObject(req);
         return this.userAuthentication().login(body).then(res => {
             this.client.authentications['JWT'].apiKey = res.access_token;
+            this.client.authentications['JWT'].requires2Fa = res.requires_2fa;
+            this.client.setToken(res);
+            return res;
+        }).catch(res => {
+            throw res.body;
+        });
+    }
+
+
+    confirm_2fa(code) {
+        if (!this.client.loggedIn()) {
+            throw "Requires regular login before confirming 2FA code";
+        }
+        const refresh_token = this.client.getRefreshToken()
+        const req = {code, refresh_token};
+        const body = Confirm2Fa.constructFromObject(req);
+        return this.userAuthentication().twoFactorAuthentication(body).then(res => {
+            this.client.authentications['JWT'].apiKey = res.access_token;
+            this.client.authentications['JWT'].requires2Fa = res.requires_2fa;
             this.client.setToken(res);
             return res;
         }).catch(res => {

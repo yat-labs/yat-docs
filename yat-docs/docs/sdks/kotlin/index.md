@@ -71,11 +71,13 @@ Class | Method | HTTP request | Description
 [UserInterestApi](docs/UserInterestApi.md) | [**getInterestedUsers**](docs/UserInterestApi.md#getinterestedusers) | **GET** /user_interests | Returns a paginated list of user interest records associated with the user
 [UserInterestApi](docs/UserInterestApi.md) | [**getUserInterestForYat**](docs/UserInterestApi.md#getuserinterestforyat) | **GET** /user_interests/{emoji_id} | Given an EmojiId returns information about the user interest if a record exists for this user
 [UserInterestApi](docs/UserInterestApi.md) | [**registerInterest**](docs/UserInterestApi.md#registerinterest) | **POST** /user_interests | Create new interest in emoji to be notified when available
+[UsersApi](docs/UsersApi.md) | [**confirm2FA**](docs/UsersApi.md#confirm2fa) | **POST** /account/2fa/confirm | Confirm two factor authentication update
 [UsersApi](docs/UsersApi.md) | [**createUser**](docs/UsersApi.md#createuser) | **POST** /users | Register a User
 [UsersApi](docs/UsersApi.md) | [**delete**](docs/UsersApi.md#delete) | **DELETE** /users/{id} | Delete a user
 [UsersApi](docs/UsersApi.md) | [**getAccount**](docs/UsersApi.md#getaccount) | **GET** /account | Current user account
 [UsersApi](docs/UsersApi.md) | [**getAllUsers**](docs/UsersApi.md#getallusers) | **GET** /users | List users
 [UsersApi](docs/UsersApi.md) | [**update**](docs/UsersApi.md#update) | **PATCH** /account | Update the currently logged in user
+[UsersApi](docs/UsersApi.md) | [**update2FA**](docs/UsersApi.md#update2fa) | **POST** /account/2fa | Update two factor authentication
 [UsersApi](docs/UsersApi.md) | [**updateUser**](docs/UsersApi.md#updateuser) | **PATCH** /users/{id} | Update a user as an admin
 
 
@@ -133,6 +135,15 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **code** | **kotlin.String** | Two factor authentication code | 
 **refreshToken** | **kotlin.String** | Refresh token obtained from login request | 
+
+
+
+### Confirm2FaUpdate
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**code** | **kotlin.String** | Auth code of newly or previously setup 2FA | 
 
 
 
@@ -712,6 +723,15 @@ availability | Available, Taken, InCart, ComingSoon, NoPrice
 
 
 
+### SuccessResponse
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**message** | **kotlin.String** |  | 
+
+
+
 ### TokenResponse
 
 #### Properties
@@ -727,6 +747,34 @@ Name | Type | Description | Notes
 Name | Value
 ---- | -----
 requires2fa | GoogleAuthenticator
+
+
+
+### Update2FAParameters
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**height** | **kotlin.Int** | Optional heigth of generated QR code |  [optional]
+**requires2fa** | [**inline**](#Requires2faEnum)
+ | Setup 2FA provider (&#x60;GoogleAuthenticator&#x60;) for account  Submit &#x60;null&#x60; to disable 2FA |  [optional]
+**width** | **kotlin.Int** | Optional width of generated QR code |  [optional]
+
+
+#### Enum: requires_2fa
+Name | Value
+---- | -----
+requires2fa | GoogleAuthenticator
+
+
+
+### Update2FAResponse
+
+#### Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**qrCodeSvg** | **kotlin.String** | Secret as QR code in svg image, will be null when code is disabled |  [optional]
+**secret** | **kotlin.String** | Hex encoded secret, will be null when code is disabled |  [optional]
 
 
 

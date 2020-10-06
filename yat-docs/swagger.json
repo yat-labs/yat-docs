@@ -97,6 +97,17 @@
         "refresh_token"
       ]
     },
+    "Confirm2FaUpdate": {
+      "properties": {
+        "code": {
+          "description": "Auth code of newly or previously setup 2FA",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code"
+      ]
+    },
     "CurrentUser": {
       "properties": {
         "global_scopes": {
@@ -105,47 +116,47 @@
           "items": {
             "type": "string",
             "enum": [
-              "admin-emoji:register",
-              "admin-emoji:write",
+              "adminEmoji:register",
+              "adminEmoji:write",
               "cart:show",
               "cart:update",
               "code:delete",
               "code:read",
               "code:write",
-              "emoji-groups:delete",
-              "emoji-groups:read",
-              "emoji-groups:write",
+              "emojiGroups:delete",
+              "emojiGroups:read",
+              "emojiGroups:write",
               "order:read",
-              "order:read-self",
+              "order:readSelf",
               "order:refund",
-              "order:refund-override",
-              "order:resend-confirmation",
+              "order:refundOverride",
+              "order:resendConfirmation",
               "organization:admin",
-              "organization-code:admin",
-              "organization-emoji:list",
-              "organization-emoji:write",
-              "organization-list:read",
+              "organizationCode:admin",
+              "organizationEmoji:list",
+              "organizationEmoji:write",
+              "organizationList:read",
               "organization:read",
-              "organization-user:admin",
-              "organization-user:read",
+              "organizationUser:admin",
+              "organizationUser:read",
               "organization:write",
-              "payment-method:destroy",
-              "payment-method:read",
-              "payment-method:set-default",
+              "paymentMethod:destroy",
+              "paymentMethod:read",
+              "paymentMethod:setDefault",
               "refund:read",
               "token:refresh",
-              "auth:two-factor",
+              "auth:twoFactor",
               "user:delete",
-              "user:delete-self",
-              "user-emoji:list",
-              "user-interest:delete",
-              "user-interest:read",
-              "user-interest:write",
+              "user:deleteSelf",
+              "userEmoji:list",
+              "userInterest:delete",
+              "userInterest:read",
+              "userInterest:write",
               "user:list",
-              "user-pubkeys:list",
-              "user-pubkeys:write",
+              "userPubkeys:list",
+              "userPubkeys:write",
               "user:write",
-              "user:write-self"
+              "user:writeSelf"
             ]
           }
         },
@@ -172,47 +183,47 @@
             "items": {
               "type": "string",
               "enum": [
-                "admin-emoji:register",
-                "admin-emoji:write",
+                "adminEmoji:register",
+                "adminEmoji:write",
                 "cart:show",
                 "cart:update",
                 "code:delete",
                 "code:read",
                 "code:write",
-                "emoji-groups:delete",
-                "emoji-groups:read",
-                "emoji-groups:write",
+                "emojiGroups:delete",
+                "emojiGroups:read",
+                "emojiGroups:write",
                 "order:read",
-                "order:read-self",
+                "order:readSelf",
                 "order:refund",
-                "order:refund-override",
-                "order:resend-confirmation",
+                "order:refundOverride",
+                "order:resendConfirmation",
                 "organization:admin",
-                "organization-code:admin",
-                "organization-emoji:list",
-                "organization-emoji:write",
-                "organization-list:read",
+                "organizationCode:admin",
+                "organizationEmoji:list",
+                "organizationEmoji:write",
+                "organizationList:read",
                 "organization:read",
-                "organization-user:admin",
-                "organization-user:read",
+                "organizationUser:admin",
+                "organizationUser:read",
                 "organization:write",
-                "payment-method:destroy",
-                "payment-method:read",
-                "payment-method:set-default",
+                "paymentMethod:destroy",
+                "paymentMethod:read",
+                "paymentMethod:setDefault",
                 "refund:read",
                 "token:refresh",
-                "auth:two-factor",
+                "auth:twoFactor",
                 "user:delete",
-                "user:delete-self",
-                "user-emoji:list",
-                "user-interest:delete",
-                "user-interest:read",
-                "user-interest:write",
+                "user:deleteSelf",
+                "userEmoji:list",
+                "userInterest:delete",
+                "userInterest:read",
+                "userInterest:write",
                 "user:list",
-                "user-pubkeys:list",
-                "user-pubkeys:write",
+                "userPubkeys:list",
+                "userPubkeys:write",
                 "user:write",
-                "user:write-self"
+                "user:writeSelf"
               ]
             }
           }
@@ -1049,7 +1060,7 @@
           "description": "Email",
           "type": "string"
         },
-        "g-recaptcha-response": {
+        "g_recaptcha_response": {
           "description": "Response from google Recaptcha",
           "type": "string"
         },
@@ -1130,7 +1141,7 @@
           "description": "Email",
           "type": "string"
         },
-        "g-recaptcha-response": {
+        "g_recaptcha_response": {
           "description": "Response from google Recaptcha",
           "type": "string"
         },
@@ -1140,6 +1151,28 @@
           "format": "uuid"
         }
       }
+    },
+    "MagicLinkLoginResponse": {
+      "properties": {
+        "message": {
+          "description": "Message",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status of requested user after completing the login request",
+          "type": "string",
+          "enum": [
+            "Active",
+            "RegisteredInactive",
+            "RegisteredActive",
+            "Inactive"
+          ]
+        }
+      },
+      "required": [
+        "message",
+        "status"
+      ]
     },
     "NewUserInterestParameters": {
       "properties": {
@@ -1298,7 +1331,7 @@
           "description": "Optional: first name",
           "type": "string"
         },
-        "g-recaptcha-response": {
+        "g_recaptcha_response": {
           "description": "Response from google Recaptcha",
           "type": "string"
         },
@@ -1457,6 +1490,41 @@
         "refresh_token"
       ]
     },
+    "Update2FAParameters": {
+      "properties": {
+        "height": {
+          "description": "Optional heigth of generated QR code",
+          "type": "integer",
+          "format": "int32"
+        },
+        "requires_2fa": {
+          "description": "Setup 2FA provider (`GoogleAuthenticator`) for account\n Submit `null` to disable 2FA",
+          "type": "string",
+          "enum": [
+            "GoogleAuthenticator",
+            null
+          ]
+        },
+        "width": {
+          "description": "Optional width of generated QR code",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Update2FAResponse": {
+      "properties": {
+        "qr_code_svg": {
+          "description": "Secret as QR code in svg image, will be null when code is disabled",
+          "type": "string"
+        },
+        "secret": {
+          "description": "Hex encoded secret, will be null when code is disabled",
+          "type": "string",
+          "example": "0123456789abcdef"
+        }
+      }
+    },
     "UpdateCartRequest": {
       "properties": {
         "items": {
@@ -1581,7 +1649,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -1611,6 +1679,96 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/UpdateUserParameters"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/account/2fa": {
+      "post": {
+        "operationId": "update2FA",
+        "summary": "Update two factor authentication",
+        "description": "Returning String with SVG QR code when enabling 2FA OR empty String in the case of disabling<br/> NOTE: This call does not take effect until code is confirmed via `POST /account/2fa/confirm`",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Update2FAResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Update2FAParameters"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/account/2fa/confirm": {
+      "post": {
+        "operationId": "confirm2FA",
+        "summary": "Confirm two factor authentication update",
+        "description": "Match 2FA code and commit two factor authentication setting for user account",
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request: Request body or parameters are not in the expected format."
+          },
+          "401": {
+            "description": "Unauthorized: Access token not found or invalid."
+          },
+          "422": {
+            "description": "Unprocessable Entity: Duplicate record."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Confirm2FaUpdate"
             }
           }
         ],
@@ -1668,7 +1826,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/SuccessResponse"
+              "$ref": "#/definitions/MagicLinkLoginResponse"
             }
           },
           "400": {
@@ -2068,7 +2226,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -2120,7 +2278,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -2430,7 +2588,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -2563,7 +2721,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -2601,7 +2759,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -2980,7 +3138,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -3082,7 +3240,7 @@
             "JWT": []
           },
           {
-            "two-factor": []
+            "two_factor": []
           }
         ],
         "responses": {
@@ -3135,7 +3293,7 @@
       "in": "header",
       "description": "Use format `Bearer TOKEN`"
     },
-    "two-factor": {
+    "two_factor": {
       "name": "Authorization",
       "type": "apiKey",
       "in": "header",
@@ -3173,7 +3331,7 @@
     }
   ],
   "info": {
-    "version": "0.1.125",
+    "version": "0.1.133",
     "title": "Emoji ID API server",
     "description": "Emoji ID is a directory service that associates almost any type of structured data with a short, memorable identifier the emoji id."
   }
