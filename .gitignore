@@ -6,3 +6,7 @@ yat-docs/build
 
 #secrets
 .env
+
+# generated docs
+yat-docs/docs/sdks/
+yat-docs/docs/api_reference/api.md

@@ -142,8 +142,16 @@ async function writeSdkDoc(lang, sdkSrc, ctx, options) {
     } catch (err) {
         debug("Error getting SDK source documentation: %s", err.message);
     }
+    let filter_fn;
+    switch (lang) {
+        case "swift":
+            filter_fn = _f => true;
+            break;
+        default:
+            filter_fn = f => f => f.toLowerCase().endsWith("api.md");
+    }
     const pArr = file_list
-        .filter(f => f.toLowerCase().endsWith("api.md"))
+        .filter(filter_fn)
         .map(async f =>  fs.copyFile(path.join(srcDocs, f), path.join(destDir, 'docs/', f)));
     await Promise.all(pArr);
     debug(`${lang.id} SDK documentation copied.`)

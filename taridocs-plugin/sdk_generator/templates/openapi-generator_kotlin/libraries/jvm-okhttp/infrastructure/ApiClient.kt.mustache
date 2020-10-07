@@ -1,8 +1,8 @@
 package {{packageName}}.infrastructure
 
-import okhttp3.Credentials
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
+import com.tarilabs.yat.apis.UserAuthenticationApi
+import com.tarilabs.yat.models.RefreshRequest
+import com.tarilabs.yat.models.TokenResponse
 {{#jvm-okhttp3}}
 import okhttp3.MediaType
 {{/jvm-okhttp3}}
@@ -21,9 +21,15 @@ import okhttp3.ResponseBody
 {{#jvm-okhttp4}}
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 {{/jvm-okhttp4}}
+import okhttp3.Route
+import okhttp3.Response
+import okhttp3.Authenticator
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.Request
 import okhttp3.Headers
 import okhttp3.MultipartBody
+import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import java.net.URLConnection
 import java.util.Date
@@ -42,24 +48,44 @@ import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
 {{/threetenbp}}
 
-{{#nonPublicApi}}internal {{/nonPublicApi}}open class ApiClient(val baseUrl: String) {
+interface TokenStorage {
+    var accessToken: String?
+    var refreshToken: String?
+}
+
+private class InMemoryTokenStorage: TokenStorage {
+    private var inMemoryAccessToken: String? = null
+    private var inMemoryRefreshToken: String? = null
+
+    override var accessToken: String?
+        get() = inMemoryAccessToken
+        set(value) { inMemoryAccessToken = value }
+    override var refreshToken: String?
+        get() = inMemoryRefreshToken
+        set(value) { inMemoryRefreshToken = value }
+}
+
+{{#nonPublicApi}}internal {{/nonPublicApi}}open class ApiClient {
     {{#nonPublicApi}}internal {{/nonPublicApi}}companion object {
         protected const val ContentType = "Content-Type"
         protected const val Accept = "Accept"
         protected const val Authorization = "Authorization"
+        protected const val Bearer = "Bearer"
         protected const val JsonMediaType = "application/json"
         protected const val FormDataMediaType = "multipart/form-data"
         protected const val FormUrlEncMediaType = "application/x-www-form-urlencoded"
         protected const val XmlMediaType = "application/xml"
 
-        val apiKey: MutableMap<String, String> = mutableMapOf()
-        val apiKeyPrefix: MutableMap<String, String> = mutableMapOf()
-        var username: String? = null
-        var password: String? = null
-        var accessToken: String? = null
+        var baseUrl: String = ""
+        var tokenStorage: TokenStorage = InMemoryTokenStorage()
+        var logLevel = HttpLoggingInterceptor.Level.BASIC
 
         @JvmStatic
         val client: OkHttpClient by lazy {
+            builder.authenticator(AccessTokenAuthenticator())
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.level = (logLevel)
+            builder.addInterceptor(loggingInterceptor)
             builder.build()
         }
 
@@ -168,69 +194,18 @@ import org.threeten.bp.OffsetTime
         if (bodyContent.isEmpty()) {
             return null
         }
-        return when(mediaType) {
-            JsonMediaType -> {{#moshi}}Serializer.moshi.adapter(T::class.java).fromJson(bodyContent){{/moshi}}{{#gson}}Serializer.gson.fromJson(bodyContent, T::class.java){{/gson}}{{#jackson}}Serializer.jacksonObjectMapper.readValue(bodyContent, T::class.java){{/jackson}}
+        when(mediaType) {
+            JsonMediaType -> {
+                val bodyObject = {{#moshi}}Serializer.moshi.adapter(T::class.java).fromJson(bodyContent){{/moshi}}{{#gson}}Serializer.gson.fromJson(bodyContent, T::class.java){{/gson}}{{#jackson}}Serializer.jacksonObjectMapper.readValue(bodyContent, T::class.java){{/jackson}}
+                if (bodyObject is TokenResponse) {
+                    tokenStorage.accessToken = bodyObject.accessToken
+                    tokenStorage.refreshToken = bodyObject.refreshToken
+                }
+                return bodyObject
+            }
             else ->  throw UnsupportedOperationException("responseBody currently only supports JSON body.")
         }
     }
-
-    {{#hasAuthMethods}}
-    protected fun updateAuthParams(requestConfig: RequestConfig) {
-        {{#authMethods}}
-        {{#isApiKey}}
-        {{#isKeyInHeader}}
-        if (requestConfig.headers["{{keyParamName}}"].isNullOrEmpty()) {
-        {{/isKeyInHeader}}
-        {{#isKeyInQuery}}
-        if (requestConfig.query["{{keyParamName}}"].isNullOrEmpty()) {
-        {{/isKeyInQuery}}
-            if (apiKey["{{keyParamName}}"] != null) {
-                if (apiKeyPrefix["{{keyParamName}}"] != null) {
-                    {{#isKeyInHeader}}
-                    requestConfig.headers["{{keyParamName}}"] = apiKeyPrefix["{{keyParamName}}"]!! + " " + apiKey["{{keyParamName}}"]!!
-                    {{/isKeyInHeader}}
-                    {{#isKeyInQuery}}
-                    requestConfig.query["{{keyParamName}}"] = apiKeyPrefix["{{keyParamName}}"]!! + " " + apiKey["{{keyParamName}}"]!!
-                    {{/isKeyInQuery}}
-                } else {
-                    {{#isKeyInHeader}}
-                    requestConfig.headers["{{keyParamName}}"] = apiKey["{{keyParamName}}"]!!
-                    {{/isKeyInHeader}}
-                    {{#isKeyInQuery}}
-                    requestConfig.query["{{keyParamName}}"] = apiKey["{{keyParamName}}"]!!
-                    {{/isKeyInQuery}}
-                }
-            }
-        }
-        {{/isApiKey}}
-        {{#isBasic}}
-        {{#isBasicBasic}}
-        if (requestConfig.headers[Authorization].isNullOrEmpty()) {
-            username?.let { username ->
-                password?.let { password ->
-                    requestConfig.headers[Authorization] = Credentials.basic(username, password)
-                }
-            }
-        }
-        {{/isBasicBasic}}
-        {{#isBasicBearer}}
-        if (requestConfig.headers[Authorization].isNullOrEmpty()) {
-            accessToken?.let { accessToken ->
-                requestConfig.headers[Authorization] = "Bearer $accessToken"
-            }
-        }
-        {{/isBasicBearer}}
-        {{/isBasic}}
-        {{#isOAuth}}
-        if (requestConfig.headers[Authorization].isNullOrEmpty()) {
-            accessToken?.let { accessToken ->
-                requestConfig.headers[Authorization] = "Bearer $accessToken "
-            }
-        }
-        {{/isOAuth}}
-        {{/authMethods}}
-    }
-    {{/hasAuthMethods}}
 
     protected inline fun <reified T: Any?> request(requestConfig: RequestConfig, body : Any? = null): ApiInfrastructureResponse<T?> {
         {{#jvm-okhttp3}}
@@ -239,11 +214,9 @@ import org.threeten.bp.OffsetTime
         {{#jvm-okhttp4}}
         val httpUrl = baseUrl.toHttpUrlOrNull() ?: throw IllegalStateException("baseUrl is invalid.")
         {{/jvm-okhttp4}}
-        {{#hasAuthMethods}}
 
-        // take authMethod from operation
-        updateAuthParams(requestConfig)
-        {{/hasAuthMethods}}
+        // add auth header
+        tokenStorage?.accessToken?.let { requestConfig.headers[Authorization] = "Bearer $it" }
 
         val url = httpUrl.newBuilder()
             .addPathSegments(requestConfig.path.trimStart('/'))
@@ -333,7 +306,7 @@ import org.threeten.bp.OffsetTime
                 return toMultiValue(value, "csv").toString()
             }
             is OffsetDateTime, is OffsetTime, is LocalDateTime, is LocalDate, is LocalTime, is Date -> {
-                return parseDateToQueryString<Any>(value)
+                return parseDateToQueryString(value)
             }
             else -> {
                 return value.toString()
@@ -341,7 +314,7 @@ import org.threeten.bp.OffsetTime
         }
     }
 
-    protected inline fun <reified T: Any> parseDateToQueryString(value : T): String {
+    private inline fun <reified T: Any> parseDateToQueryString(value : T): String {
         {{#toJson}}
         /*
         .replace("\"", "") converts the json object string to an actual string for the query parameter.
@@ -363,4 +336,39 @@ import org.threeten.bp.OffsetTime
         return value.toString()
         {{/toJson}}
     }
+
+    private class AccessTokenAuthenticator: Authenticator {
+
+        override fun authenticate(route: Route?, response: Response): Request? {
+            val accessToken = tokenStorage?.accessToken
+            val refreshToken = tokenStorage?.refreshToken
+            val authHeader = response.request.header(Authorization)
+            if (accessToken == null || refreshToken == null) {
+                return null
+            } else if (authHeader == null || !authHeader.startsWith(Bearer)) {
+                return null
+            }
+
+            synchronized(client) {
+                // check if access token is refreshed in another thread
+                if (accessToken != tokenStorage?.accessToken) {
+                    // token refreshed, continue with the new token
+                    return response.request.newBuilder()
+                            .header(Authorization, "$Bearer ${tokenStorage?.accessToken}")
+                            .build()
+                }
+                // need to refresh the access token
+                val tokenResponse = UserAuthenticationApi.shared.refreshToken(
+                    RefreshRequest(refreshToken)
+                )
+                tokenStorage?.accessToken = tokenResponse.accessToken
+                tokenStorage?.refreshToken = tokenResponse.refreshToken
+                return response.request.newBuilder()
+                        .header(Authorization, "$Bearer ${tokenResponse.accessToken}")
+                        .build()
+            }
+        }
+
+    }
+
 }

@@ -14,15 +14,13 @@ import {{packageName}}.infrastructure.RequestConfig
 import {{packageName}}.infrastructure.RequestMethod
 import {{packageName}}.infrastructure.ResponseType
 import {{packageName}}.infrastructure.Success
-import {{packageName}}.infrastructure.toMultiValue
 
 {{#operations}}
-{{#nonPublicApi}}internal {{/nonPublicApi}}class {{classname}}(basePath: kotlin.String = defaultBasePath) : ApiClient(basePath) {
+{{#nonPublicApi}}internal {{/nonPublicApi}}class {{classname}} : ApiClient() {
+
     companion object {
-        @JvmStatic
-        val defaultBasePath: String by lazy {
-            System.getProperties().getProperty("{{packageName}}.baseUrl", "{{{basePath}}}")
-        }
+        // The shared singleton.
+        val shared = {{classname}}()
     }
 
     {{#operation}}
@@ -41,9 +39,9 @@ import {{packageName}}.infrastructure.toMultiValue
     @Deprecated(message = "This operation is deprecated.")
     {{/isDeprecated}}
     {{^doNotUseRxAndCoroutines}}{{#useCoroutines}}suspend {{/useCoroutines}}{{/doNotUseRxAndCoroutines}}fun {{operationId}}({{#allParams}}{{{paramName}}}: {{{dataType}}}{{^required}}?{{/required}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) : {{#returnType}}{{{returnType}}}{{#nullableReturnType}}?{{/nullableReturnType}}{{/returnType}}{{^returnType}}Unit{{/returnType}} {
-        val localVariableBody: kotlin.Any? = {{#hasBodyParam}}{{#bodyParams}}{{{paramName}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{^hasFormParams}}null{{/hasFormParams}}{{#hasFormParams}}mapOf({{#formParams}}"{{{baseName}}}" to {{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/formParams}}){{/hasFormParams}}{{/hasBodyParam}}
+        val localVariableBody: Any? = {{#hasBodyParam}}{{#bodyParams}}{{{paramName}}}{{/bodyParams}}{{/hasBodyParam}}{{^hasBodyParam}}{{^hasFormParams}}null{{/hasFormParams}}{{#hasFormParams}}mapOf({{#formParams}}"{{{baseName}}}" to {{{paramName}}}{{#hasMore}}, {{/hasMore}}{{/formParams}}){{/hasFormParams}}{{/hasBodyParam}}
         val localVariableQuery: MultiValueMap = {{^hasQueryParams}}mutableMapOf()
-{{/hasQueryParams}}{{#hasQueryParams}}mutableMapOf<kotlin.String, List<kotlin.String>>()
+{{/hasQueryParams}}{{#hasQueryParams}}mutableMapOf<String, List<String>>()
             .apply {
                 {{#queryParams}}
                 {{^required}}

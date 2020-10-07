@@ -207,7 +207,185 @@ register()
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+import com.tarilabs.yat.infrastructure.ApiClient
+import com.tarilabs.yat.apis.*
+import com.tarilabs.yat.models.*
+
+const val email = "tester@y.at"
+const val password = "yatster"
+
+/**
+ * Setup the API client.
+ */
+fun setup() {
+    // Set API base URL.
+    ApiClient.baseUrl = "http://api.y.at"
+}
+
+/**
+ * Register a new Yat account.
+ */
+fun register(): Boolean {
+    val details = RegisterUserParameters(
+        firstName = "Testy",
+        lastName = "McTesty",
+        email = email,
+        password = password
+    )
+    return try {
+        val user = UsersApi.shared.createUser(details)
+        println("Registered user response: $user")
+        true
+    } catch (exception: Exception) {
+        val alreadyRegistered = exception.message?.contains("422") ?: false
+        if (!alreadyRegistered) {
+            throw Exception("Could not register an account: ${exception.message}")
+        }
+        alreadyRegistered
+    }
+}
+
+/**
+ * Generate a random yat of length `len` from the given list of emoji
+ */
+fun selectRandomYat(list: List<String>, len: Int): String {
+    return list.shuffled()
+        .take(len)
+        .joinToString(separator = "")
+}
+
+/**
+ * Login into the yat API
+ */
+fun login() {
+    try {
+        // If login fails after registration, it may be due to y.at still being in
+        // closed Alpha. Each registration must be manually approved by an admin
+        // before you can continue.
+        UserAuthenticationApi.shared.login(
+            LoginRequest(
+                email = email,
+                password = password
+            )
+        )
+    } catch (exception: Exception) {
+        println("Could not login: ${exception.message}")
+        throw Exception("Could not login")
+    }
+}
+
+/**
+ * Attempt to procure a free yat using the given promo code
+ */
+fun purchaseYat(): String {
+    // Request the set of supported emoji
+    val emojiList = EmojiApi.shared.emojiList()
+    // Clear the cart
+    CartApi.shared.clear()
+    // This is for demo purposes. There are also endpoints for
+    // automatically selecting a random yat and applying a promo code.
+    var yatIsAvailable: Boolean
+    var myYat: String
+    do {
+        myYat = selectRandomYat(emojiList, 4)
+        println("Checking $myYat availability...")
+        val yatInfo = EmojiIDApi.shared.search(
+            myYat,
+            redemptionCode = "FREEYAT"
+        )
+        println(yatInfo.result)
+        yatIsAvailable = yatInfo.result.available
+    } while (!yatIsAvailable)
+    // Add the yat to the cart. This time use the constructor
+    val order = UpdateCartRequest(
+        items = listOf(
+            UpdateCartRequestItems(
+                emojiId = myYat,
+                redemptionCode = "FREEYAT"
+            )
+        )
+    )
+    val cart = CartApi.shared.addItems(order)
+    println("Order added to cart: $cart")
+    // Checkout..
+    val result = CartApi.shared.checkout(
+        CheckoutCartRequestBody(
+            method = CheckoutCartRequestBody.Method.free
+        )
+    )
+    println("Checkout succeeded: $result")
+    return myYat
+}
+
+/**
+ * List the yats the user owns
+ */
+fun getMyYats(): List<String> {
+    val yats = EmojiIDApi.shared.list(
+        organizationId = null,
+        userId = null
+    )
+    println("These are my yats: $yats")
+    return yats
+}
+
+/**
+ * Add a url record to my Yat
+ */
+fun addYatRecord(yat: String, url: String) {
+    val req = EditRequest(
+        insert = listOf(
+            EditRequestInsert(
+                tag = "0x4001",
+                data = url
+            )
+        )
+    )
+    try {
+        EmojiIDApi.shared.edit(yat, req)
+        println("URL added to yat.")
+    } catch (exception: Exception) {
+        println("Error Result of adding record request: ${exception.message}")
+    }
+}
+
+/**
+ * Display all the records associated with the given yat
+ */
+fun printYatRecords(yat: String) {
+    try {
+        val records = EmojiIDApi.shared.lookup(yat, tags = null)
+        println(records)
+    } catch (exception: Exception) {
+        println("Error fetching yat data: ${exception.message}")
+    }
+}
+
+/**
+ * Main function
+ */
+fun main() {
+    setup()
+    try {
+        register()
+        login()
+        val yats = getMyYats()
+        val yat = if (yats.isEmpty()) {
+            purchaseYat()
+        } else {
+            yats[0]
+        }
+        Thread.sleep(1000)
+        addYatRecord(
+            yat,
+            "https://api-docs.y.at/docs/sdks/kotlin/sdk_kotlin_index"
+        )
+        printYatRecords(yat)
+    } catch (exception: Exception) {
+        println("Error: ${exception.message}")
+    }
+    println("Bye!")
+}
 ```
 
 </TabItem>
@@ -301,7 +479,67 @@ Bye!
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMING SOON 🚧
+Checking 🍘🃏🏍️⛸️ availability...
+SearchResultResult(
+    availability=available,
+    available=true,
+    discountedPrice=0,
+    emojiId=🍘🃏🏍️⛸️,
+    price=4800,
+    viewsPastMonth=1
+)
+Order added to cart: DisplayOrder(
+    createdAt=2020-10-05T14:49:27.075676Z,
+    eligibleForRefund=false,
+    id=63a5f7f3-2169-4c8f-b38c-7d0907dd089b,
+    miscRefundedTotalInCents=0,
+    orderItems=[...],
+    orderNumber=07dd089b,
+    refundedTotalInCents=0,
+    status=draft,
+    totalInCents=0,
+    updatedAt=2020-10-05T14:49:27.567199Z,
+    user=DisplayOrderUser(...),
+    userId=13e94d21-7d34-4331-9e87-3c00ed05e5a5,
+    expiresAt=2020-10-05T15:04:27.551149Z,
+    organizationId=null,
+    paidAt=null,
+    paymentMethodData=null,
+    secondsUntilExpiry=899
+)
+Checkout succeeded: DisplayOrder(
+    createdAt=2020-10-05T14:49:27.075676Z,
+    eligibleForRefund=true,
+    id=63a5f7f3-2169-4c8f-b38c-7d0907dd089b,
+    miscRefundedTotalInCents=0,
+    orderItems=[...],
+    orderNumber=07dd089b,
+    refundedTotalInCents=0,
+    status=paid,
+    totalInCents=0,
+    updatedAt=2020-10-05T14:49:27.737642Z,
+    user=DisplayOrderUser(...),
+    userId=13e94d21-7d34-4331-9e87-3c00ed05e5a5,
+    expiresAt=null,
+    organizationId=null,
+    paidAt=2020-10-05T14:49:27.719656Z,
+    paymentMethodData=null,
+    secondsUntilExpiry=null
+)
+URL added to yat.
+LookupResponse(
+    viewsPastMonth=2,
+    error=null,
+    result=[
+        LookupResponseResult(
+            data=https://api-docs.y.at/docs/sdks/kotlin/sdk_kotlin_index,
+            hash=a54e26b78d811a0fc152aa679e4ea1c69b49ea0e7a936dba0bf37aeea7ce1b7f,
+            tag=0x4001
+        )
+    ],
+    status=true
+)
+Bye!
 ```
 
 </TabItem>
@@ -366,8 +604,30 @@ async function register() {
 </TabItem>
 <TabItem value="kotlin">
 
-```kotlin
-  🚧 COMIN SOON 🚧
+```kotlin {6-11,13}
+import com.tarilabs.yat.infrastructure.ApiClient
+import com.tarilabs.yat.apis.*
+import com.tarilabs.yat.models.*
+
+fun register(): Boolean {
+    val details = RegisterUserParameters(
+        firstName = "Testy",
+        lastName = "McTesty",
+        email = email,
+        password = password
+    )
+    return try {
+        val user = UsersApi.shared.createUser(details)
+        println("Registered user response: $user")
+        true
+    } catch (exception: Exception) {
+        val alreadyRegistered = exception.message?.contains("422") ?: false
+        if (!alreadyRegistered) {
+            throw Exception("Could not register an account: ${exception.message}")
+        }
+        alreadyRegistered
+    }
+}
 ```
 
 </TabItem>
@@ -458,6 +718,32 @@ async function login() {
 ```
 
 </TabItem>
+<TabItem value="kotlin">
+
+```kotlin {9-14}
+import com.tarilabs.yat.infrastructure.ApiClient
+import com.tarilabs.yat.apis.*
+import com.tarilabs.yat.models.*
+
+// ...
+
+fun login() {
+    try {
+        UserAuthenticationApi.shared.login(
+            LoginRequest(
+                email = email,
+                password = password
+            )
+        )
+        // Api calls that require auth are automatically managed for you...
+        let result = SomeApi.shared.someAuthFunction(foo)
+    } catch (exception: Exception) {
+        println("Could not login: ${exception.message}")
+        throw Exception("Could not login")
+    }
+}
+```
+</TabItem>
 </Tabs>
 
 ## Purchasing a Yat
@@ -510,8 +796,24 @@ async function checkYatAvailability(myYat) {
 </TabItem>
 <TabItem value="kotlin">
 
-```kotlin
-  // 🚧 COMING SOON 🚧
+```kotlin {9-12}
+import com.tarilabs.yat.infrastructure.ApiClient
+import com.tarilabs.yat.apis.*
+import com.tarilabs.yat.models.*
+
+// ... Login etc
+
+fun checkYatAvailability(myYat: String) {
+    println("Checking $myYat availability...")
+    val yatInfo = EmojiIDApi.shared.search(
+        myYat,
+        redemptionCode = "AURORA123"
+    )
+    println(yatInfo.result)
+    if (!yatInfo.result.available) {
+        println("Bad luck:( $myYat is not available.")
+    }
+}
 ```
 
 </TabItem>
@@ -559,7 +861,10 @@ The recommended claim process is:
 * Add an item to the cart with the relevant Promo code
 * Checkout with the `Free` payment provider.
 
-More details and use cases of acquiring yats for account can be found in [Advanced integration topics](/docs/advanced_topics).
+:::tip
+Integration partners and affiliates may be interested in the random free yat allocation flow in the
+[Advanced integration topics](/docs/advanced_topics) section.
+:::
 
 This flow is achieved with three consecutive calls to the API:
 
@@ -597,6 +902,38 @@ async function claimYat(myYat) {
 ```
 
 </TabItem>
+
+<TabItem value="kotlin">
+
+```kotlin {3,14,17}
+fun claimYat(myYat: String): String {
+    // Clear the cart
+    CartApi.shared.clear()
+
+    // Add the yat to the cart. This time use the constructor
+    val order = UpdateCartRequest(
+        items = listOf(
+            UpdateCartRequestItems(
+                emojiId = myYat,
+                redemptionCode = "FREEYAT"
+            )
+        )
+    )
+    val cart = CartApi.shared.addItems(order)
+    println("Order added to cart: $cart")
+    // Checkout..
+    val result = CartApi.shared.checkout(
+        CheckoutCartRequestBody(
+            method = CheckoutCartRequestBody.Method.free
+        )
+    )
+    println("Checkout succeeded: $result")
+    return myYat
+}
+```
+
+</TabItem>
+
 </Tabs>
 
 The final response from a successful checkout is the final order object and looks similar to the following:
@@ -697,8 +1034,20 @@ async function fetchMyYats() {
 </TabItem>
 <TabItem value="kotlin">
 
-```kotlin
-  🚧 COMIN SOON 🚧
+```kotlin {8-11}
+import com.tarilabs.yat.infrastructure.ApiClient
+import com.tarilabs.yat.apis.*
+import com.tarilabs.yat.models.*
+
+// Log in ...
+
+fun fetchMyYats(): List<String> {
+    val yats = EmojiIDApi.shared.list(
+        organizationId = null,
+        userId = null
+    )
+    return yats
+}
 ```
 
 </TabItem>
@@ -773,7 +1122,28 @@ async function addYatRecord(yat, url) {
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+fun addYatRecord(yat: String, url: String): String {
+    try {
+        // Delete existing record
+        var updates = EditRequest(
+            delete = listOf("cdc56f98660c2d684605ada33266918043d7d1935e2b9f13550b32d05191bc7a")
+        )
+        EmojiIDApi.shared.edit(yat, updates)
+        updates = EditRequest(
+            insert = listOf(
+                EditRequestInsert(
+                    tag = "0x4001",
+                    data = url
+                )
+            )
+        )
+        EmojiIDApi.shared.edit(yat, updates)
+        println("URL added to yat.")
+    } catch (exception: Exception) {
+        println("Error Result of adding record request: ${exception.message}")
+    }
+    return yat
+}
 ```
 
 </TabItem>
@@ -811,6 +1181,7 @@ const yat = require("yatJs");
 const api = new yat.YatJs();
 
 // ...
+
 async function printYatRecords(yat) {
     try {
         let records = await api.emojiID().lookup(yat);
@@ -825,7 +1196,20 @@ async function printYatRecords(yat) {
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+import com.tarilabs.yat.infrastructure.ApiClient
+import com.tarilabs.yat.apis.*
+import com.tarilabs.yat.models.*
+
+// ...
+
+fun printYatRecords(yat: String) {
+    try {
+        val records = EmojiIDApi.shared.lookup(yat, tags = null)
+        println(records)
+    } catch (exception: Exception) {
+        println("Error fetching yat data: ${exception.message}")
+    }
+}
 ```
 
 </TabItem>
@@ -842,7 +1226,7 @@ A typical response to a lookup request contains an `error` object (`null` on a s
 result (set to `true`), a counter, `views_past_month` indicating how many times the yat has been requested in the last
 month, and an array of emoji id records.
 
-Each record contains the data itself, the [category tag](/categories) for the record, and the hash of the data.
+Each record contains the data itself, the [category tag](/docs/categories) for the record, and the hash of the data.
 
 A typical response looks like
 

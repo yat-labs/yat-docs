@@ -1,7 +1,7 @@
 ---
 id: overview
 slug: /overview
-title: Using the Yat SDKs
+title: Introduction and overview
 ---
 
 :::caution

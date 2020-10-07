@@ -26,9 +26,9 @@ Redemption code are usually provided for claiming discounts during the checkout 
 
 ## Free random yats
 
-Integration partners can make use of a convenience endpoint, [RandomYat](/docs/sdks/nodejs/sdk_nodejs_index#enum-codetypeenum). 
+Integration partners can make use of a convenience endpoint [POST /codes/{code_id}/random_yat](/docs/api-ref#use-random-yat-code).
 
-This endpoint is  secured by a secret key, and handles the steps of selecting and assigning a yat for your users on the server side.
+This endpoint is secured by a secret key, and handles the steps of selecting and assigning a yat for your users on the server side.
 
 The code snippet below illustrates how you might approach setting up all your users with a discounted yat automatically:
 1. An authorised integration partner, let's call them `Organization owner` would lookup the secret code with `code_type="RandomYat"` via
@@ -40,7 +40,7 @@ along with their pubkey to the user. In the JS demo we use the [`tari_crypto`](h
 4. The `User` can then activate their free random yat with their promo code by submitting a signed message via
 [`POST /codes/{code_id}/random_yat`](/docs/api-ref/#use-random-yat-code)
 This call will result in a new cart being created for user, with newly generated random yat and 100% discount applied.
-5. The `User` completes the transaction via cart checkout with a `method="Free"` via 
+5. The `User` completes the transaction via cart checkout with a `method="Free"` via
 [`POST /cart/checkout`](/docs/api-ref/#checkout-cart-with-provided-payment-details).
 
 
@@ -141,7 +141,7 @@ async function main() {
 main()
     .then(() => console.log("Bye"))
     .catch(console.error);
-````
+```
 
 </TabItem>
 <TabItem value="swift5">

@@ -82,6 +82,7 @@ When 2FA is required, the `requires_2fa` will indicate what type of 2FA is requi
   "requires_2fa": "GoogleAuthenticator"
   ...
 }
+```
 
 You can obtain a `refresh_token` by posting the 2FA code via POST to [`/auth/2fa`](/docs/api-ref#two-factor-authentication). This token can be used as a regular refresh token.
 
@@ -180,7 +181,7 @@ async function runDemo() {
 runDemo()
     .then(() => console.log("Bye"))
     .catch(console.error);
-````
+```
 
 </TabItem>
 <TabItem value="swift5">

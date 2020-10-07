@@ -79,11 +79,9 @@ function cleanupApi(api) {
 }
 
 async function writeApiReference(apiMarkdown, dest) {
-    try {
-        await fs.writeFile(dest, apiMarkdown);
-    } catch (e) {
-        debug("Could not write API reference markdown");
-    }
+    const folder = path.dirname(dest);
+    await fs.mkdir(folder, { recursive: true });
+    await fs.writeFile(dest, apiMarkdown);
 }
 
 async function generateApiReference(ctx, options) {
@@ -97,7 +95,11 @@ async function generateApiReference(ctx, options) {
 async function deleteApiReference(ctx, options) {
     debug("Cleaning Api reference directory...");
     let apiFile = path.resolve(ctx.siteDir, options.apiRefPath);
-    await fs.unlink(apiFile);
+    try {
+        await fs.unlink(apiFile);
+    } catch {
+        // It's ok. File didn't exist anyway
+    }
 }
 
 module.exports = {

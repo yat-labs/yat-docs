@@ -70,7 +70,7 @@ kotlin:
   # suffix for api classes (Default: Api)
   apiSuffix: Api
   # Generated artifact id (name of jar). (Default: kotlin-client)
-  artifactId: kotlin-client
+  artifactId: yat-sdk
   # Generated artifact's package version. (Default: 1.0.0)
   artifactVersion: 1.0.0
   # Option. Collection type to use (Default: list)
@@ -88,7 +88,7 @@ kotlin:
   # (Default: camelCase)
   enumPropertyNaming: camelCase
   # Generated artifact package's organization (i.e. maven groupId). (Default: org.openapitools)
-  groupId: com.tarilabs
+  groupId: com.tarilabs.yat
   # Library template (sub-template) to use (Default: jvm-okhttp4)
   #   jvm-okhttp4 - Platform: Java Virtual Machine.
   #                 HTTP client: OkHttp 4.2.0 (Android 5.0+ and Java 8+).
@@ -104,9 +104,9 @@ kotlin:
   #Create mutable models (Default: false)
   modelMutable: false
   # Generated artifact package name. (Default: org.openapitools.client)
-  packageName: com.tarilabs.client
+  packageName: com.tarilabs.yat
   # toggle "@Parcelize" for generated models
-  parcelizeModels: true
+  parcelizeModels: false
   # JVM-Option. Defines in how to handle date-time objects that are used for a request (as query or parameter)
   #   toJson - [DEFAULT] Date formater option using a json converter.
   #   toString - Use the 'toString'-method of the date-time object to retrieve the related string representation.
