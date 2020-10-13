@@ -23,25 +23,34 @@ If you are a y.at affiliate or partner, there are 2 ways of offering Yat discoun
 1. via a publicly available [redemption code](/docs/sdks/nodejs/sdk_nodejs_index#enum-activatorenum), or
 2. via an offer embedded in the app, and locked with a [secret key](/docs/sdks/nodejs/sdk_nodejs_index#enum-activatorenum)
 
-Redemption code are usually provided for claiming discounts during the checkout flow at [y.at](https://y.at).  The secret key approach is more suitable for use in Yat-integrated applications. We will cover that in more detail below.
+Redemption codes are used to for claim discounts during the checkout flow at [y.at](https://y.at).
+The secret key approach is more suitable for use in Yat-integrated applications. We will cover that in more detail below.
 
 ## Free random yats
 
-Integration partners can make use of a convenience endpoint [POST /codes/{code_id}/random_yat](/docs/api-ref#use-random-yat-code).
+Integration partners can make use of a [convenience endpoint](/docs/api-ref#use-random-yat-code) that combines the steps
+of selecting and assigning a yat for your users on the server side.
 
-This endpoint is secured by a secret key, and handles the steps of selecting and assigning a yat for your users on the server side.
+:::caution
+There is a risk of a man-in-the-middle attack where an eavesdropper could intercept the promo code and claim all of your users' discounted apps for themselves.
+
+To mitigate this risk, the Yat API allows affiliates to select a secret key, and register the associated public key on
+the Yat server. Then, a signature must accompany every discounted yat claim, which authorises the request.
+:::
 
 The code snippet below illustrates how you might approach setting up all your users with a discounted yat automatically:
+
 1. An authorised integration partner, let's call them `Organization owner` would lookup the secret code with `code_type="RandomYat"` via
-[`GET /codes`](/docs/api-ref/#fetch-codes) (.discounts().listCodes() in the SDK).
+[`GET /codes`](/docs/api-ref/#fetch-codes) (`.discounts().listCodes()` in the SDK).
 2. The `Organization owner` then attaches a newly generated or existing Ristretto public key corresponding to the secret key
 via [`POST /codes/{code_id}/pubkeys/{pubkey}`](/docs/api-ref/#add-pubkey-for-code).
-3. The `Organization owner` would sign an user's `alternate_id` with their secret key and provided signature
-along with their pubkey to the user. In the JS demo we use the [`tari_crypto`](https://www.npmjs.com/package/tari_crypto) package to sign the message. Note that the signature consists of the public key, nonce and signature itself.
-4. The `User` can then activate their free random yat with their promo code by submitting a signed message via
-[`POST /codes/{code_id}/random_yat`](/docs/api-ref/#use-random-yat-code)
-This call will result in a new cart being created for user, with newly generated random yat and 100% discount applied.
-5. The `User` completes the transaction via cart checkout with a `method="Free"` via
+3. The `Organization owner` then signs the user's `alternate_id` with the secret key and passes the signature
+and public key to the user. In the Javascript demo we use the [`tari_crypto`](https://www.npmjs.com/package/tari_crypto)
+package to sign the message. Note that the signature consists of the public key, nonce and signature itself.
+4. The `User` can then activate their free random yat with their promo code by submitting the signed message via
+[`POST /codes/{code_id}/random_yat`](/docs/api-ref/#use-random-yat-code).
+This call will create a new cart for the user, place the newly generated yat into it and apply the discount.
+5. Finally, `User` completes the transaction with `method="Free"` via
 [`POST /cart/checkout`](/docs/api-ref/#checkout-cart-with-provided-payment-details).
 
 
@@ -96,15 +105,13 @@ async function activate_random_yat(user, code, pubkey, secret) {
 async function checkout() {
     let res = await apiUser.cart().checkout({ method: "Free" });
     let eid = res.order_items.filter((item) => item.item_type == 'EmojiId')[0].emoji_id;
-    console.log('Congratulations with your free emoji: ', eid);
+    console.log('Congratulations on your free yat: ', eid);
 }
 
 async function main() {
     try {
         // Initialize API and login
-        api.basePath = 'http://localhost:3001';
         await api.login("owner@org.com", "your_password");
-        apiUser.basePath = 'http://localhost:3001';
         await apiUser.login("app-user", "your_password");
 
         // Retrieve information about current account
@@ -148,20 +155,20 @@ main()
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>
 </Tabs>
 
-This script would usually generate following output:
+This script generates output tha looks something like:
 
 
 <Tabs
@@ -209,20 +216,20 @@ Bye
 ## Payment methods
 
 There are 4 [payment methods](/docs/sdks/nodejs/sdk_nodejs_index#enum-methodenum) which can be used for cart checkouts:
-1. `Provider` is directly managed by client on a payment provider side, either `Stripe` or `Globee`
+1. `Provider` is directly managed by the y.at website to configure  a payment provider, and is either `Stripe` or `Globee`
 2. `Card` is used with `Stripe` provider and allows to pay with and register new payment card
-3. `Default` allows to use payment method configured for user account as default
+3. `Default` uses the payment method that was configured for user account as default
 4. `Free` was already described in [Claiming a free Yat](/docs/integration_general#claiming-a-free-yat)
 
 ## Ordering and cart usage
 
 The code snippet below illustrates how you might implement payments via credit card for users:
-1. User would need to select or build Emoji ID. In the example below we use convenience endpoint
-which would return randomly generated emoji IDs which are available for purchase.
-[GET /emoji_id/random](/docs/api-ref/#return-random-emoji)
-2. New cart with selected emojis is created via replace cart endpoint (PUT /cart)[/docs/api-ref#replace-cart-items]
-3. Before proceeding with checkout application would need to obtain a token from `Stripe` for user as described above
-4. Checkout cart with a token obtained from `Stripe`
+1. The user adds a yat to their cart. In the example below we use [a convenience endpoint](/docs/api-ref/#return-random-emoji) that generates a random yat
+that is available for purchase.
+2. A new cart with the selected yat is created via the [replace cart](/docs/api-ref#replace-cart-items) endpoint.
+3. The application obtains a token from `Stripe` for the user.
+4. We can then complete the checkout using the `Stripe` token.
+5. If the default payment is set in step 4, processing future payments is even simpler, using the `Default` payment method.
 
 <Tabs
   defaultValue="nodejs"
@@ -269,7 +276,7 @@ async function main() {
         let items = emojis.result.map((rec) => new yat.UpdateCartRequestItems(rec.emoji_id)).splice(2, 2);
         await placeNewCart(items);
 
-        // Checkout via creadit card. We use test token in this case "tok_visa"
+        // Checkout via credit card. We use test token in this case "tok_visa"
         // For actual payment Stripe token shall be acquired as described https://stripe.com/docs/api/tokens/create_card
         // Yat's Stripe public API key should be used for communication with Stripe
         let result = await api.cart().checkout({ method: "Card", provider: "Stripe", token: "tok_visa", save_payment_method: true, set_default: true });
@@ -278,13 +285,13 @@ async function main() {
         }
         console.log(`Order is ${result.status}. Total: ${result.total_in_cents}.`);
 
-        // Now we have setup Default payment method which can be used. Let's buy 2 more emojis
+        // Now we have setup the Default payment method. Let's buy 2 more emojis
         items = emojis.result.map((rec) => new yat.UpdateCartRequestItems(rec.emoji_id)).splice(5, 2);
         await placeNewCart(items);
         result = await api.cart().checkout({ method: "Default" });
         console.log(`Order is ${result.status}. Total: ${result.total_in_cents}.`);
 
-        // List all emojis for the user (NOTE: it might be more than we just bought)
+        // List all emojis for the user, including the ones we've just purchased!
         await getMyYats();
     } catch(err) {
         console.log("Failed: ", err)
@@ -317,7 +324,7 @@ main()
 </TabItem>
 </Tabs>
 
-This script would usually generate following output:
+This script produces output something along the lines of:
 
 
 <Tabs
@@ -376,14 +383,14 @@ Bye!
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>
@@ -392,16 +399,15 @@ Bye!
 
 ## Using Stripe
 
-Yat is using `Stripe` as a payment provider for credit card payments. In order to process payment
-it should be authorized via Stripe and all payment details are stored on a stripe side. Which requires
-integration via a Stripe API from the application side.
+Yat uses [Stripe](https://stripe.com/) as a payment provider for handling credit card payments. Stripe manages and stores
+all credit card and personally identifying information (PII), none of which is stored on y.at's servers.
 
-Client applications should use Yat's Stripe API public key for authorization with stripe.
-If you are a y.at affiliate or partner key might be obtained directly from integrations team.
+To integrate card payments into a third-party application you need to obtain a Stripe API public key from the Yat integration
+team.
 
-For a testing purposes there is preregistered token `"tok_visa"` also used in example above. This key is only available on staging [emojid.me](https://emojid.me/).
+For a testing purposes there is pre-registered token `"tok_visa"`. This key is only available on the y.at [test environment](https://emojid.me/).
 
-Following is a list of suggested resources for reading about using stripe for payments:
+The following is a list of suggested resources for reading about using Stripe for payments:
 - Development quickstart [https://stripe.com/docs/development](https://stripe.com/docs/development)
 - Creating a card token [https://stripe.com/docs/api/tokens/create_card](https://stripe.com/docs/api/tokens/create_card)
 - Testing stripe payments [https://stripe.com/docs/testing](https://stripe.com/docs/testing)

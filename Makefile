@@ -1,6 +1,7 @@
 SHELL=/bin/bash
 DOCS=yat-docs
 BUILDDIR=${DOCS}/build
+DEBUG?="tari-docs:*"
 
 clean:
 	rm -fr $(BUILDDIR)
