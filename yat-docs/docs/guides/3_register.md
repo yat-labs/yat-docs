@@ -194,7 +194,132 @@ runDemo()
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+/**
+ * Kotlin One-Time Password Library Dependency:
+ * https://github.com/marcelkliemannel/kotlin-onetimepassword
+ *
+ * Gradle (Kotlin):
+ * compile("dev.turingcomplete:kotlin-onetimepassword:2.0.1")
+ */
+import com.tarilabs.yat.apis.UserAuthenticationApi
+import com.tarilabs.yat.apis.UsersApi
+import com.tarilabs.yat.infrastructure.ApiClient
+import com.tarilabs.yat.models.*
+import dev.turingcomplete.kotlinonetimepassword.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.absoluteValue
+import kotlin.random.Random
+
+val alternateId = "my-app-user-id-" + Random.nextInt().absoluteValue
+const val password = "secret password"
+var SECRET = ""
+
+val totpConfig = TimeBasedOneTimePasswordConfig(
+    codeDigits = 6,
+    hmacAlgorithm = HmacAlgorithm.SHA1,
+    timeStep = 30,
+    timeStepUnit = TimeUnit.SECONDS
+)
+
+fun hexStringToByteArray(hexString: String): ByteArray {
+    val bytes = ByteArray(hexString.length / 2)
+    var i = 0
+    while (i < hexString.length) {
+        bytes[i / 2] = hexString.substring(i, i + 2).toInt(16).toByte()
+        i += 2
+    }
+    return bytes
+}
+
+fun register(): Boolean {
+    val details = RegisterUserParameters(
+        firstName = "Testy",
+        lastName = "McTesty",
+        source = "My nice app",
+        alternateId = alternateId,
+        password = password
+    )
+    return try {
+        UsersApi.shared.createUser(details)
+        true
+    } catch (exception: Exception) {
+        false
+    }
+}
+
+fun registerWith2fa(): Boolean {
+    try {
+        if (!register()) {
+            println("Account already registered, will try to login")
+        }
+        UserAuthenticationApi.shared.login(
+            LoginRequest(
+                alternateId = alternateId,
+                password = password
+            )
+        )
+        val update2FAResult = UsersApi.shared.update2FA(
+            Update2FAParameters(
+                requires2fa = Update2FAParameters.Requires2fa.googleAuthenticator
+            )
+        )
+        // NOTE: qr_code_svg is svg in text which should be shown to user to save in Google Authenticator
+        // For the API purposes we will be using secret directly
+        SECRET = update2FAResult.secret!!
+        val otpGenerator = TimeBasedOneTimePasswordGenerator(
+            hexStringToByteArray(SECRET),
+            totpConfig
+        )
+        val code: String = otpGenerator.generate()
+        println("Confirming 2FA with $code. Secret $SECRET")
+        UsersApi.shared.confirm2FA(Confirm2FaUpdate(code))
+        println("Confirmed 2FA for user account. Logged out.")
+        ApiClient.logout()
+        return true
+    } catch (exception: Exception) {
+        println("Could not setup 2FA for account: ${exception.message}")
+        return false
+    }
+
+}
+
+fun runDemo() {
+    ApiClient.baseUrl = "http://localhost:3001"
+    println("Yat API calls will be made to ${ApiClient.baseUrl}")
+    if (!registerWith2fa()) {
+        return
+    }
+    try {
+        var result = UserAuthenticationApi.shared.login(
+            LoginRequest(
+                alternateId = alternateId,
+                password = password
+            )
+        )
+        println("Before confirm_2fa: Requires 2FA = ${result.requires2fa}")
+        val otpGenerator = TimeBasedOneTimePasswordGenerator(
+            hexStringToByteArray(SECRET),
+            totpConfig
+        )
+        val code: String = otpGenerator.generate()
+        result = UserAuthenticationApi.shared.twoFactorAuthentication(
+            Confirm2Fa(
+                code = code,
+                refreshToken = result.refreshToken
+            )
+        )
+        println("After confirm_2fa: Requires 2FA = ${result.requires2fa}")
+        val account = UsersApi.shared.getAccount()
+        println("User profile data: ${account.user}")
+    } catch (exception: Exception) {
+        println("Could not log in: ${exception.message}")
+    }
+}
+
+fun main() {
+    runDemo()
+    println("Bye")
+}
 ```
 
 </TabItem>
@@ -247,8 +372,31 @@ Bye
 </TabItem>
 <TabItem value="kotlin">
 
-```kotlin
-  🚧 COMING SOON 🚧
+```text
+Yat API calls will be made to http://localhost:3001
+Confirming 2FA with 202086. Secret 30356be8ffea52d11d5a900adb4bab72b93cef38aa
+Confirmed 2FA for user account. Logged out.
+Before confirm_2fa: Requires 2FA = googleAuthenticator
+After confirm_2fa: Requires 2FA = null
+User profile data: CurrentUserUser(
+    createdAt=2020-10-13T12:26:37.846788Z, 
+    emojiIds=[], 
+    freeLimit=1, 
+    id=a683cd5a-4590-4504-a26b-21747de81d25, 
+    isActive=true, 
+    pubkeys=[eeaf3aa6c78d5e541daff3af2041e7d223d80024b9ae136b0b01e75f49a92018], 
+    remainingFreeEmoji=1, 
+    role=user, 
+    updatedAt=2020-10-13T12:26:38.936081Z, 
+    alternateId=my-app-user-id-373959841, 
+    deactivatedAt=null, 
+    email=null, 
+    firstName=Testy, 
+    lastName=McTesty,
+     source=My nice app, 
+     twoFactorAuth=googleAuthenticator
+)
+Bye
 ```
 
 </TabItem>

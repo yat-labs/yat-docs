@@ -78,7 +78,7 @@ private class InMemoryTokenStorage: TokenStorage {
 
         var baseUrl: String = ""
         var tokenStorage: TokenStorage = InMemoryTokenStorage()
-        var logLevel = HttpLoggingInterceptor.Level.BASIC
+        var logLevel = HttpLoggingInterceptor.Level.NONE
 
         @JvmStatic
         val client: OkHttpClient by lazy {
@@ -91,6 +91,11 @@ private class InMemoryTokenStorage: TokenStorage {
 
         @JvmStatic
         val builder: OkHttpClient.Builder = OkHttpClient.Builder()
+
+        fun logout() {
+            tokenStorage.accessToken = null
+            tokenStorage.refreshToken = null
+        }
     }
 
     /**
@@ -216,7 +221,7 @@ private class InMemoryTokenStorage: TokenStorage {
         {{/jvm-okhttp4}}
 
         // add auth header
-        tokenStorage?.accessToken?.let { requestConfig.headers[Authorization] = "Bearer $it" }
+        tokenStorage.accessToken?.let { requestConfig.headers[Authorization] = "Bearer $it" }
 
         val url = httpUrl.newBuilder()
             .addPathSegments(requestConfig.path.trimStart('/'))
@@ -340,8 +345,8 @@ private class InMemoryTokenStorage: TokenStorage {
     private class AccessTokenAuthenticator: Authenticator {
 
         override fun authenticate(route: Route?, response: Response): Request? {
-            val accessToken = tokenStorage?.accessToken
-            val refreshToken = tokenStorage?.refreshToken
+            val accessToken = tokenStorage.accessToken
+            val refreshToken = tokenStorage.refreshToken
             val authHeader = response.request.header(Authorization)
             if (accessToken == null || refreshToken == null) {
                 return null
@@ -351,18 +356,18 @@ private class InMemoryTokenStorage: TokenStorage {
 
             synchronized(client) {
                 // check if access token is refreshed in another thread
-                if (accessToken != tokenStorage?.accessToken) {
+                if (accessToken != tokenStorage.accessToken) {
                     // token refreshed, continue with the new token
                     return response.request.newBuilder()
-                            .header(Authorization, "$Bearer ${tokenStorage?.accessToken}")
+                            .header(Authorization, "$Bearer ${tokenStorage.accessToken}")
                             .build()
                 }
                 // need to refresh the access token
                 val tokenResponse = UserAuthenticationApi.shared.refreshToken(
                     RefreshRequest(refreshToken)
                 )
-                tokenStorage?.accessToken = tokenResponse.accessToken
-                tokenStorage?.refreshToken = tokenResponse.refreshToken
+                tokenStorage.accessToken = tokenResponse.accessToken
+                tokenStorage.refreshToken = tokenResponse.refreshToken
                 return response.request.newBuilder()
                         .header(Authorization, "$Bearer ${tokenResponse.accessToken}")
                         .build()
