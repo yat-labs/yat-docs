@@ -200,16 +200,242 @@ register()
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+import YatSDK
+
+    let email = "test\(UUID().uuidString)@y.at"
+    let password = "coolpassword"
+
+    
+    let alternateId = "my-app-user-id-" + UUID().uuidString
+
+    /**
+     * Register a new Yat account.
+     */
+    func register(completion: @escaping (Result<CurrentUser, Error>) -> Void) {
+        let details = RegisterUserParameters(alternateId: alternateId,
+                                             email: email,
+                                             firstName: "Testy",
+                                             lastName: "McTesty",
+                                             password: password,
+                                             source: "My nice app")
+
+        UsersAPI.createUser(body: details, completion: completion)
+    }
+    
+    /**
+     * Login into the yat API
+     */
+    func login(completion: @escaping (Result<TokenResponse, Error>) -> Void) {
+         // If login fails after registration, it may be due to y.at still being in
+        // closed Alpha. Each registration must be manually approved by an admin
+        // before you can continue.
+        let details = LoginRequest(password: password, email: email)
+        UserAuthenticationAPI.login(body: details) { (result) in
+            switch result {
+            case .success(let token):
+                YatSDKAPI.yatCredential = YatCredentials(accessToken: token.accessToken, refreshToken: token.refreshToken)
+                completion(.success(token))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+        
+    /**
+     * Generate a random yat of length `len` from the given list of emoji
+     */
+    func selectRandomYat(list: [String], len: Int) -> String {
+        var result = ""
+        for _ in 0...len - 1 {
+            result.append(list.randomElement()!)
+        }
+        return result
+    }
+
+    /**
+     * Selection an available yat from the given list of emoji
+     */
+    func findAvailableYat(list: [String], completion: @escaping (Result<String, Error>) -> Void) {
+        let yat = self.selectRandomYat(list: list, len: 4)
+        print("Checking \(yat) availability...")
+        EmojiIDAPI.search(emojiId: yat) { (result) in
+            switch result {
+            case .success(let response):
+                if response.result.available {
+                    completion(.success(yat))
+                } else {
+                    self.findAvailableYat(list: list, completion: completion)
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /**
+     * Add selected yat to cart
+     */
+    func addToCart(_ yat: String, completion: @escaping (Result<DisplayOrder, Error>) -> Void) {
+        let item = UpdateCartRequestItems(emojiId: yat, redemptionCode: "FREEYAT")
+        let order = UpdateCartRequest(items: [item])
+
+        CartAPI.addItems(body: order) { (result) in
+            switch result {
+            case .success(let displayOrder): completion(.success(displayOrder))
+            case .failure(let error): completion(.failure(error))
+            }
+        }
+    }
+        
+     /**
+     * Attempt to procure a free yat using the given promo code
+     */
+    func purchaseYat(completion: @escaping (Result<String, Error>) -> Void) {
+        // Request the set of supported emoji
+        EmojiAPI.emojiList { (result) in
+            switch result {
+            case .success(let list):
+                // Clear the cart
+                CartAPI.clear { [weak self] (clearResult) in
+                    switch clearResult {
+                    case .success:
+                        // This is for demo purposes. There are also endpoints for
+                        // automatically selecting a random yat and applying a promo code.
+                        self?.findAvailableYat(list: list) { [weak self] (availableYatResult) in
+                            switch availableYatResult {
+                            case .success(let yat):
+                                // Add the yat to the cart.
+                                self?.addToCart(yat, completion: { (addToCartResult) in
+                                    switch addToCartResult {
+                                    case .success(let order):
+                                        print("Order added to cart: \(order)")
+                                        // Checkout..
+                                        CartAPI.checkout(body: CheckoutCartRequestBody(method: .free)) { (checkoutResult) in
+                                            switch checkoutResult {
+                                            case .success(let order):
+                                                print("Checkout succeeded: \(order)")
+                                                completion(.success(yat))
+                                            case .failure(let error):
+                                                print("Error during checkout: \(error.localizedDescription)")
+                                                completion(.failure(error))
+                                            }
+                                        }
+                                    case .failure(let error):
+                                        print("Error during add to cart: \(error.localizedDescription)")
+                                        completion(.failure(error))
+                                    }
+                                })
+                            case .failure(let error):
+                                print("Error during find available Yat: \(error.localizedDescription)")
+                                completion(.failure(error))
+                            }
+                        }
+                    case .failure(let error):
+                        print("Error during clear cart: \(error.localizedDescription)")
+                        completion(.failure(error))
+                    }
+                }
+            case .failure(let error):
+                print("Error during getting supported emoji: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /**
+     * Add a url record to my Yat
+     */
+    func addYatRecord(yat: String, url: String, completion: @escaping ((Result<Void, Error>) -> Void)) {
+        let editRequestInsert = EditRequestInsert(data: url, tag: "0x4001")
+        let editRequest = EditRequest(insert: [editRequestInsert])
+
+        EmojiIDAPI.edit(emojiId: yat, body: editRequest) { (result) in
+            switch result {
+            case .success:
+                print("URL added to yat.")
+                completion(.success(()))
+            case .failure(let error):
+                print("Error Result of adding record request: \(error.localizedDescription)")
+                completion(.failure(error))
+            }
+        }
+    }
+
+    /**
+     * Display all the records associated with the given yat
+     */
+    func printYatRecords(yat: String, completion: (() -> Void)? = nil) {
+        EmojiIDAPI.lookup(emojiId: yat) { (result) in
+            switch result {
+            case .success(let response):
+                print("Yat Records")
+                response.result?.forEach({ print($0.data) })
+                completion?()
+            case .failure(let error):
+                print("Error fetching yat data: \(error)")
+            }
+        }
+    }
+
+    /**
+     * Demo function
+     */
+    func runDemo() {
+        // Set API base URL.
+        YatSDKAPI.basePath = "https://emojid.me/api"
+
+        register { [weak self] (registerResult) in
+            switch registerResult {
+            case .success:
+                self?.login(completion: { (loginResult) in
+                    switch loginResult {
+                    case .success:
+                        EmojiIDAPI.list { [weak self] (myYatsResult) in
+                            switch myYatsResult {
+                            case .success(let myYats):
+                                print("These are my yats: \(myYats)")
+                                if myYats.isEmpty {
+                                    self?.purchaseYat(completion: { (purchaseResult) in
+                                        switch purchaseResult {
+                                        case .success(let yat):
+                                            self?.addYatRecord(yat: yat,
+                                                               url:"https://api-docs.y.at/docs/sdks/swift5/sdk_swift5_index") { [weak self] result in
+                                                switch result {
+                                                case .success:
+                                                    self?.printYatRecords(yat: yat) {
+                                                        print("Bye!")
+                                                    }
+                                                case .failure:
+                                                    break
+                                                }
+                                            }
+                                            
+                                        default: break
+                                        }
+                                    })
+                                }
+                            case .failure(let error):
+                                print("My Yats request failed: \(error)")
+                            }
+                        }
+                    case .failure(let error):
+                        print("Login failed: \(error)")
+                    }
+                })
+            case .failure(let error):
+                print("Register failed: \(error)")
+            }
+        }
+    }
 ```
 
 </TabItem>
 <TabItem value="kotlin">
 
 ```kotlin
-import com.tarilabs.yat.infrastructure.ApiClient
-import com.tarilabs.yat.apis.*
-import com.tarilabs.yat.models.*
+import com.yatlabs.yat.infrastructure.ApiClient
+import com.yatlabs.yat.apis.*
+import com.yatlabs.yat.models.*
 
 const val email = "tester@y.at"
 const val password = "yatster"
@@ -471,8 +697,135 @@ Bye!
 </TabItem>
 <TabItem value="swift5">
 
-```swift
-  🚧 COMING SOON 🚧
+```text
+These are my yats: []
+Checking 😈🍸🍒🛍️ availability...
+Order added to cart: 
+DisplayOrder(
+    createdAt: 2020-10-21 12:35:12 +0000,
+    eligibleForRefund: false, 
+    id: 12802BBB-776C-472B-8049-A3072E25EFCF, 
+    miscRefundedTotalInCents: 0, 
+    orderItems: [YatSDK.DisplayOrderOrderItems(
+                            clientFeeInCents: 0, 
+                            companyFeeInCents: 0, 
+                            createdAt: 2020-10-21 12:35:14 +0000,
+                            id: F438B9B6-7496-4A1B-8572-BD41FF069BE0,
+                            itemType: YatSDK.DisplayOrderOrderItems.ItemType.discount,
+                            orderId: 12802BBB-776C-472B-8049-A3072E25EFCF,
+                            quantity: 1,
+                            refundedQuantity: 0,
+                            unitPriceInCents: -4800,
+                            updatedAt: 2020-10-21 12:35:14 +0000, 
+                            codeId: nil, 
+                            emojiId: nil, 
+                            parentId: Optional(AA212081-A199-4625-8B65-CF9B4BE6E85A)), 
+                 YatSDK.DisplayOrderOrderItems(
+                            clientFeeInCents: 0, 
+                            companyFeeInCents: 0, 
+                            createdAt: 2020-10-21 12:35:14 +0000, 
+                            id: AA212081-A199-4625-8B65-CF9B4BE6E85A, 
+                            itemType: YatSDK.DisplayOrderOrderItems.ItemType.emojiId, 
+                            orderId: 12802BBB-776C-472B-8049-A3072E25EFCF, 
+                            quantity: 1, 
+                            refundedQuantity: 0, 
+                            unitPriceInCents: 4800, 
+                            updatedAt: 2020-10-21 12:35:14 +0000, 
+                            codeId: Optional(EE815BD8-D60E-4941-AE6F-F50700AB51A3), 
+                            emojiId: Optional("😈🍸🍒🛍️"), parentId: nil)], 
+                            orderNumber: "2e25efcf", 
+                            refundedTotalInCents: 0, 
+                            status: YatSDK.DisplayOrder.Status.draft, 
+                            totalInCents: 0, 
+                            updatedAt: 2020-10-21 12:35:14 +0000, 
+                            user: YatSDK.DisplayOrderUser(
+                                            createdAt: 2020-10-21 12:35:07 +0000, 
+                                            emojiIds: [], 
+                                            freeLimit: 1, 
+                                            id: 090C5894-5AD8-459D-BC39-89F8E27E0A15, 
+                                            isActive: true, 
+                                            pubkeys: ["04a1e3debd9485b7cd3eadbd659fd91ce101dd3dbc8a584441ad90b210265c1b"], remainingFreeEmoji: 0, 
+                                            role: YatSDK.DisplayOrderUser.Role.user,
+                                            updatedAt: 2020-10-21 12:35:12 +0000, 
+                                            alternateId: Optional("my-app-user-id-80AD4590-B6A8-43FD-AA84-CDB9047542F3"),
+                                            deactivatedAt: nil, 
+                                            email: Optional("testf6ddd863-02fe-4daa-b205-d91d8246efde@y.at"), 
+                                            firstName: Optional("Testy"), 
+                                            lastName: Optional("McTesty"), 
+                                            source: Optional("My nice app"), 
+                                            twoFactorAuth: nil), 
+                            userId: 090C5894-5AD8-459D-BC39-89F8E27E0A15, 
+                            expiresAt: Optional(2020-10-21 12:50:14 +0000), 
+                            organizationId: nil, 
+                            paidAt: nil, 
+                            paymentMethodData: nil, 
+                            secondsUntilExpiry: Optional(899))
+
+Checkout succeeded: DisplayOrder(
+                        createdAt: 2020-10-21 12:35:12 +0000, 
+                        eligibleForRefund: true, 
+                        id: 12802BBB-776C-472B-8049-A3072E25EFCF, 
+                        miscRefundedTotalInCents: 0, 
+                        orderItems: [YatSDK.DisplayOrderOrderItems(
+                                                clientFeeInCents: 0, 
+                                                companyFeeInCents: 0, 
+                                                createdAt: 2020-10-21 12:35:14 +0000, 
+                                                id: F438B9B6-7496-4A1B-8572-BD41FF069BE0, 
+                                                itemType: YatSDK.DisplayOrderOrderItems.ItemType.discount, 
+                                                orderId: 12802BBB-776C-472B-8049-A3072E25EFCF, 
+                                                quantity: 1, 
+                                                refundedQuantity: 0, 
+                                                unitPriceInCents: -4800, 
+                                                updatedAt: 2020-10-21 12:35:14 +0000, 
+                                                codeId: nil, 
+                                                emojiId: nil, 
+                                                parentId: Optional(AA212081-A199-4625-8B65-CF9B4BE6E85A)),
+                                    YatSDK.DisplayOrderOrderItems(
+                                                clientFeeInCents: 0, 
+                                                companyFeeInCents: 0, 
+                                                createdAt: 2020-10-21 12:35:14 +0000, 
+                                                id: AA212081-A199-4625-8B65-CF9B4BE6E85A, 
+                                                itemType: YatSDK.DisplayOrderOrderItems.ItemType.emojiId, 
+                                                orderId: 12802BBB-776C-472B-8049-A3072E25EFCF, 
+                                                quantity: 1, 
+                                                refundedQuantity: 0, 
+                                                unitPriceInCents: 4800, 
+                                                updatedAt: 2020-10-21 12:35:14 +0000, 
+                                                codeId: Optional(EE815BD8-D60E-4941-AE6F-F50700AB51A3), 
+                                                emojiId: Optional("😈🍸🍒🛍️"), 
+                                                parentId: nil)],
+                        orderNumber: "2e25efcf", 
+                        refundedTotalInCents: 0, 
+                        status: YatSDK.DisplayOrder.Status.paid, 
+                        totalInCents: 0, 
+                        updatedAt: 2020-10-21 12:35:15 +0000, 
+                        user: YatSDK.DisplayOrderUser(
+                                        createdAt: 2020-10-21 12:35:07 +0000, 
+                                        emojiIds: [], 
+                                        freeLimit: 1, 
+                                        id: 090C5894-5AD8-459D-BC39-89F8E27E0A15, 
+                                        isActive: true, 
+                                        pubkeys: ["04a1e3debd9485b7cd3eadbd659fd91ce101dd3dbc8a584441ad90b210265c1b"], 
+                                        remainingFreeEmoji: 0, 
+                                        role: YatSDK.DisplayOrderUser.Role.user, 
+                                        updatedAt: 2020-10-21 12:35:15 +0000, 
+                                        alternateId: Optional("my-app-user-id-80AD4590-B6A8-43FD-AA84-CDB9047542F3"), 
+                                        deactivatedAt: nil, 
+                                        email: Optional("testf6ddd863-02fe-4daa-b205-d91d8246efde@y.at"), 
+                                        firstName: Optional("Testy"), 
+                                        lastName: Optional("McTesty"), 
+                                        source: Optional("My nice app"), 
+                                        twoFactorAuth: nil),
+                        userId: 090C5894-5AD8-459D-BC39-89F8E27E0A15, 
+                        expiresAt: nil, 
+                        organizationId: nil, 
+                        paidAt: Optional(2020-10-21 12:35:15 +0000), 
+                        paymentMethodData: nil, 
+                        secondsUntilExpiry: nil)
+URL added to yat.
+Yat Records
+https://api-docs.y.at/docs/sdks/swift5/sdk_swift5_index
+Bye!
 ```
 
 </TabItem>
@@ -598,16 +951,25 @@ async function register() {
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+func register(completion: @escaping (Result<CurrentUser, Error>) -> Void) {
+    let details = RegisterUserParameters(alternateId: alternateId,
+                                         email: email,
+                                         firstName: "Testy",
+                                         lastName: "McTesty",
+                                         password: password,
+                                         source: "My nice app")
+
+    UsersAPI.createUser(body: details, completion: completion)
+}
 ```
 
 </TabItem>
 <TabItem value="kotlin">
 
 ```kotlin {6-11,13}
-import com.tarilabs.yat.infrastructure.ApiClient
-import com.tarilabs.yat.apis.*
-import com.tarilabs.yat.models.*
+import com.yatlabs.yat.infrastructure.ApiClient
+import com.yatlabs.yat.apis.*
+import com.yatlabs.yat.models.*
 
 fun register(): Boolean {
     val details = RegisterUserParameters(
@@ -717,13 +1079,33 @@ async function login() {
 }
 ```
 
+<TabItem value="swift5">
+
+```swift
+// ...
+
+func login(completion: @escaping (Result<TokenResponse, Error>) -> Void) {
+    let details = LoginRequest(password: password, email: email)
+    UserAuthenticationAPI.login(body: details) { (result) in
+         switch result {
+        case .success(let token):
+            YatSDKAPI.yatCredential = YatCredentials(accessToken: token.accessToken, refreshToken: token.refreshToken)
+            completion(.success(token))
+        case .failure(let error):
+            completion(.failure(error))
+        }
+    }
+}
+```
+</TabItem>
+
 </TabItem>
 <TabItem value="kotlin">
 
 ```kotlin {9-14}
-import com.tarilabs.yat.infrastructure.ApiClient
-import com.tarilabs.yat.apis.*
-import com.tarilabs.yat.models.*
+import com.yatlabs.yat.infrastructure.ApiClient
+import com.yatlabs.yat.apis.*
+import com.yatlabs.yat.models.*
 
 // ...
 
@@ -797,9 +1179,9 @@ async function checkYatAvailability(myYat) {
 <TabItem value="kotlin">
 
 ```kotlin {9-12}
-import com.tarilabs.yat.infrastructure.ApiClient
-import com.tarilabs.yat.apis.*
-import com.tarilabs.yat.models.*
+import com.yatlabs.yat.infrastructure.ApiClient
+import com.yatlabs.yat.apis.*
+import com.yatlabs.yat.models.*
 
 // ... Login etc
 
@@ -807,7 +1189,7 @@ fun checkYatAvailability(myYat: String) {
     println("Checking $myYat availability...")
     val yatInfo = EmojiIDApi.shared.search(
         myYat,
-        redemptionCode = "AURORA123"
+        redemptionCode = "FREEYAT"
     )
     println(yatInfo.result)
     if (!yatInfo.result.available) {
@@ -820,7 +1202,20 @@ fun checkYatAvailability(myYat: String) {
 <TabItem value="swift5">
 
 ```swift
-  // 🚧 COMING SOON 🚧
+func checkYatAvailability(myYat: String) {
+    EmojiIDAPI.search(emojiId: myYat) { (result) in
+        switch result {
+        case .success(let response):
+            if response.result.available {
+                print("Great! \(myYat) is available.")
+            } else {
+                print("Bad luck:( \(myYat) is not available.")
+            }
+        case .failure(let error):
+            print("Check Yat Availability error: \(error)")
+        }
+    }
+}
 ```
 
 </TabItem>
@@ -933,6 +1328,39 @@ fun claimYat(myYat: String): String {
 ```
 
 </TabItem>
+<TabItem value="swift5">
+
+```swift
+func claimYat(yat: String) {
+    CartAPI.clear { [weak self] (clearResult) in
+        switch clearResult {
+        case .success:
+            // Add the yat to the cart.
+            self?.addToCart(yat, completion: { (addToCartResult) in
+                switch addToCartResult {
+                case .success(let order):
+                    print("Order added to cart: \(order)")
+                    // Checkout..
+                    CartAPI.checkout(body: CheckoutCartRequestBody(method: .free)) { (checkoutResult) in
+                        switch checkoutResult {
+                        case .success(let order):
+                            print("Checkout succeeded: \(order)")
+                        case .failure(let error):
+                            print("Error during checkout: \(error.localizedDescription)")
+                        }
+                    }
+                case .failure(let error):
+                    print("Error during add to cart: \(error.localizedDescription)")
+                }
+            })
+        case .failure(let error):
+            print("Error during clear cart: \(error.localizedDescription)")
+        }
+    }
+}
+```
+
+</TabItem>
 
 </Tabs>
 
@@ -993,11 +1421,11 @@ The final response from a successful checkout is the final order object and look
 ```
 ### Yat purchases using a Credit card
 
-🚧 COMIN SOON 🚧
+🚧 COMING SOON 🚧
 
 ### Yat purchases using cryptocurrency
 
-🚧 COMIN SOON 🚧
+🚧 COMING SOON 🚧
 
 ## Fetching a list of yats you own
 
@@ -1035,9 +1463,9 @@ async function fetchMyYats() {
 <TabItem value="kotlin">
 
 ```kotlin {8-11}
-import com.tarilabs.yat.infrastructure.ApiClient
-import com.tarilabs.yat.apis.*
-import com.tarilabs.yat.models.*
+import com.yatlabs.yat.infrastructure.ApiClient
+import com.yatlabs.yat.apis.*
+import com.yatlabs.yat.models.*
 
 // Log in ...
 
@@ -1054,7 +1482,16 @@ fun fetchMyYats(): List<String> {
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+func fetchMyYats() {
+    EmojiIDAPI.list { [weak self] (myYatsResult) in
+        switch myYatsResult {
+        case .success(let myYats):
+            print("These are my yats: \(myYats)")
+        case .failure(let error):
+            print("My Yats request failed: \(error)")
+        }
+    }
+}
 ```
 
 </TabItem>
@@ -1150,7 +1587,21 @@ fun addYatRecord(yat: String, url: String): String {
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+func addYatRecord(yat: String, url: String, completion: @escaping ((Result<Void, Error>) -> Void)) {
+    let editRequestInsert = EditRequestInsert(data: url, tag: "0x4001")
+    let editRequest = EditRequest(insert: [editRequestInsert])
+
+    EmojiIDAPI.edit(emojiId: yat, body: editRequest) { (result) in
+        switch result {
+        case .success:
+            print("URL added to yat.")
+            completion(.success(()))
+        case .failure(let error):
+            print("Error Result of adding record request: \(error.localizedDescription)")
+            completion(.failure(error))
+        }
+    }
+}
 ```
 
 </TabItem>
@@ -1196,9 +1647,9 @@ async function printYatRecords(yat) {
 <TabItem value="kotlin">
 
 ```kotlin
-import com.tarilabs.yat.infrastructure.ApiClient
-import com.tarilabs.yat.apis.*
-import com.tarilabs.yat.models.*
+import com.yatlabs.yat.infrastructure.ApiClient
+import com.yatlabs.yat.apis.*
+import com.yatlabs.yat.models.*
 
 // ...
 
@@ -1216,7 +1667,18 @@ fun printYatRecords(yat: String) {
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+func printYatRecords(yat: String, completion: (() -> Void)? = nil) {
+    EmojiIDAPI.lookup(emojiId: yat) { (result) in
+        switch result {
+        case .success(let response):
+            print("Yat Records")
+            response.result?.forEach({ print($0.data) })
+            completion?()
+        case .failure(let error):
+            print("Error fetching yat data: \(error)")
+        }
+    }
+}
 ```
 
 </TabItem>

@@ -17,7 +17,7 @@ cd demos
 npm run build
 ```
 
-4. Make sure to follow any prerequisites which are outline on top of the script in comments
+4. Make sure to follow any prerequisites which are outlined on top of the script in comments
 
 5. Run any script
 ```shell

@@ -187,7 +187,165 @@ runDemo()
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+import Foundation
+import YatSDK
+import OneTimePassword
+            
+let email = "test\(UUID().uuidString)@y.at"
+let password = "coolpassword"
+
+let alternateId = "my-app-user-id-" + UUID().uuidString
+let secretPassword = "secretpassword"
+var secret = ""
+
+var oneTimePassword: String? {
+    get {
+        guard let generator = Generator(
+            factor: .timer(period: 30),
+            secret: YatAPI.hexStringToData(string: secret),
+            algorithm: .sha1,
+            digits: 6) else {
+                print("Invalid generator parameters")
+                return nil
+            }
+
+        return Token(generator: generator).currentPassword
+    }
+}
+
+static func hexStringToData(string: String) -> Data {
+    let stringArray = Array(string)
+    var data: Data = Data()
+    for i in stride(from: 0, to: string.count, by: 2) {
+        let pair: String = String(stringArray[i]) + String(stringArray[i+1])
+        if let byteNum = UInt8(pair, radix: 16) {
+            let byte = Data([byteNum])
+            data.append(byte)
+        } else {
+            fatalError()
+        }
+    }
+    return data
+}
+
+/**
+ * Register a new Yat account.
+ */
+func register(completion: @escaping (Result<CurrentUser, Error>) -> Void) {
+    let details = RegisterUserParameters(alternateId: alternateId,
+                                         email: email,
+                                         firstName: "Testy",
+                                         lastName: "McTesty",
+                                         password: password,
+                                         source: "My nice app")
+
+    UsersAPI.createUser(body: details, completion: completion)
+}
+
+/**
+ * Register a new Yat account with Two Factor Authentication.
+ */
+func registerWith2fa(completion: @escaping (Result<Void, Error>) -> Void) {
+    let failure: ((Error) -> Void) = { error in
+        print("Could not setup 2FA for account: \(error.localizedDescription)")
+        completion(.failure(error))
+    }       
+
+    register { [weak self] result in
+        guard let `self` = self else { return }
+
+        switch result {
+        case .failure:
+            print("Account already registered, will try to login")
+            fallthrough
+        case .success:
+            let loginRequest = LoginRequest(password: self.password,
+                                            alternateId: self.alternateId,
+                                            email: self.email)
+
+            UserAuthenticationAPI.login(body: loginRequest) { [weak self] (loginResult) in
+                switch loginResult {
+                case .success(let token):
+                    YatSDKAPI.yatCredential = YatCredentials(accessToken: token.accessToken, refreshToken: token.refreshToken)
+                    let update2FAParameters = Update2FAParameters(requires2fa: Update2FAParameters.Requires2fa.googleAuthenticator)
+                    UsersAPI.update2FA(body: update2FAParameters) { (update2FAresult) in
+                        switch update2FAresult {
+                        case .success(let response):
+                        self?.secret = response.secret!
+                        // NOTE: qr_code_svg is svg in text which should be shown to user to save in Google Authenticator
+                        // For the API purposes we will be using secret directly
+                        if let code = self?.oneTimePassword {
+                           print("Confirming 2FA with \(code). Secret \(String(describing: self?.secret))")
+                           UsersAPI.confirm2FA(body: Confirm2FaUpdate(code: code)) { (confirmResult) in
+                                switch confirmResult {
+                                case .success:
+                                    print("Confirmed 2FA for user account. Logged out")
+                                    // logout
+                                    YatSDKAPI.yatCredential = nil
+                                    completion(.success(()))
+                                case .failure(let error):
+                                    failure(error)
+                                }
+                           }
+                        }
+                        case .failure(let error):
+                            failure(error)
+                    }
+                            }
+                case .failure(let error):
+                    failure(error)
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Demo function
+ */
+func runDemo() {
+	// Set API base URL.
+    YatSDKAPI.basePath = "http://api.y.at"
+    registerWith2fa { (result) in
+        switch result {
+        case .success:
+            let loginRequest = LoginRequest(password: self.password,
+                                            alternateId: self.alternateId,
+                                            email: self.email)
+            UserAuthenticationAPI.login(body: loginRequest) { [weak self] (loginResult) in
+                switch loginResult {
+                case .success(let token):
+                    print("Before confirm_2fa: Requires 2FA = \(String(describing: token.requires2fa))")
+
+                    if let code = self?.oneTimePassword {
+                        let confirm2Fa = Confirm2Fa(code: code, refreshToken: token.refreshToken)
+
+                        UserAuthenticationAPI.twoFactorAuthentication(body: confirm2Fa) { (twoFAResult) in
+                           	switch twoFAResult {
+                            case .success(let token):
+                                print("Before confirm_2fa: Requires 2FA = \(String(describing: token.requires2fa))")
+                                YatSDKAPI.yatCredential = YatCredentials(accessToken: token.accessToken, refreshToken: token.refreshToken)
+                                UsersAPI.getAccount { (accountResult) in
+                                    switch accountResult {
+                                    case .success(let user):
+                                        print("User profile data: \(user)")
+                                    case .failure(let error):
+                                        print("Get Account failure: \(error.localizedDescription)")
+                                    }
+                                }
+                            case .failure(let error):
+                                print("Two Factor Authentication failure: \(error.localizedDescription)")
+                            }
+                        }
+                    }
+                case .failure(let error):
+                    print("Could not login to account: \(error.localizedDescription)")
+                }
+            }
+        case .failure: return
+        }
+    }
+}
 ```
 
 </TabItem>
@@ -201,10 +359,10 @@ runDemo()
  * Gradle (Kotlin):
  * compile("dev.turingcomplete:kotlin-onetimepassword:2.0.1")
  */
-import com.tarilabs.yat.apis.UserAuthenticationApi
-import com.tarilabs.yat.apis.UsersApi
-import com.tarilabs.yat.infrastructure.ApiClient
-import com.tarilabs.yat.models.*
+import com.yatlabs.yat.apis.UserAuthenticationApi
+import com.yatlabs.yat.apis.UsersApi
+import com.yatlabs.yat.infrastructure.ApiClient
+import com.yatlabs.yat.models.*
 import dev.turingcomplete.kotlinonetimepassword.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
@@ -365,8 +523,32 @@ Bye
 </TabItem>
 <TabItem value="swift5">
 
-```swift
-  🚧 COMING SOON 🚧
+```text
+Confirming 2FA with 863938. Secret Optional("303c8746462730628eda1a260817ced5ec771066e3")
+Confirmed 2FA for user account. Logged out
+Before confirm_2fa: Requires 2FA = Optional(YatSDK.TokenResponse.Requires2fa.googleAuthenticator)
+Before confirm_2fa: Requires 2FA = nil
+User profile data: CurrentUser(
+                        globalScopes: [YatSDK.CurrentUser.GlobalScopes.cartShow, YatSDK.CurrentUser.GlobalScopes.cartUpdate, YatSDK.CurrentUser.GlobalScopes.orderReadself, YatSDK.CurrentUser.GlobalScopes.organizationlistRead, YatSDK.CurrentUser.GlobalScopes.paymentmethodDestroy, YatSDK.CurrentUser.GlobalScopes.paymentmethodRead, YatSDK.CurrentUser.GlobalScopes.paymentmethodSetdefault, YatSDK.CurrentUser.GlobalScopes.userDeleteself, YatSDK.CurrentUser.GlobalScopes.userinterestDelete, YatSDK.CurrentUser.GlobalScopes.userinterestRead, YatSDK.CurrentUser.GlobalScopes.userinterestWrite, YatSDK.CurrentUser.GlobalScopes.userWriteself], organizationRoles: [:], 
+                        organizationScopes: [:], 
+                        pubkeys: ["6c36804893556a6447d4f62b457d9743ba29afcd15689eaca7d0ca1cc33fd523"], 
+                        role: YatSDK.CurrentUser.Role.user, 
+                        user: YatSDK.CurrentUserUser(createdAt: 2020-10-21 12:36:15 +0000, 
+                        emojiIds: [], 
+                        freeLimit: 1, 
+                        id: 7573CAB4-A4C3-411F-AC1D-D1B3CA4ABE3E, 
+                        isActive: true, 
+                        pubkeys: ["6c36804893556a6447d4f62b457d9743ba29afcd15689eaca7d0ca1cc33fd523"], 
+                        remainingFreeEmoji: 1, 
+                        role: YatSDK.CurrentUserUser.Role.user, 
+                        updatedAt: 2020-10-21 12:36:19 +0000, 
+                        alternateId: Optional("my-app-user-id-41AA1A22-13A6-4FB0-B4BA-5C281CCD17B8"), 
+                        deactivatedAt: nil, 
+                        email: Optional("test22bdbe8c-0447-4464-92d1-2cd66cf837de@y.at"), 
+                        firstName: Optional("Testy"), 
+                        lastName: Optional("McTesty"), 
+                        source: Optional("My nice app"), 
+                        twoFactorAuth: Optional(YatSDK.CurrentUserUser.TwoFactorAuth.googleAuthenticator)))
 ```
 
 </TabItem>

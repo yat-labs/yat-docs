@@ -19,7 +19,7 @@ This website is built using
 ```bash
 $ cd yat-docs
 $ yarn install # npm doesn't seem to work for some reason
-$ cd ../taridocs-plugin
+$ cd ../yatdocs-plugin
 $ yarn install
 ```
 
@@ -69,12 +69,12 @@ Commands:
 
 ## Debug logs
 
-To generate debug logs to stdout, set the `DEBUG~ environment variable. All tari-doc plugin logs are namespaced accordingly,
+To generate debug logs to stdout, set the `DEBUG~ environment variable. All yat-doc plugin logs are namespaced accordingly,
 so
 
-    $ DEBUG=tari-docs:* npm run build
+    $ DEBUG=yat-docs:* npm run build
 
-will print out all tari-docs debug information and ignore any other messages from other packages.
+will print out all yat-docs debug information and ignore any other messages from other packages.
 
 
 # Build and deploy

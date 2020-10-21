@@ -1,0 +1,69 @@
+{{>licenseInfo}}
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD.
+    define(['expect.js', process.cwd()+'/src/{{#invokerPackage}}{{invokerPackage}}/{{/invokerPackage}}index'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // CommonJS-like environments that support module.exports, like Node.
+    factory(require('expect.js'), require(process.cwd()+'/src/{{#invokerPackage}}{{invokerPackage}}/{{/invokerPackage}}index'));
+  } else {
+    // Browser globals (root is window)
+    factory(root.expect, root.{{moduleName}});
+  }
+}(this, function(expect, {{moduleName}}) {
+  'use strict';
+
+  var instance;
+
+  beforeEach(function() {
+{{#models}}
+{{#model}}
+{{^isEnum}}
+    instance = new {{moduleName}}.{{classname}}();
+{{/isEnum}}
+{{/model}}
+{{/models}}
+  });
+
+{{#defaultValue}}
+  var getProperty = function(object, getter, property) {
+    // Use getter method if present; otherwise, get the property directly.
+    if (typeof object[getter] === 'function')
+      return object[getter]();
+    else
+      return object[property];
+  }
+
+  var setProperty = function(object, setter, property, value) {
+    // Use setter method if present; otherwise, set the property directly.
+    if (typeof object[setter] === 'function')
+      object[setter](value);
+    else
+      object[property] = value;
+  }
+{{/defaultValue}}
+
+  describe('{{classname}}', function() {
+    it('should create an instance of {{classname}}', function() {
+      const instance = new {{moduleName}}.{{classname}}();
+      expect(instance).to.be.a({{moduleName}}.{{classname}});
+    });
+
+{{#models}}
+{{#model}}
+{{#vars}}
+    it('should have the property {{name}} (base name: "{{baseName}}")', function() {
+        const instance = new {{moduleName}}.{{classname}}();
+        expect(instance.{{name}}).to.be();
+        {{#defaultValue}}
+        const {{name}}_val = getProperty(instance, "{{name}}", "{{name}}");
+        expect({{name}}_val).to.equal({{defaultValue}});
+        {{/defaultValue}}
+    });
+
+{{/vars}}
+{{/model}}
+{{/models}}
+  });
+
+}));

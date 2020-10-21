@@ -1,0 +1,47 @@
+<TabItem value="swift5">
+
+```swift
+import Foundation
+
+let apiBaseURL = "https://api.y.at"
+let url = URL(string: apiBaseURL + "{{=data.url}}{{=data.requiredQueryString}}")
+
+var request = URLRequest(url: url!)
+request.httpMethod = "{{=data.methodUpper}}"
+request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+{{?data.bodyParameter.present}}
+let requestBody = """
+{{=data.bodyParameter.exampleValues.json}}
+"""
+request.httpBody = requestBody.data(using: .utf8)
+{{?}}
+let sessionConfiguration = URLSessionConfiguration.default
+let session = URLSession(configuration: sessionConfiguration)
+let task = session.dataTask(with: request) { (data, response, error) in
+    guard error == nil else {
+        print("Request failed: \(String(describing: error))")
+        return
+    }
+    if let response = response as? HTTPURLResponse {
+        if (response.statusCode >= 200
+            && response.statusCode < 300) {
+            print("Successful with status code: \(response.statusCode)")
+        } else {
+            print("Failed with status code: \(response.statusCode)")
+        }
+        // display body
+        if let data = data, let responseBody = String(data: data, encoding: .utf8) {
+            print("Response body:")
+            print(responseBody)
+        } else {
+            print("Empty response body.")
+        }
+    } else {
+        print("Unexpected response type.")
+    }
+}
+task.resume()
+```
+
+</TabItem>
+

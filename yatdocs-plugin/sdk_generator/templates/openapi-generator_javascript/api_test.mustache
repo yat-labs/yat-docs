@@ -1,0 +1,56 @@
+{{>licenseInfo}}
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD.
+    define(['expect.js', process.cwd()+'/src/{{#invokerPackage}}{{invokerPackage}}/{{/invokerPackage}}index'], factory);
+  } else if (typeof module === 'object' && module.exports) {
+    // CommonJS-like environments that support module.exports, like Node.
+    factory(require('expect.js'), require(process.cwd()
++'/src/{{#invokerPackage}}{{invokerPackage}}/{{/invokerPackage}}index'));
+  } else {
+    // Browser globals (root is window)
+    factory(root.expect, root.{{moduleName}});
+  }
+}(this, function(expect, {{moduleName}}) {
+  'use strict';
+
+  var instance;
+
+  beforeEach(function() {
+    const yat = new {{moduleName}}.YatJs();
+    yat.basePath = 'https://localhost:3001';
+    instance = yat.{{#lambda.camelcase}}{{baseName}}{{/lambda.camelcase}}();
+  });
+
+  var getProperty = function(object, getter, property) {
+    // Use getter method if present; otherwise, get the property directly.
+    if (typeof object[getter] === 'function')
+      return object[getter]();
+    else
+      return object[property];
+  }
+
+  var setProperty = function(object, setter, property, value) {
+    // Use setter method if present; otherwise, set the property directly.
+    if (typeof object[setter] === 'function')
+      object[setter](value);
+    else
+      object[property] = value;
+  }
+
+  describe('{{classname}}', function() {
+{{#operations}}
+{{#operation}}
+    describe('{{operationId}}', function() {
+      it('should call {{operationId}} successfully', function() {
+        return instance.{{operationId}}()
+            .then(result => {
+                // Test results
+            });
+      });
+    });
+{{/operation}}
+{{/operations}}
+  });
+
+}));

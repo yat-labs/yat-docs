@@ -1,5 +1,5 @@
 /*
- * Copyright 2020. Tari Labs Pty. Ltd.
+ * Copyright 2020. Yat Labs
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
  * following conditions are met:
@@ -43,7 +43,7 @@ async function runDemo() {
         }
     }
     try {
-        await api.login("test@tari.com", "real_password");
+        await api.login("test@yatlabs.com", "real_password");
         console.log("Logged in.");
         let account = await api.users().getAccount();
         console.log("Account data:", account);

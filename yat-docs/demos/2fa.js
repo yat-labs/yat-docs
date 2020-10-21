@@ -1,5 +1,5 @@
 /*
- * Copyright 2020. Tari Labs Pty. Ltd.
+ * Copyright 2020. Yat Labs
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
  * following conditions are met:

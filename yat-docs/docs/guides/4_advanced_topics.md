@@ -200,14 +200,14 @@ Bye
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>
@@ -311,14 +311,14 @@ main()
 <TabItem value="swift5">
 
 ```swift
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>
 <TabItem value="kotlin">
 
 ```kotlin
-  🚧 COMIN SOON 🚧
+  🚧 COMING SOON 🚧
 ```
 
 </TabItem>

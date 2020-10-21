@@ -1,7 +1,8 @@
 SHELL=/bin/bash
 DOCS=yat-docs
 BUILDDIR=${DOCS}/build
-DEBUG?="tari-docs:*"
+DEBUG?="yat-docs:*"
+NODE_SRC=${DOCS}/sdks/nodejs
 
 clean:
 	rm -fr $(BUILDDIR)
@@ -16,6 +17,11 @@ generate:
 
 build: clean-all generate
 	cd $(DOCS) && npm run build
+
+$(NODE_SRC)/package.json: build
+
+build-node-dist: $(NODE_SRC)/package.json
+	cd $(NODE_SRC) && npm i && npm run build
 
 preview:
 	cd $(DOCS) && npm run serve

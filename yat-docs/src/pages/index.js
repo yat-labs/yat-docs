@@ -21,7 +21,7 @@ const features = [
     imageUrl: 'img/feature_img2.png',
     description: (
       <>
-        Dive straight into the <a href="/docs/api-ref/">API reference documentation</a>.
+        Dive straight into the <a href="/docs/api-ref">API reference documentation</a>.
       </>
     ),
   },

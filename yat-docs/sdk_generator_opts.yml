@@ -88,7 +88,7 @@ kotlin:
   # (Default: camelCase)
   enumPropertyNaming: camelCase
   # Generated artifact package's organization (i.e. maven groupId). (Default: org.openapitools)
-  groupId: com.tarilabs.yat
+  groupId: com.yatlabs.yat
   # Library template (sub-template) to use (Default: jvm-okhttp4)
   #   jvm-okhttp4 - Platform: Java Virtual Machine.
   #                 HTTP client: OkHttp 4.2.0 (Android 5.0+ and Java 8+).
@@ -104,7 +104,7 @@ kotlin:
   #Create mutable models (Default: false)
   modelMutable: false
   # Generated artifact package name. (Default: org.openapitools.client)
-  packageName: com.tarilabs.yat
+  packageName: com.yatlabs.yat
   # toggle "@Parcelize" for generated models
   parcelizeModels: false
   # JVM-Option. Defines in how to handle date-time objects that are used for a request (as query or parameter)
@@ -169,13 +169,13 @@ swift5:
   library: alamofire
 
   # Generates code with reduced access modifiers; allows embedding elsewhere without exposing non-public API calls to consumers.(default: false)
-  nonPublicApi: true
+  nonPublicApi: false
 
   # Add additional properties and methods for Objective-C compatibility (default: false)
   objcCompatible: false
 
   # Authors used for Podspec
-  podAuthors: "Tari Labs"
+  podAuthors: "Yat Labs"
 
   # Description used for Podspec
   podDescription: |
@@ -216,7 +216,7 @@ swift5:
   readonlyProperties: false
 
   # Optionally use libraries to manage response.  Currently PromiseKit, RxSwift, Result, Combine are available.
-  responseAs: PromiseKit
+  responseAs: Result
 
   # Sort model properties to place required parameters before optional parameters. (Default: true)
   sortModelPropertiesByRequiredFlag: true
