@@ -20,7 +20,8 @@ module.exports = {
             'guides/integration_general',
             'guides/register',
             'guides/advanced_topics',
-            'guides/categories'
+            'guides/categories',
+            'guides/oauth'
         ],
         'Links': [{
             type: 'link',
