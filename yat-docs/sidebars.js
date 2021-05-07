@@ -21,7 +21,8 @@ module.exports = {
             'guides/register',
             'guides/advanced_topics',
             'guides/categories',
-            'guides/oauth'
+            'guides/oauth',
+            'guides/web_based_partner_integration'
         ],
         'Links': [{
             type: 'link',
