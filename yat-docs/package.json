@@ -17,14 +17,14 @@
     "serve": "docusaurus serve"
   },
   "dependencies": {
-    "@docusaurus/core": "2.0.0-alpha.63",
-    "@docusaurus/preset-classic": "2.0.0-alpha.63",
-    "@mdx-js/react": "^1.5.8",
+    "@docusaurus/core": "^2.0.0-beta",
+    "@docusaurus/preset-classic": "^2.0.0-beta",
+    "@mdx-js/react": "^1.6.22",
     "clsx": "^1.1.1",
-    "prism-react-renderer": "^1.1.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
-    "yaml": "^1.10.0"
+    "prism-react-renderer": "^1.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "yaml": "^1.10.2"
   },
   "browserslist": {
     "production": [
