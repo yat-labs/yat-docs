@@ -106,6 +106,7 @@ class ApiClient {
         }
         try {
             this.jwt = new JWT(tokens.access_token);
+            this.authentications['JWT'].apiKey = tokens.access_token;
             this.tokens = tokens;
         } catch (err) {
             throw new Error("Could not set access tokens:", tokens);
