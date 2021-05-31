@@ -23,7 +23,8 @@ module.exports = {
             'guides/categories',
             'guides/oauth',
             'guides/web_based_partner_integration',
-            'guides/ios_partner_integration_framework'
+            'guides/ios_partner_integration_framework',
+            'guides/android_partner_integration_framework'
         ],
         'Links': [{
             type: 'link',
