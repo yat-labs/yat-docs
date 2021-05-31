@@ -28,7 +28,7 @@ You can use [CocoaPods](http://cocoapods.org/) to install `YatLib` by adding it 
 use_frameworks!
 
 target 'MyApp' do
-    pod 'YatLib', '0.1.7'
+    pod 'YatLib', '0.1.8'
 end
 ```
 

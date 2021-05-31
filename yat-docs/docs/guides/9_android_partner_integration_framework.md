@@ -36,7 +36,7 @@ This guide describes the usage of the Android Yat integration framework for the 
 
     ```gradle
     dependencies {
-        implementation 'com.github.yat-labs:yat-lib-android:0.1.1'
+        implementation 'com.github.yat-labs:yat-lib-android:0.1.2'
     }
 
 ## Usage
