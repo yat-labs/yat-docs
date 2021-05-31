@@ -33,7 +33,7 @@ const features = [
         We have SDK libraries and <a href="/docs/sdks/nodejs/sdk_nodejs_index">documentation</a> for several languages.
       </>
     ),
-  },
+  }
 ];
 
 function Feature({imageUrl, title, description}) {
