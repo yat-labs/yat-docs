@@ -6,7 +6,7 @@ const path = require('path');
 const yaml = require('yaml');
 const fs = require('fs').promises;
 const validUrl = require('valid-url');
-
+const os = require('os');
 /**
  * Deletes the SDK folder
  */
@@ -81,7 +81,10 @@ async function runOpenAPIGenerator(config, spec, lang, out_dir) {
     const templates = path.resolve(__dirname, `../sdk_generator/templates/openapi-generator_${generator}`);
     const script_dir = path.resolve(__dirname, '../sdk_generator');
     // Build command
-    const cmd = `./oag.sh generate -c ${langConfigFile} -g ${generator} -i ${specUri} -o ${output} -t ${templates}`;
+    debug(`${os.platform()} detected`);
+    const cmd = os.platform() === "win32" ?
+        `./oag.bat ${langConfigFile} ${generator} ${specUri} ${output} ${templates}` :
+        `./oag.sh generate -c ${langConfigFile} -g ${generator} -i ${specUri} -o ${output} -t ${templates}`;
     try {
         const {stdout, stderr} = await exec(cmd, {cwd: script_dir, maxBuffer: 1024 * 1024 * 5});
         debug(stdout);
