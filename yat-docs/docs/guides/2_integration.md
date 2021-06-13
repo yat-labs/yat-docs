@@ -15,7 +15,7 @@ This guide will walk you through a full integration flow, covering the following
 
 * [Registering a new account](#registering-a-new-account),
 * [Logging into the API](#user-authentication),
-* [Claiming a free Yat](#claiming-a-free-yat),
+* [Claiming a Yat with a promo code](#claiming-a-yat-with-a-promo-code),
 * [Fetching a list of yats you own](#fetching-a-list-of-yats-you-own),
 * [Adding an emoji id record to the yat](#adding-an-emoji-id-record-to-the-yat),
 * [Fetching the data associated with a yat](#fetching-the-data-associated-with-a-yat).
@@ -88,7 +88,7 @@ function selectRandomYat(list, len) {
  */
 async function login() {
     try {
-        // If login fails after registration, it may be due to y.at still being in closed Alpha. Each registration must be manually
+        // If login fails after registration, it may be due to y.at still being in closed Beta. Each registration must be manually
         // approved by an admin before you can continue.
         let res = await api.login(email, password);
     } catch (res) {
@@ -98,7 +98,7 @@ async function login() {
 }
 
 /**
- * Attempt to procure a free yat using the given promo code
+ * Attempt to procure a yat using the given promo code
  * @returns {Promise<string>}
  */
 async function purchaseYat() {
@@ -227,7 +227,7 @@ import YatSDK
      */
     func login(completion: @escaping (Result<TokenResponse, Error>) -> Void) {
          // If login fails after registration, it may be due to y.at still being in
-        // closed Alpha. Each registration must be manually approved by an admin
+        // closed Beta. Each registration must be manually approved by an admin
         // before you can continue.
         let details = LoginRequest(password: password, email: email)
         UserAuthenticationAPI.login(body: details) { (result) in
@@ -288,7 +288,7 @@ import YatSDK
     }
         
      /**
-     * Attempt to procure a free yat using the given promo code
+     * Attempt to procure a yat using the given promo code
      */
     func purchaseYat(completion: @escaping (Result<String, Error>) -> Void) {
         // Request the set of supported emoji
@@ -486,7 +486,7 @@ fun selectRandomYat(list: List<String>, len: Int): String {
 fun login() {
     try {
         // If login fails after registration, it may be due to y.at still being in
-        // closed Alpha. Each registration must be manually approved by an admin
+        // closed Beta. Each registration must be manually approved by an admin
         // before you can continue.
         UserAuthenticationApi.shared.login(
             LoginRequest(
@@ -501,7 +501,7 @@ fun login() {
 }
 
 /**
- * Attempt to procure a free yat using the given promo code
+ * Attempt to procure a yat using the given promo code
  */
 fun purchaseYat(): String {
     // Request the set of supported emoji
@@ -900,8 +900,8 @@ Bye!
 
 ## Registering a new account
 
-:::info Closed alpha
-During the closed alpha, registrations are not automatically activated. If you are part of the closed alpha test group,
+:::info Closed beta
+During the closed beta, registrations are not automatically activated. If you are part of the closed beta test group,
 you will need to contact a y.at admin to activate your user account.
 :::
 
@@ -909,7 +909,9 @@ There are a few ways to register a new account. The majority of use cases will m
 you just need an `alternate_id` and `password` to create a new account. You can also optionally provide some personal details
 to personalise your profile, such as first and last name.
 
-It is possible to register without supplying a password. If you register with an `email` only, then all logins will require you to use the  [magic link](/docs/register#magic-links) feature. Magic links provide a great user experience on front-ends, but might not be ideal for pure API access to your yats.
+It is possible to register without supplying a password. If you register with an `email` only, then all logins will
+require you to use the  [magic link](/docs/register#magic-links) feature. Magic links provide a great user experience on
+front-ends, but might not be ideal for pure API access to your yats.
 
 More details on user registration is provided in the [Creating a new user](/docs/register) section.
 
@@ -1133,7 +1135,7 @@ fun login() {
 y.at supports purchasing a Yat using credit card and cryptocurrencies. All Yat purchases can be discounted with a Promo Code,
 and if the discount is 100%, then no payment details are required whatsoever.
 
-The demonstration flow above illustrates how to go about claiming a free yat by applying a Promo Code with 100% discount.
+The demonstration flow above illustrates how to go about claiming a yat by applying a Promo Code with 100% discount.
 We'll describe that flow first, and then talk about how the credit card and crypto payments work.
 
 ### Checking Yat availability
@@ -1246,7 +1248,7 @@ Yats in case the requested one is not available:
   }
 }
 ```
-### Claiming a free Yat
+### Claiming a Yat with a promo code
 
 You can claim a Yat without providing any payment details by making use of the `Free` payment method. This method requires
 a promo code(s) to be applied to the order since it will only succeed if the total cost of the order is zero.
@@ -1255,11 +1257,6 @@ The recommended claim process is:
 * Clear the cart
 * Add an item to the cart with the relevant Promo code
 * Checkout with the `Free` payment provider.
-
-:::tip
-Integration partners and affiliates may be interested in the random free yat allocation flow in the
-[Advanced integration topics](/docs/advanced_topics) section.
-:::
 
 This flow is achieved with three consecutive calls to the API:
 
@@ -1512,7 +1509,7 @@ Let's start making those yats useful!
 
 It's possible to associate [all kinds of data](/docs/categories) with your Yat.
 
-:::info Closed alpha
+:::info Closed beta
 Whilst the API does support all these data types, only URL redirects are supported on the [y.at platform](https://y.at) presently,
 so this guide will focus on that use case.
 :::

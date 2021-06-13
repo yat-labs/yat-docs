@@ -29,24 +29,25 @@ To create a new account at y.at, register a user with a `POST` query to the
 
 There are three ways to register a new account on y.at:
 
-* **With an email only**. Login and registration will be via [magic links](/docs/register#magic-links).
+* **With an email only**. Login and registration will be via [magic links](#magic-links).
 * **With an email and password**. Registration is immediate. Logins may use either username-password or magic link semantics.
 * **With an "alternate id" and a password**. Affiliates and y.at partners will use this approach. The registration and flow is the same as for email/password. With "alternate id" registrations, logins must _always_ use username-password semantics, since there is no email address to receive magic links.
 
+An example code snippet for registering a new account is given in
+[Integrating Yats - Registering a new account](/docs/integration_general#registering-a-new-account).
 
-But there's also the option of omitting the password field completely, in which case y.at will grant user access via
-[magic links](#magic-links).
+## What is the `alternate_id`?
 
-Users have the ability to register with an email address and password.
+Users can be registered using either to their `email` or an `alternate_id`. The latter is a global unique identifier,
+which is typically deterministically determined from the user's integration application and device. Such users require
+the `source` and `password` fields to be set when registering. To provide a deamless user experience, the password is
+also typically determined under the hood by applying a hash function to data unique to the user and her device.
 
-An example code snippet for registering a new account is given in [Integrating Yats - Registering a new account](/docs/integration_general#registering-a-new-account).
+When configured this way, users registered via `alternate_id` can only be authenticated via `password`, and from the app
+ that carried out the registration (since the user doesn't know their password).
 
-## What is alternate_id
-
-User might be registered either to their `email` or to `alternate_id`. Latter is global unique identifier, which is
-usually correlates to the id used in integrated application. Such users require `source` and `password` fields to be set.
-Users registered via `alternate_id` can only be authenticated via `password`,
-though they can be converted to `email` authentication at later stage if needed.
+Users can supply their email address in the web interface at any time to complete their profile and enable `email`-based
+authentication.
 
 ## Authentication flows
 
