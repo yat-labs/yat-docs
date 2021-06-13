@@ -11,9 +11,16 @@ import TabItem from '@theme/TabItem';
 The integration libraries and documentation for Yat are still in _Alpha_. They are not yet feature complete, and there are likely bugs in the implementation.
 :::
 
-This guide describes the usage of the Android Yat integration framework for the Yat partners. A partner application can get a free Yat for any of its users, and link cryptocurrency addresses to the user's Yat as a result of the flow described in this document.
+This guide describes the usage of the Android Yat integration framework for the Yat partners. The integration library
+provides a simple way for Yat partners to purchase and link Yats from within the partner application.
 
-[Framework repository](https://github.com/yat-labs/yat-lib-android) contains an example app module named `yat-lib-example` that illustrates the steps below. The `YatAppConfig` instance in the `MainActivity` of the sample app needs to be edited for the app to function correctly.
+The [Android framework repository](https://github.com/yat-labs/yat-lib-android) contains an example app module named
+`yat-lib-example` that illustrates the steps below.
+
+The `YatAppConfig` instance in the `MainActivity` of the sample app needs to be edited for the app to function correctly.
+
+`YatLib` is open source software. You can view the code, submit bug reports, and offer improvements or features by
+creating new issues or PRs.
 
 ## Requirements
 
@@ -41,7 +48,9 @@ This guide describes the usage of the Android Yat integration framework for the 
 
 ## Usage
 
-1. This library uses deep links to return from the Yat web application back to the partner application. URL scheme of the deep link is agreed upon in between the Yat development team and the integration partner. Currently used scheme is {partner_key}://y.at?{query_params}. Add deep link support to your activity using an intent filter.
+1. This library uses deep links to return from the Yat web application back to the partner application. URL scheme of
+   the deep link is agreed upon in between the Yat development team and the integration partner. Currently used scheme
+   is `{partner_key}://y.at?{query_params}`. Add deep link support to your activity using an intent filter.
 
     ```xml
     <intent-filter>
@@ -86,7 +95,8 @@ This guide describes the usage of the Android Yat integration framework for the 
     }
     ```
 
-3. Implement a function that initializes the library with the app-specific constants, user information and Yat records that should be linked to the Yat.
+3. Implement a function that initializes the library with the app-specific constants, user information and Yat records
+   that should be linked to the Yat.
 
     ```kotlin
     class MainActivity :

@@ -11,7 +11,8 @@ import TabItem from '@theme/TabItem';
 The integration libraries and documentation for Yat are still in _Alpha_. They are not yet feature complete, and there are likely bugs in the implementation.
 :::
 
-This guide describes the usage of the iOS Yat integration framework for the Yat partners. A partner application can get a free Yat for any of its users, and link cryptocurrency addresses to the user's Yat as a result of the flow described in this document.
+This guide describes the usage of the iOS Yat integration framework for the Yat partners. The integration library
+provides a simple way for Yat partners to purchase and link Yats from within the partner application.
 
 ## Requirements
 
@@ -32,11 +33,15 @@ target 'MyApp' do
 end
 ```
 
+`YatLib` is open source software. You can view the code, submit bug reports, and offer improvements or features by
+creating new issues or PRs on the [Github repo](https://github.com/yat-labs/yat-lib-ios).
+
 ## Usage
 
 1. Create your app, add `YatLib` as a pod dependency as described above, and do a `pod install`.
-
-2. `YatLib` uses deep links to return from the Yat web application back to the application. URL scheme of the deep link is agreed upon in between the Yat development team and the integration partner. Currently used scheme is `{partner_key}://y.at?{query_params}`. Setup your deep links in your project accordingly.
+2. `YatLib` uses deep links to return from the Yat web application back to the application. URL scheme of the deep link
+   is agreed upon in between the Yat development team and the integration partner. Currently used scheme is
+   `{partner_key}://y.at?{query_params}`. Setup your deep links in your project accordingly.
 
     1. Select your project in the project browser.
     2. Select your app target under `Targets`.
@@ -70,7 +75,8 @@ end
     }
     ```
 
-4. Define and set the app-specific constants, which will be delivered to you by the Yat development team, and define the crypto records to be linked to the Yat.
+4. Define and set the app-specific constants, which will be delivered to you by the Yat development team, and define the
+   crypto records to be linked to the Yat.
 
     ```swift
     import YatLib
@@ -152,7 +158,8 @@ end
     YatLib.start(hostViewController: self)
     ```
 
-8. Library will call its delegate's `onYatIntegrationComplete(yat: String)` function on successful completion, and will exit silently if the user cancels the flow.
+8. Library will call its delegate's `onYatIntegrationComplete(yat: String)` function on successful completion, and will
+   exit silently if the user cancels the flow.
 
 ## Looking up a Yat
 
