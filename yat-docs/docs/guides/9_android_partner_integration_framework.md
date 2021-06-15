@@ -43,7 +43,7 @@ creating new issues or PRs.
 
     ```gradle
     dependencies {
-        implementation 'com.github.yat-labs:yat-lib-android:0.1.1'
+        implementation 'com.github.yat-labs:yat-lib-android:0.1.2'
     }
 
 ## Usage
