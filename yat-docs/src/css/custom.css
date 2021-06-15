@@ -73,13 +73,13 @@ html[data-theme='dark'] {
   --ifm-toc-link-color: #7F8599;
   --ifm-hr-border-color: #1A1829;
 
-  --ifm-color-success: #33a853;
+  /* --ifm-color-success: #33a853;
   --ifm-color-info: #81d7fb;
   --ifm-color-warning: #f8e77e;
-  --ifm-color-danger: #f4aeb9;
+  --ifm-color-danger: #f4aeb9; */
 
-    --ifm-code-background: #FFF;
-    --ifm-code-color: #523DF1;
+  --ifm-code-background: #FFF;
+  --ifm-code-color: #523DF1;
 
 }
 
@@ -99,18 +99,24 @@ html[data-theme='dark'] {
 }
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-	text-transform: uppercase;
-	font-family: "alliance_no1_black", sans-serif;
+	font-family: "alliance_no1_bold", sans-serif;
   letter-spacing: -0.03em;
 }
 h1, h2, h3, h4 {
   color: #FFF;
 }
+h1 {
+  text-transform: uppercase;
+  	font-family: "alliance_no1_black", sans-serif;
+}
 p {
-letter-spacing: -0.03em;
+  letter-spacing: -0.03em;
 }
 code {
   vertical-align: top;
+}
+.markdown > h2 {
+  --ifm-h2-font-size: 30px;
 }
 
 /* Code Blocks */
@@ -192,7 +198,7 @@ code {
 }
 .bigHeading {
   font-size: 100px;
-	line-height: 80px;
+	line-height: 80%;
   letter-spacing: -0.08em;
 }
 .homeText {
