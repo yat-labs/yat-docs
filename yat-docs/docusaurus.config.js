@@ -13,19 +13,43 @@ module.exports = {
     projectName: 'yat-docs', // Usually your repo name.
     themeConfig: {
         colorMode: {
-            defaultMode: 'dark'
+            defaultMode: 'dark',
+            disableSwitch: true
         },
         navbar: {
             title: 'Yat Developer Documentation',
             logo: {
                 alt: 'Yat',
-                src: 'img/yat-logo-yellow.png',
+                src: 'img/yat-logo-white.svg',
             },
             items: [
+                {
+                    href: '#',
+                    label: 'Support',
+                    position: 'right',
+                },
+                {
+                    href: '#',
+                    label: 'APIs & SDKs',
+                    position: 'right',
+                },
+                {
+                    href: 'https://y.at',
+                    label: 'Y.at',
+                    position: 'right',
+                    target: '_blank',
+                },
                 {
                     href: 'https://github.com/yat-labs/yat-docs',
                     label: 'GitHub',
                     position: 'right',
+                    target: '_blank',
+                },
+                {
+                    href: '#',
+                    label: 'Get API keys',
+                    position: 'right',
+					className: 'menuHighlight',
                 },
             ],
         },
