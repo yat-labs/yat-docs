@@ -6,6 +6,39 @@
  */
 
 /* You can override the default Infima variables here. */
+
+@font-face {
+    font-family: 'alliance_no1_black';
+    src: url('fonts/alliance_no.1_black-webfont.woff2') format('woff2'),
+         url('fonts/alliance_no.1_black-webfont.woff') format('woff');
+}
+@font-face {
+    font-family: 'alliance_no1_bold';
+    src: url('fonts/alliance_no.1_bold-webfont.woff2') format('woff2'),
+         url('fonts/alliance_no.1_bold-webfont.woff') format('woff');
+}
+@font-face {
+    font-family: 'alliance_no1_medium';
+    src: url('fonts/alliance_no.1_medium-webfont.woff2') format('woff2'),
+         url('fonts/alliance_no.1_medium-webfont.woff') format('woff');
+}
+@font-face {
+    font-family: 'alliance_no1_regular';
+    src: url('fonts/alliance_no.1_regular-webfont.woff2') format('woff2'),
+         url('fonts/alliance_no.1_regular-webfont.woff') format('woff');
+}
+@font-face {
+    font-family: 'alliance_no1_light';
+    src: url('fonts/alliance_no.1_light-webfont.woff2') format('woff2'),
+         url('fonts/alliance_no.1_light-webfont.woff') format('woff');
+}
+
+.componentContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
 :root {
   --ifm-color-primary: #895aff;
   --ifm-color-primary-dark: #522ab7;
@@ -22,4 +55,176 @@
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+}
+
+/* Custom edits */
+html[data-theme='dark'] {
+  --ifm-background-color: #090719;
+  --ifm-navbar-background-color: #090719;
+  --ifm-toc-border-color: #1A1829;
+  --ifm-menu-color: #7F8599;
+  --ifm-menu-color-active: #FFFFFF;
+  --ifm-color-primary: #523DF1;
+  --ifm-color-primary-dark: #4d2fe0;
+  --ifm-color-primary-darker: #3A2E7C;
+  --ifm-color-primary-darkest: #2C1D5A;
+  --ifm-font-family-base: 'alliance_no1_regular', sans-serif;
+  --ifm-font-color-base: #7F8599;
+  --ifm-toc-link-color: #7F8599;
+  --ifm-hr-border-color: #1A1829;
+
+  --ifm-color-success: #33a853;
+  --ifm-color-info: #81d7fb;
+  --ifm-color-warning: #f8e77e;
+  --ifm-color-danger: #f4aeb9;
+
+    --ifm-code-background: #FFF;
+    --ifm-code-color: #523DF1;
+
+}
+
+.footer--dark {
+  --ifm-footer-background-color: #090719;
+  border-top: 1px solid #1A1829;
+}
+.navbar__title {
+  display: none;
+}
+.navbar__link {
+  font-family:  'alliance_no1_medium', sans-serif;
+  font-size: 16px;
+}
+.footer__copyright {
+  font-size: 12px;
+}
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+	text-transform: uppercase;
+	font-family: "alliance_no1_black", sans-serif;
+  letter-spacing: -0.03em;
+}
+h1, h2, h3, h4 {
+  color: #FFF;
+}
+p {
+letter-spacing: -0.03em;
+}
+code {
+  vertical-align: top;
+}
+
+/* Code Blocks */
+.codeBlockLines_node_modules-\@docusaurus-theme-classic-lib-next-theme-CodeBlock- {
+  background-color: #1a1829 !important;
+}
+.string {
+  color: #9fd3b9 !important;
+}
+.property {
+  color: #f4aeb9;
+}
+.boolean {
+  color: #f8e77e;
+}
+.null {
+  color: #81d7fb !important;
+}
+.punctuation {
+  color: #b9b9b9 !important;
+}
+.function {
+  color: #d19a66 !important;
+}
+
+/* Homepage Styling */
+.yatBtn {
+	border-radius: 40px;
+	padding: 20px 50px;
+	color: #FFF;
+	font-weight: normal;
+}
+.yatBtn:hover {
+	color: #FFF;
+}
+
+/* Mobile */
+@media (max-width: 996px){
+.yatHome {
+	background: url('/img/phones-mobile.png') no-repeat bottom center;
+  background-size: cover;
+  height: 90vh;
+  padding: 5rem 2rem 12rem 2rem !important;
+}
+.bigHeading {
+  font-size: 50px;
+	line-height: 0.8em;
+	text-align: center;
+}
+.homeText {
+	text-align: center;
+	color: #7F8599;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.yatBtn {
+	margin: 0 auto;
+  box-shadow: 0px 0px 40px rgba(82, 61, 241, 0.6);
+}
+.btnCenter {
+  display: flex;
+  align-items: center;
+}
+}
+
+
+
+/* Desktop */
+@media (min-width: 997px){
+.yatHome {
+	background: url('/img/phones.png') no-repeat bottom right;
+  background-size: cover;
+  height: 100vh;
+  min-height: 500px;
+  padding: 0 5rem 3rem 3rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+.bigHeading {
+  font-size: 100px;
+	line-height: 80px;
+  letter-spacing: -0.08em;
+}
+.homeText {
+	text-align: left;
+	color: #7F8599;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.colContainer {
+	min-height: 700px;
+}
+.navbar {
+	border-bottom: 1px solid #1A1829;
+  letter-spacing: -0.03em;
+}
+.navbar__logo {
+  height: 90%;
+}
+
+.menuHighlight {
+	background: #523DF1;
+	border-radius: 33px;
+	color: #FFF;
+	padding: 5px 20px;
+}
+.menuHighlight:hover {
+	background: #4d2fe0;
+	color: #FFF;
+}
+.yatBtn:hover {
+  box-shadow: 0px 0px 40px rgba(82, 61, 241, 0.6);
+}
+
+
 }
