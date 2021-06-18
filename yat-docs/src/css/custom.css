@@ -32,13 +32,11 @@
     src: url('fonts/alliance_no.1_light-webfont.woff2') format('woff2'),
          url('fonts/alliance_no.1_light-webfont.woff') format('woff');
 }
-
 .componentContainer {
   max-width: 1100px;
   margin: 0 auto;
   padding: 30px;
 }
-
 :root {
   --ifm-color-primary: #895aff;
   --ifm-color-primary-dark: #522ab7;
@@ -72,14 +70,9 @@ html[data-theme='dark'] {
   --ifm-font-color-base: #7F8599;
   --ifm-toc-link-color: #7F8599;
   --ifm-hr-border-color: #1A1829;
-
-  /* --ifm-color-success: #33a853;
-  --ifm-color-info: #81d7fb;
-  --ifm-color-warning: #f8e77e;
-  --ifm-color-danger: #f4aeb9; */
-
   --ifm-code-background: #FFF;
   --ifm-code-color: #523DF1;
+  --ifm-container-width-xl: 1340px;
 
 }
 
@@ -186,15 +179,36 @@ code {
 
 /* Desktop */
 @media (min-width: 997px){
-.yatHome {
+.navbar__inner {
+  padding: 0 50px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.navbar {
+  padding: 0;
+}
+.container {
+  max-width: 100%;
+}
+.docs-wrapper {
+  padding: 0 25px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+.yatBg {
 	background: url('/img/phones.png') no-repeat bottom right;
   background-size: cover;
-  height: 100vh;
+}
+.yatHome {
+  height: 95vh;
   min-height: 500px;
-  padding: 0 5rem 3rem 3rem !important;
-  display: flex;
+  display: grid;
+  max-width: 1440px;
+  margin: 0 auto;
   align-items: center;
-  justify-content: left;
+}
+.yatContent {
+  padding: 50px;
 }
 .bigHeading {
   font-size: 100px;
@@ -223,6 +237,7 @@ code {
 	border-radius: 33px;
 	color: #FFF;
 	padding: 5px 20px;
+  margin-left: 50px;
 }
 .menuHighlight:hover {
 	background: #4d2fe0;
@@ -231,6 +246,19 @@ code {
 .yatBtn:hover {
   box-shadow: 0px 0px 40px rgba(82, 61, 241, 0.6);
 }
+.main-wrapper {
+  width: 100%;
+}
+}
 
-
+/* Desktop Large */
+@media (min-width: 1440px){
+.yatBg {
+  background-size: auto;
+}
+.footer--dark .container {
+  width: 1440px;
+  margin: 0 auto;
+  padding: 20px 50px;
+}
 }

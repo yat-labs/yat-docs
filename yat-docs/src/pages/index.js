@@ -15,31 +15,28 @@ function Home() {
       title={`👋🏼 from ${siteConfig.title}`}
       description="Yat API and SDK documentation and examples">
 
-    <main>
-	  <section>
-    <div className="yatHome">
-				<div>
-					<h1 className="bigHeading">Yat API <br />Reference</h1>
-					<p className="homeText">Helping you build awesome stuff with 🖖.at<br/>
-					Integrate your app or website with Yat in minutes<br />
-					with our easy to follow user guides</p>
-				   <div className="btnCenter">
-					<Link
-					  className={clsx(
-						'button button--primary button--lg yatBtn',
-						styles.getStarted,
-					  )}
-					  to={useBaseUrl('/docs/api-ref')}>
-					  Get Started
-					</Link>
-
-				  </div>
-				</div>
-</div>
-		</section>
-    </main>
-
-
+      <main>
+  	  <section className="yatBg">
+      <div className="yatHome">
+    		<div className="yatContent">
+    			<h1 className="bigHeading">Yat API <br />Reference</h1>
+    			<p className="homeText">Helping you build awesome stuff with 🖖.at<br/>
+    			Integrate your app or website with Yat in minutes<br />
+    			with our easy to follow user guides</p>
+    		  <div className="btnCenter">
+    				<Link
+    				  className={clsx(
+    					'button button--primary button--lg yatBtn',
+    					styles.getStarted,
+    				  )}
+    				  to={useBaseUrl('/docs/api-ref')}>
+    				  Get Started
+    				</Link>
+          </div>
+    		</div>
+      </div>
+  		</section>
+      </main>
     </Layout>
   );
 }
