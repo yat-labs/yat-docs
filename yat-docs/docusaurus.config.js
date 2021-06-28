@@ -24,12 +24,12 @@ module.exports = {
             },
             items: [
                 {
-                    href: '#',
+                    href: '/docs/support',
                     label: 'Support',
                     position: 'right',
                 },
                 {
-                    href: '#',
+                    href: '/docs/api-ref',
                     label: 'APIs & SDKs',
                     position: 'right',
                 },
@@ -46,7 +46,7 @@ module.exports = {
                     target: '_blank',
                 },
                 {
-                    href: '#',
+                    href: '/docs/api_keys',
                     label: 'Get API keys',
                     position: 'right',
 					className: 'menuHighlight',
@@ -66,23 +66,6 @@ module.exports = {
                         {
                             label: 'API reference',
                             to: '/docs/api-ref'
-                        }
-                    ]
-                },
-                {
-                    title: 'SDK Documentation',
-                    items: [
-                        {
-                            label: 'NodeJs',
-                            to: '/docs/sdks/nodejs/sdk_nodejs_index'
-                        },
-                        {
-                            label: 'Kotlin',
-                            to: '/docs/sdks/kotlin/sdk_kotlin_index'
-                        },
-                        {
-                            label: 'Swift',
-                            to: '/docs/sdks/swift5/sdk_swift5_index'
                         }
                     ]
                 },
