@@ -21,8 +21,7 @@ function Home() {
     		<div className="yatContent">
     			<h1 className="bigHeading">Yat API <br />Reference</h1>
     			<p className="homeText">Helping you build awesome stuff with 🖖.at<br/>
-    			Integrate your app or website with Yat in minutes<br />
-    			with our easy to follow user guides</p>
+    			Integrate your app or website with Yat in minutes	with our easy to follow user guides</p>
     		  <div className="btnCenter">
     				<Link
     				  className={clsx(

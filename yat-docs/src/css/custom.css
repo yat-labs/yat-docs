@@ -145,14 +145,14 @@ code {
 .yatBtn:hover {
 	color: #FFF;
 }
-
 /* Mobile */
 @media (max-width: 996px){
 .yatHome {
 	background: url('/img/phones-mobile.png') no-repeat bottom center;
   background-size: cover;
-  height: 90vh;
-  padding: 5rem 2rem 12rem 2rem !important;
+  height: 92vh;
+  display: grid;
+  align-items: center;
 }
 .bigHeading {
   font-size: 50px;
@@ -163,7 +163,9 @@ code {
 	text-align: center;
 	color: #7F8599;
   padding-top: 15px;
-  padding-bottom: 15px;
+  padding-bottom: 30px;
+  max-width: 350px;
+  margin: 0 auto;
 }
 .yatBtn {
 	margin: 0 auto;
@@ -172,6 +174,27 @@ code {
 .btnCenter {
   display: flex;
   align-items: center;
+}
+}
+
+/* Mobile Small*/
+@media (max-width: 420px) {
+.yatHome {
+	background: url('/img/phones-mobile.png') no-repeat bottom center;
+  background-size: cover;
+  height: 92vh;
+  padding: 20px !important;
+}
+.bigHeading {
+  font-size: 34px;
+	line-height: 0.8em;
+	text-align: center;
+}
+.yatBtn {
+	border-radius: 40px;
+	padding: 15px 40px;
+	color: #FFF;
+	font-weight: normal;
 }
 }
 
@@ -220,6 +243,7 @@ code {
 	color: #7F8599;
   padding-top: 30px;
   padding-bottom: 30px;
+  max-width: 350px;
 }
 .colContainer {
 	min-height: 700px;
