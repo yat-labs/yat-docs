@@ -145,6 +145,10 @@ code {
 .yatBtn:hover {
 	color: #FFF;
 }
+.yatHomeLink {
+  color: #7F8599;
+  font-weight: bold;
+}
 /* Mobile */
 @media (max-width: 996px){
 .yatHome {
