@@ -224,7 +224,7 @@ code {
 }
 .yatBg {
 	background: url('/img/phones.png') no-repeat bottom right;
-  background-size: cover;
+  background-size: 1400px 850px;
 }
 .yatHome {
   height: 95vh;
@@ -282,7 +282,7 @@ code {
 /* Desktop Large */
 @media (min-width: 1440px){
 .yatBg {
-  background-size: auto;
+  background-size: 1400px 850px;
 }
 .footer--dark .container {
   width: 1440px;
