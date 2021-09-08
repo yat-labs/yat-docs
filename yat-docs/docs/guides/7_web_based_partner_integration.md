@@ -31,7 +31,7 @@ out the rest of the steps below.
 
 ## 2a. Existing Partner App Users
 
-<a href="/img/web_based_integration_flow_1_large.png" target="_blank"><img src="/img/web_based_integration_flow_1_small.png"/></a>
+<a href="/img/web_based_integration_flow_1_lrg.png" target="_blank"><img src="/img/web_based_integration_flow_1_sml.png"/></a>
 <br/><br/>
 
 As the first step of the integration for an existing partner app user, the partner app makes a call to the `/process` endpoint to:
