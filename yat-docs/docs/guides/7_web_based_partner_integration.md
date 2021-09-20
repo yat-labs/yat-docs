@@ -40,7 +40,7 @@ As the first step of the integration for an existing partner app user, the partn
 2. Allow the user to purchase a Yat
 3. Assign the Yat to the newly created user
 
-**Service URL:** `https://y.at/process`<br/>
+**Service URL:** `https://a.y.at/process`<br/>
 **Method:** `POST`<br/>
 **Headers:**<br/>
 - `X-Bypass-Token`: Contains an authentication token for the partner. To be delivered to the partner by the Yat team.
@@ -160,7 +160,7 @@ partner application, and the integration flow is completed.
 
 A `GET` request is required to look up a Yat and query all the records linked to it.
 
-**Service URL:** `https://y.at/emoji_id/{yat}`<br/>
+**Service URL:** `https://a.y.at/emoji_id/{yat}`<br/>
 **Method:** `GET`<br/>
 **Path Parameters:**
 
