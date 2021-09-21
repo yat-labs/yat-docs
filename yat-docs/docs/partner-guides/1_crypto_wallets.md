@@ -196,7 +196,7 @@ A `GET` request is required to look up a Yat and query all the records linked to
 
 **Path Parameters:**
 
-`yat`: The Yat to be looked up. (e.g. https://y.at/emoji_id/👒🍥🍬♐🕌)
+`yat`: The URI encoded Yat to be looked up. (e.g. https://y.at/emoji_id/%F0%9F%91%92%F0%9F%8D%A5%F0%9F%8D%AC%E2%99%90%F0%9F%95%8C)
 
 Response: A JSON object that contains the lookup result. Yat records will be found in the result field. Below example contains a BTC address `(0x1003)`, an ETH address `(0x1004)`, a Monero standard address `(0x1001)` and a Tari public key `(0x0101)`.
 
