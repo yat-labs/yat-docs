@@ -241,7 +241,7 @@ Response: A JSON object that contains the lookup result. Yat records will be fou
 
 ### Utility endpoints
 
-If you're looking for a specific tag associated wityh the Yat, there are utility endpoints available for most of the emoji id category tags in the form `https://y.at/emoji_id/{yat}/{ticker}`.
+If you're looking for a specific tag associated with the Yat, there are utility endpoints available for most of the emoji id category tags in the form `https://a.y.at/emoji_id/{yat}/{ticker}`.
 
 So for example, to query the BTC address only you can simply call
 
