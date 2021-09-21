@@ -190,7 +190,7 @@ If the user has connected an address with their Yat, addresses are set, any one 
 
 A `GET` request is required to look up a Yat and query all the records linked to it.
 
-**Service URL:** `https://y.at/emoji_id/{yat}`
+**Service URL:** `https://a.y.at/emoji_id/{yat}`
 
 **Method:** `GET`
 
