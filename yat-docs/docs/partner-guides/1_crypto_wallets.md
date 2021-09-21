@@ -48,7 +48,7 @@ Non-custodial crypto wallets give users complete control of their keys and funds
 <a href="/img/flow1b-lrg.png" target="_blank"><img src="/img/flow1b-sml.png"/></a>
 
 &nbsp;  
-As the first step of the integration for an existing partner app user, the partner app makes a call to the /process endpoint to:
+As the first step of the integration for an existing partner app user, the partner app makes a call to the `/process` endpoint to:
 
 1. Create and activate a new Yat user
 2. Allow the user to purchase a Yat
