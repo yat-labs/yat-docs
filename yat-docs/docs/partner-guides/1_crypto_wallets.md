@@ -245,7 +245,7 @@ If you're looking for a specific tag associated with the Yat, there are utility 
 
 So for example, to query the BTC address only you can simply call
 
-`curl -X GET http://localhost:3001/emoji_id/👒🍥🍬/BTC` and receive a response listing only the Bitcoin addresses associated with the yat. For example:
+`curl -X GET https://a.y.at/emoji_id/%F0%9F%91%92%F0%9F%8D%A5%F0%9F%8D%AC/BTC` and receive a response listing only the Bitcoin addresses associated with the yat. For example:
 
 ```json
 {
