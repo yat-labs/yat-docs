@@ -174,7 +174,7 @@ Partner application’s users can access the Yat dashboard directly from the par
 
 ## 4. Send payment to a Yat
 
-If the user has connected an address with their Yat, addresses are set, any one can send crypto payments and the user will receive it in the correct address. Alice can send BTC to Bob’s Yat (🚀👽) without ever having to paste Bob’s P2PKH address. To top it all off, the partner app can even render a unique visualization associated with 🚀👽 created by Bob himself. Yat supports the top 100 cryptocurrencies.
+If the user has connected an address with their Yat, addresses are set, any one can send crypto payments and the user will receive it in the correct address. Alice can send BTC to Bob’s Yat (🚀👽) without ever having to paste Bob’s P2PKH address. To top it all off, the partner app can even render a unique visualization associated with 🚀👽 created by Bob himself. Yat supports the top 100 cryptocurrencies as native tags. Additional currencies can be specified with the generic crypto tag.
 
 <a href="/img/flow4a-lrg.png" target="_blank"><img src="/img/flow4a-sml.png"/></a>
 
