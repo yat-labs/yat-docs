@@ -17,7 +17,6 @@ The Yat team and the partner will need to finalize the following before kicking 
 * Partner branding assets for the Yat web views (e.g. the partner’s logo that will appear in our web app)
 * URL path component for the partner (e.g. /coolwalletapp)
 * Partner’s return URL that the Yat web app redirects to once a user completes the integration steps in our web app (Flow [1](#1-allow-my-users-to-get-a-yat) & [2](#2-connect-existing-yats))
-* Partner app's deep link scheme for the redirection of the existing Yat users to the partner app through a QR code (Flow [1](#1-allow-my-users-to-get-a-yat), [2](#2-connect-existing-yats) & [8](#8-enable-yat-users-to-connect-with-partner-wallets))
 
 Once the partner path component, the QR code deep link scheme and the redirection URL have been assigned, they can carry out the rest of the steps below.
 
@@ -95,7 +94,7 @@ As the first step of the integration for an existing partner app user, the partn
 
 ### Redirection of the User to the Yat Web Application
 
-The partner application user needs to get redirected to the Yat website to Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets) & [1B](#1b-get-a-yat-non-custodial-wallets)) or Connect a Yat (Flow [2](#2-connect-existing-yats)). A number of query parameters are necessary for the Yat web application to correctly identify the user and link any necessary data to the user's Yat.
+The partner application user needs to get redirected to the Yat website to Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets) & [1B](#1b-get-a-yat-non-custodial-wallets)). A number of query parameters are necessary for the Yat web application to correctly identify the user and link any necessary data to the user's Yat.
 
 Web App URL: `https://y.at/partner/{partner_path}`
 
@@ -166,6 +165,18 @@ Users who already own one or more Yats can connect their Yat(s) with their walle
 
 <a href="/img/flow2b-lrg.png" target="_blank"><img src="/img/flow2b-sml.png"/></a>
 
+The partner application user needs to get redirected to the Yat website to Connect a Yat (Flow 2). A number of query parameters are necessary for the Yat web application to correctly identify the user and link any necessary data to the user's Yat.
+
+**Web App URL**: `https://y.at/partner/{partner_path}/link-email`
+
+**Query Parameters:**
+
+`refresh_token`: User's refresh token that was received in the response body of redirection to Yat web or as a deep link query parameter in redirection from Yat web.
+
+`eid`: The Yat that the user linked or purchased, received by the partner application as a result of the call to the /process endpoint in Flow #1.
+
+`addresses`: A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`.
+Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
 ## 3. Manage connected Yats
 
 Partner application’s users can access the Yat dashboard directly from the partner app with the Manage Yats flow. The Yat Dashboard enables users to visualize, mint, transfer their Yat and more.
@@ -283,22 +294,5 @@ As a part of this flow, the partner app will need to:
 * Assign a nickname to the address
 * Allow users to enter/paste the Yat instead of their wallet address when sending money
 
-## 8. Enable Yat users to connect with partner wallets
 
-Logged-in Yat users who already own one or more Yats can connect their Yat(s) with their wallet directly from Yat’s web app.
 
-Yat will publish a blog post and marketing collateral to announce the partnership to the Yat community. The post will contain a QR code with a deferred deep link that launches the app or installs and then launches the partner app.
-
-<a href="/img/flow8-lrg.png" target="_blank"><img src="/img/flow8-sml.png"/></a>
-
-&nbsp;  
-Existing Yat users are forwarded to the partner application through a QR code, which encodes the partner deep link scheme and query parameters that identify the user's Yat and session information.
-
-QR Code URL: Partner app's deep link scheme as described in [Pre-integration setup](#getting-started). (e.g. `coolwalletapp://y.at` )
-
-**Query Parameters:**
-
-`eid:` Existing user's Yat.
-
-`refresh_token:` Existing user's refresh token.
-Partner application proceeds with [Flow 8](#8-enable-yat-users-to-connect-with-partner-wallets) upon successful reception of the QR code deep link.
