@@ -26,6 +26,9 @@ module.exports = {
             'guides/ios_partner_integration_framework',
             'guides/android_partner_integration_framework'
         ],
+        'Partner Guides': [
+            'partner-guides/crypto-wallets'
+        ],
         'Links': [{
             type: 'link',
             label: 'Yat homepage',
