@@ -297,6 +297,7 @@ Coming soon: If **no visualization** exists for the Yat, we recommend partners d
 
 ## 5. Receive payments from a Yat
 
+Looking up a Yat from an address is not currently possible, however the client application could store a map of used addresses to known Yats and confirm the address is still linked to that Yat when doing the lookup.
 <a href="/img/flow5-lrg.png" target="_blank"><img src="/img/flow5-sml.png"/></a>
 
 ## 6. Share a Yat address
