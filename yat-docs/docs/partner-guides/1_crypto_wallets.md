@@ -318,7 +318,7 @@ As a part of this flow, the partner app will need to:
 
 ## 8. Invalid Yats
 
-Looking up a valid Yat, that has not yet been registered will return a 404 error
+Looking up a valid Yat, that has not yet been registered will return a 404 error.
 
 `curl -X GET https://a.y.at/emoji_id/%E2%98%A0%EF%B8%8F%F0%9F%90%99%E2%98%A0%EF%B8%8F%F0%9F%91%81%EF%B8%8F%F0%9F%A6%96`
 
