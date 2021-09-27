@@ -18,7 +18,7 @@ The Yat team and the partner will need to finalize the following before kicking 
 * URL path component for the partner (e.g. /coolwalletapp)
 * Partner’s return URL that the Yat web app redirects to once a user completes the integration steps in our web app (Flow [1](#1-allow-my-users-to-get-a-yat) & [2](#2-connect-existing-yats))
 
-Once the partner path component, the QR code deep link scheme and the redirection URL have been assigned, they can carry out the rest of the steps below.
+Once the partner path component and the redirection URL have been assigned, they can carry out the rest of the steps below.
 
 ## 1. Allow my users to get a Yat
 
@@ -293,7 +293,8 @@ Each Yat may have a set of visualizations, if the user has generated them. To ac
 }
 ```
 
-Coming soon: If **no visualization** exists for the Yat, we recommend partners display the fallback graphic in place of the visualization. Fallback graphics will be updated on to this documentation shortly. 
+Coming soon: If **no visualization** exists for the Yat, we recommend partners display the fallback graphic in place of the visualization. Fallback graphics will be updated on to this documentation shortly.
+
 ## 5. Receive payments from a Yat
 
 <a href="/img/flow5-lrg.png" target="_blank"><img src="/img/flow5-sml.png"/></a>
