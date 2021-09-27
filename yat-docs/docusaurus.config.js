@@ -24,12 +24,12 @@ module.exports = {
             },
             items: [
                 {
-                    href: '/docs/support',
+                    to: '/docs/support',
                     label: 'Support',
                     position: 'right',
                 },
                 {
-                    href: '/docs/api-ref',
+                    to: '/docs/api-ref',
                     label: 'APIs & SDKs',
                     position: 'right',
                 },
@@ -46,7 +46,7 @@ module.exports = {
                     target: '_blank',
                 },
                 {
-                    href: '/docs/api_keys',
+                    to: '/docs/api_keys',
                     label: 'Get API keys',
                     position: 'right',
 					className: 'menuHighlight',

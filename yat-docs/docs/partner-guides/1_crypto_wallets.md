@@ -18,7 +18,7 @@ The Yat team and the partner will need to finalize the following before kicking 
 * URL path component for the partner (e.g. /coolwalletapp)
 * Partner’s return URL that the Yat web app redirects to once a user completes the integration steps in our web app (Flow [1](#1-allow-my-users-to-get-a-yat) & [2](#2-connect-existing-yats))
 
-Once the partner path component, the QR code deep link scheme and the redirection URL have been assigned, they can carry out the rest of the steps below.
+Once the partner path component and the redirection URL have been assigned, they can carry out the rest of the steps below.
 
 ## 1. Allow my users to get a Yat
 
@@ -207,7 +207,7 @@ A `GET` request is required to look up a Yat and query all the records linked to
 
 **Path Parameters:**
 
-`yat`: The URI encoded Yat to be looked up. (e.g. https://y.at/emoji_id/%F0%9F%91%92%F0%9F%8D%A5%F0%9F%8D%AC%E2%99%90%F0%9F%95%8C)
+`yat`: The URI encoded Yat to be looked up. (e.g. https://a.y.at/emoji_id/%F0%9F%91%92%F0%9F%8D%A5%F0%9F%8D%AC%E2%99%90%F0%9F%95%8C)
 
 Response: A JSON object that contains the lookup result. Yat records will be found in the result field. Below example contains a BTC address `(0x1003)`, an ETH address `(0x1004)`, a Monero standard address `(0x1001)` and a Tari public key `(0x0101)`.
 
@@ -272,7 +272,32 @@ So for example, to query the BTC address only you can simply call
 }
 ```
 
+### Visualizations
+
+Each Yat may have a set of visualizations, if the user has generated them. To access these pre-rendered files call
+
+`curl -X GET https://a.y.at/emoji_id/%E2%98%A0%EF%B8%8F%F0%9F%90%99%E2%98%A0%EF%B8%8F/json/VisualizerFileLocations` which will respond with the absolute URLs for the files.
+
+```json
+{
+  "data": {
+    "gif": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.gif",
+    "image": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.png",
+    "video": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.mp4",
+    "webm": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.webm"
+  },
+  "is_locked": false,
+  "created_at": "2021-08-03T08:51:00.362249Z",
+  "updated_at": "2021-09-15T09:23:37.787489Z",
+  "locked_future_writes_at": null
+}
+```
+
+Coming soon: If **no visualization** exists for the Yat, we recommend partners display the fallback graphic in place of the visualization. Fallback graphics will be updated on to this documentation shortly.
+
 ## 5. Receive payments from a Yat
+
+Looking up a Yat from an address is not currently possible, however the client application could store a map of used addresses to known Yats and confirm the address is still linked to that Yat when doing the lookup by using Flow [7](#7-add-yats-to-address-book). 
 
 <a href="/img/flow5-lrg.png" target="_blank"><img src="/img/flow5-sml.png"/></a>
 
@@ -294,5 +319,24 @@ As a part of this flow, the partner app will need to:
 * Assign a nickname to the address
 * Allow users to enter/paste the Yat instead of their wallet address when sending money
 
+## 8. Invalid Yats
 
+Looking up a valid Yat, that has not yet been registered will return a 404 error.
 
+`curl -X GET https://a.y.at/emoji_id/%E2%98%A0%EF%B8%8F%F0%9F%90%99%E2%98%A0%EF%B8%8F%F0%9F%91%81%EF%B8%8F%F0%9F%A6%96`
+
+```json
+{
+  "error": "Error processing EmojiId 404: Emoji lookup error: EmojiDbError: EmojiID ☠️🐙☠️👁️🦖 not found"
+}
+```
+
+Looking up a Yat that is not part of the set will return a 400 error.
+
+`curl -X GET https://a.y.at/emoji_id/%F0%9F%88%B5`
+
+```json
+{
+  "error": "Failed to parse EmojiId: Encountered a character or emoji not in the supported set"
+}
+```
