@@ -272,6 +272,27 @@ So for example, to query the BTC address only you can simply call
 }
 ```
 
+### Visualizations
+
+Each Yat may have a set of visualizations, if the user has generated them. To access these pre-rendered files call
+
+`curl -X GET https://a.y.at/emoji_id/%E2%98%A0%EF%B8%8F%F0%9F%90%99%E2%98%A0%EF%B8%8F/json/VisualizerFileLocations` which will respond with the absolute URLs for the files.
+
+```json
+{
+  "data": {
+    "gif": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.gif",
+    "image": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.png",
+    "video": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.mp4",
+    "webm": "https://y.at/viz/poison/poison.octopus.poison-f4fc44.webm"
+  },
+  "is_locked": false,
+  "created_at": "2021-08-03T08:51:00.362249Z",
+  "updated_at": "2021-09-15T09:23:37.787489Z",
+  "locked_future_writes_at": null
+}
+```
+
 ## 5. Receive payments from a Yat
 
 <a href="/img/flow5-lrg.png" target="_blank"><img src="/img/flow5-sml.png"/></a>
@@ -294,5 +315,24 @@ As a part of this flow, the partner app will need to:
 * Assign a nickname to the address
 * Allow users to enter/paste the Yat instead of their wallet address when sending money
 
+## 8. Invalid Yats
 
+Looking up a valid Yat, that has not yet been registered will return a 404 error
 
+`curl -X GET https://a.y.at/emoji_id/%E2%98%A0%EF%B8%8F%F0%9F%90%99%E2%98%A0%EF%B8%8F%F0%9F%91%81%EF%B8%8F%F0%9F%A6%96`
+
+```json
+{
+  "error": "Error processing EmojiId 404: Emoji lookup error: EmojiDbError: EmojiID ☠️🐙☠️👁️🦖 not found"
+}
+```
+
+Looking up a Yat that is not part of the set will return a 400 error.
+
+`curl -X GET https://a.y.at/emoji_id/%F0%9F%88%B5`
+
+```json
+{
+  "error": "Failed to parse EmojiId: Encountered a character or emoji not in the supported set"
+}
+```
