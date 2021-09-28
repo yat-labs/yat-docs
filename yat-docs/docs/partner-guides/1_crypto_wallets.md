@@ -104,9 +104,9 @@ Web App URL: `https://y.at/partner/{partner_path}`
 
 **Query Parameters:**
 
-`refresh_token:` User's refresh token that was received in the response body of redirection to Yat web or as a deep link query parameter in redirection from Yat web in both of the above flows - Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets) & [1B](#1b-get-a-yat-non-custodial-wallets)) or Connect a Yat (Flow [2A](#2a-connect-existing-yats-from-onboarding) & [2B](#2b-connect-existing-yats-from-settings)).
+`refresh_token:` User's refresh token that was received in the response body of redirection to Yat web or as a deep link query parameter in redirection from Yat web in Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets) & [1B](#1b-get-a-yat-non-custodial-wallets)).
 
-`eid:` The Yat that the user linked or purchased, received by the partner application as a result of the call to the /process endpoint in Step #2a or as a deep link query parameter in Flow [8](#8-enable-yat-users-to-connect-with-partner-wallets) (Enable Yat users to connect with partner wallets).
+`eid:` The Yat that the user linked or purchased, received by the partner application as a result of the call to the /process endpoint in Step #2a.
 
 `addresses:` A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`.
 Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories, but here's a partial list of cryptocurrency address tags:
@@ -297,7 +297,7 @@ Coming soon: If **no visualization** exists for the Yat, we recommend partners d
 
 ## 5. Receive payments from a Yat
 
-Looking up a Yat from an address is not currently possible, however the client application could store a map of used addresses to known Yats and confirm the address is still linked to that Yat when doing the lookup by using Flow [7](#7-add-yats-to-address-book). 
+Looking up a Yat from an address is not currently possible, however the client application could store a map of used addresses to known Yats and confirm the address is still linked to that Yat when doing the lookup by using Flow [7](#7-add-yats-to-address-book).
 
 <a href="/img/flow5-lrg.png" target="_blank"><img src="/img/flow5-sml.png"/></a>
 
