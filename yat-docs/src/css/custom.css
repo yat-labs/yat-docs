@@ -46,6 +46,7 @@
   --ifm-color-primary-lighter:  #ff5a5a;
   --ifm-color-primary-lightest: #ffa758;
   --ifm-code-font-size: 95%;
+  --ifm-alert-background-color-highlight: #FFF !important;
 }
 
 .docusaurus-highlight-code-line {
@@ -73,9 +74,32 @@ html[data-theme='dark'] {
   --ifm-code-background: #FFF;
   --ifm-code-color: #523DF1;
   --ifm-container-width-xl: 1340px;
-
 }
-
+.alert {
+  color: #000;
+}
+.alert--primary {
+  background: #306cce;
+}
+.alert--secondary {
+  background: #d4d5d8;
+}
+.alert--success {
+  background: #009400;
+}
+.alert--warning {
+  background: #e6a700;
+}
+.alert--info {
+  background: #4cb3d4;
+}
+.alert--danger {
+  background: #e13238;
+}
+.admonition-icon {
+  -webkit-filter: invert(100%); /* safari 6.0 - 9.0 */
+         filter: invert(100%)
+}
 .footer--dark {
   --ifm-footer-background-color: #090719;
   border-top: 1px solid #1A1829;
@@ -107,6 +131,7 @@ p {
 }
 code {
   vertical-align: top;
+  color: #523df1;
 }
 .markdown > h2 {
   --ifm-h2-font-size: 30px;
@@ -289,4 +314,23 @@ code {
   margin: 0 auto;
   padding: 20px 50px;
 }
+}
+
+.react-toggle-track {
+  display: none;
+}
+
+.iconExternalLink_node_modules-\@docusaurus-theme-classic-lib-next-theme-IconExternalLink-styles-module {
+  display: none;
+}
+a:hover {
+  text-decoration: none;
+}
+.table-of-contents__link--active {
+  color: #FFF;
+}
+
+/* Search Results Page */
+.searchResultItem_3Ppn {
+  border-bottom: 1px solid #222;
 }
