@@ -14,7 +14,7 @@ module.exports = {
     themeConfig: {
         colorMode: {
             defaultMode: 'dark',
-            disableSwitch: true
+            disableSwitch: false
         },
         navbar: {
             title: 'Yat Developer Documentation',
@@ -96,6 +96,12 @@ module.exports = {
         },
     },
     plugins: [
+        [
+          require.resolve("@easyops-cn/docusaurus-search-local"),
+          {
+            hashed: true,
+          },
+        ],
         [
             path.resolve(__dirname, '../yatdocs-plugin'),
             {
