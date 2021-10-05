@@ -33,7 +33,13 @@ module.exports = {
             type: 'link',
             label: 'Yat homepage',
             href: 'https://y.at'
-        }]
+        },
+        {
+            type: 'link',
+            label: 'Unicode License',
+            href: 'https://www.unicode.org/license.html'
+        }
+      ]
     },
     sdk_nodejs: [
         'sdks/nodejs/sdk_nodejs_index',
