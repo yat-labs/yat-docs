@@ -49,6 +49,16 @@ The following is not an exhaustive list, and will very likely be expanded as tim
 
 #### Cryptocurrency addresses
 
+Cryptocurrencies that have their own protocol have a designated Tag value. There is a structured, pipe `|` delimited value for addresses.
+
+`address|description|signature|default`
+
+Examples:
+    
+    0x1003 = bc1q4ywsw6ktuxmnz4qx0h3uh44m324443hv4mn9vc|My Coffee Collection|OptionalSignature|t
+    0x1003 = bc1q4ywsw6ktuxmnz4qx0h3uh44m324443hv4mn9vc
+
+
 | Class  | Tag    | Type / Size | Description                         |
 |:-------|:-------|:------------|:------------------------------------|
 | `0x10` | `0x01` | 69 bytes    | Monero standard address             |
@@ -56,104 +66,259 @@ The following is not an exhaustive list, and will very likely be expanded as tim
 | `0x10` | `0x03` | 34 bytes    | Bitcoin address                     |
 | `0x10` | `0x04` |             | Ethereum address                    |
 | `0x10` | `0x10` |             | Binance Coin                        |
-| `0x10` | `0x11` |             | Tether                              |
 | `0x10` | `0x12` |             | Cardano                             |
 | `0x10` | `0x13` |             | Dogecoin                            |
-| `0x10` | `0x14` |             | Ripple                              |
+| `0x10` | `0x14` |             | XRP                                 |
 | `0x10` | `0x15` |             | Polkadot                            |
 | `0x10` | `0x16` |             | Internet Computer                   |
 | `0x10` | `0x17` |             | Bitcoin Cash                        |
-| `0x10` | `0x18` |             | Uniswap                             |
 | `0x10` | `0x19` |             | Litecoin                            |
-| `0x10` | `0x1A` |             | Chainlink                           |
-| `0x10` | `0x1B` |             | USD Coin                            |
 | `0x10` | `0x1C` |             | Stellar                             |
 | `0x10` | `0x1D` |             | Solana                              |
 | `0x10` | `0x1E` |             | VeChain                             |
 | `0x10` | `0x1F` |             | Ethereum Classic                    |
 | `0x10` | `0x20` |             | EOS                                 |
 | `0x10` | `0x21` |             | THETA                               |
-| `0x10` | `0x22` |             | Wrapped Bitcoin                     |
 | `0x10` | `0x23` |             | TRON                                |
 | `0x10` | `0x24` |             | Filecoin                            |
-| `0x10` | `0x25` |             | Binance USD                         |
-| `0x10` | `0x26` |             | Aave                                |
 | `0x10` | `0x27` |             | Neo                                 |
-| `0x10` | `0x28` |             | SHIBA INU                           |
 | `0x10` | `0x29` |             | Polygon                             |
-| `0x10` | `0x2A` |             | Huobi Token                         |
 | `0x10` | `0x2B` |             | Terra                               |
 | `0x10` | `0x2C` |             | Bitcoin SV                          |
-| `0x10` | `0x2D` |             | FTX Token                           |
-| `0x10` | `0x2E` |             | PancakeSwap                         |
 | `0x10` | `0x2F` |             | IOTA                                |
 | `0x10` | `0x30` |             | Tezos                               |
 | `0x10` | `0x31` |             | Klaytn                              |
 | `0x10` | `0x32` |             | Cosmos                              |
-| `0x10` | `0x33` |             | Dai                                 |
-| `0x10` | `0x34` |             | Maker                               |
 | `0x10` | `0x35` |             | Avalanche                           |
 | `0x10` | `0x36` |             | Kusama                              |
-| `0x10` | `0x37` |             | THORChain                           |
 | `0x10` | `0x38` |             | Algorand                            |
-| `0x10` | `0x39` |             | Crypto.com Coin                     |
-| `0x10` | `0x3A` |             | Compound                            |
-| `0x10` | `0x3B` |             | BitTorrent                          |
 | `0x10` | `0x3C` |             | Dash                                |
 | `0x10` | `0x3D` |             | Zcash                               |
-| `0x10` | `0x3E` |             | UNUS SED LEO                        |
 | `0x10` | `0x3F` |             | Waves                               |
 | `0x10` | `0x40` |             | Elrond                              |
-| `0x10` | `0x41` |             | Bitcoin BEP2                        |
 | `0x10` | `0x42` |             | NEM                                 |
 | `0x10` | `0x43` |             | Decred                              |
-| `0x10` | `0x44` |             | yearn.finance                       |
-| `0x10` | `0x45` |             | Revain                              |
-| `0x10` | `0x46` |             | Chiliz                              |
-| `0x10` | `0x47` |             | Synthetix                           |
-| `0x10` | `0x48` |             | Hedera Hashgraph                    |
 | `0x10` | `0x49` |             | TerraUSD                            |
-| `0x10` | `0x4A` |             | OKB                                 |
 | `0x10` | `0x4B` |             | Zilliqa                             |
-| `0x10` | `0x4C` |             | Telcoin                             |
 | `0x10` | `0x4D` |             | Nano                                |
-| `0x10` | `0x4E` |             | Nexo                                |
-| `0x10` | `0x4F` |             | Decentraland                        |
 | `0x10` | `0x50` |             | Qtum                                |
-| `0x10` | `0x51` |             | SushiSwap                           |
 | `0x10` | `0x52` |             | NEAR Protocol                       |
-| `0x10` | `0x53` |             | Holo                                |
 | `0x10` | `0x54` |             | Stacks                              |
-| `0x10` | `0x55` |             | Basic Attention Token               |
 | `0x10` | `0x56` |             | Ontology                            |
-| `0x10` | `0x57` |             | Celsius                             |
-| `0x10` | `0x58` |             | Enjin Coin                          |
 | `0x10` | `0x59` |             | Bitcoin Gold                        |
 | `0x10` | `0x5A` |             | Theta Fuel                          |
-| `0x10` | `0x5B` |             | The Graph                           |
 | `0x10` | `0x5C` |             | DigiByte                            |
 | `0x10` | `0x5D` |             | Fantom                              |
 | `0x10` | `0x5E` |             | Horizen                             |
-| `0x10` | `0x5F` |             | UMA                                 |
 | `0x10` | `0x60` |             | Siacoin                             |
-| `0x10` | `0x61` |             | Bancor                              |
-| `0x10` | `0x62` |             | `0x  `                              |
 | `0x10` | `0x63` |             | OMG Network                         |
 | `0x10` | `0x64` |             | Helium                              |
 | `0x10` | `0x65` |             | ICON                                |
-| `0x10` | `0x66` |             | Paxos Standard                      |
 | `0x10` | `0x67` |             | Ravencoin                           |
-| `0x10` | `0x68` |             | TrueUSD                             |
-| `0x10` | `0x69` |             | SwissBorg                           |
-| `0x10` | `0x6A` |             | Venus                               |
-| `0x10` | `0x6B` |             | Curve DAO Token                     |
 | `0x10` | `0x6C` |             | Harmony                             |
 | `0x10` | `0x6D` |             | Celo                                |
-| `0x10` | `0x6E` |             | Ankr                                |
 | `0x10` | `0x6F` |             | Arweave                             |
-| `0x10` | `0x70` |             | BakeryToken                         |
 | ...    |        |             |                                     |
 | `0x3f` | `0xff` | 3-8 + 1-128 | Unspecified (Ticker:Address string) |
+
+#### Crypto Tokens
+
+Crypto tokens that are based on other networks for resolution use a single Category with structured delimited data.
+The list of standardized short and long names can be found here.
+
+| Class  | Tag    | Type / Size     | Description                                                                                          |
+|:-------|:-------|:----------------|:-----------------------------------------------------------------------------------------------------|
+| `0x63` | `0x00` |                 | ShortName&#124;LongName&#124;SettlementNetwork&#124;Address&#124;Description&#124;Signature          |
+
+
+| Short Name | Long Name                       | Settlement Network |
+| ---------- | ------------------------------- | ------------------ |
+| 1INCH      | 1inch                           | ETH                |
+| AAVE       | Aave                            | ETH                |
+| ACH        | Alchemy Pay                     | ETH                |
+| AGIX       | SingularityNET                  | ETH                |
+| AGLD       | Adventure Gold                  | ETH                |
+| ALCX       | Alchemix                        | ETH                |
+| ALICE      | MyNeighborAlice                 | ETH                |
+| ALPHA      | Alpha Finance Lab               | BNB                |
+| ALT        | Alitas                          | BNB                |
+| AMP        | Amp                             | ETH                |
+| ANC        | Anchor Protocol                 | LUNA               |
+| ANKR       | Ankr                            | BNB                |
+| ANT        | Aragon                          | ETH                |
+| ANY        | Anyswap                         | FTM                |
+| API3       | API3                            | ETH                |
+| ASD        | ASD                             | ETH                |
+| ATLAS      | Star Atlas                      | SOL                |
+| AUDIO      | Audius                          | ETH                |
+| AXS        | Axie Infinity                   | ETH                |
+| BADGER     | Badger DAO                      | ETH                |
+| BAKE       | BakeryToken                     | BNB                |
+| BAND       | Band Protocol                   | ETH                |
+| BAT        | Basic Attention Token           | ETH                |
+| BEST       | Bitpanda Ecosystem Token        | ETH                |
+| BETA       | Beta Finance                    | ETH                |
+| BFC        | Bifrost (BFC)                   | ETH                |
+| BIT        | BitDAO                          | ETH                |
+| BLCT       | Bloomzed Loyalty Club Ticket    | ETH                |
+| BNT        | Bancor                          | ETH                |
+| BP         | Beyond Protocol                 | ETH                |
+| BTCB       | Bitcoin BEP2                    | BNB                |
+| BTCST      | Bitcoin Standard Hashrate Token | BNB                |
+| BTRST      | Braintrust                      | ETH                |
+| BTT        | BitTorrent                      | TRX                |
+| BUSD       | Binance USD                     | BNB                |
+| C20        | CRYPTO20                        | ETH                |
+| C98        | Coin98                          | ETH                |
+| CAKE       | PancakeSwap                     | BNB                |
+| CEL        | Celsius                         | ETH                |
+| CELR       | Celer Network                   | ETH                |
+| CHSB       | SwissBorg                       | ETH                |
+| CHZ        | Chiliz                          | ETH                |
+| COMP       | Compound                        | ETH                |
+| CRO        | Crypto.com Coin                 | ETH                |
+| CRV        | Curve DAO Token                 | ETH                |
+| CTSI       | Cartesi                         | ETH                |
+| CVC        | Civic                           | ETH                |
+| CVX        | Convex Finance                  | ETH                |
+| DAI        | Dai                             | ETH                |
+| DAWN       | Dawn Protocol                   | ETH                |
+| DENT       | Dent                            | ETH                |
+| DYDX       | dYdX                            | ETH                |
+| ELF        | aelf                            | ETH                |
+| ENJ        | Enjin Coin                      | ETH                |
+| EPS        | Ellipsis                        | BNB                |
+| FEI        | Fei Protocol                    | ETH                |
+| FET        | Fetch.ai                        | ETH                |
+| FIDA       | Bonfida                         | SOL                |
+| FRAX       | Frax                            | ETH                |
+| FTT        | FTX Token                       | BNB                |
+| FUN        | FUNToken                        | ETH                |
+| FX         | Function X                      | ETH                |
+| GALA       | Gala                            | ETH                |
+| GLM        | Golem                           | ETH                |
+| GNO        | Gnosis                          | ETH                |
+| GRT        | The Graph                       | ETH                |
+| GT         | GateToken                       | ETH                |
+| GUSD       | Gemini Dollar                   | ETH                |
+| HBTC       | Huobi BTC                       | ETH                |
+| HEDG       | HedgeTrade                      | ETH                |
+| HEX        | HEX                             | ETH                |
+| HOT        | Holo                            | ETH                |
+| HT         | Huobi Token                     | ETH                |
+| HUSD       | HUSD                            | ETH                |
+| IDEX       | IDEX                            | ETH                |
+| ILV        | Illuvium                        | ETH                |
+| INJ        | Injective Protocol              | ETH                |
+| INO        | INO COIN                        | ETH                |
+| IQ         | Everipedia                      | EOS                |
+| JST        | JUST                            | TRX                |
+| KAVA       | Kava                            | BNB                |
+| KCS        | KuCoin Token                    | ETH                |
+| KEEP       | Keep Network                    | ETH                |
+| KNC        | Kyber Network Crystal v2        | ETH                |
+| KOK        | KOK                             | ETH                |
+| LEO        | UNUS SED LEO                    | ETH                |
+| LINA       | Linear                          | ETH                |
+| LINK       | Chainlink                       | ETH                |
+| LRC        | Loopring                        | ETH                |
+| LUSD       | Liquity USD                     | ETH                |
+| LYXe       | LUKSO                           | ETH                |
+| MANA       | Decentraland                    | ETH                |
+| MASK       | Mask Network                    | ETH                |
+| MBOX       | MOBOX                           | BNB                |
+| MDX        | Mdex                            | HT                 |
+| MIR        | Mirror Protocol                 | ETH                |
+| MKR        | Maker                           | ETH                |
+| MLN        | Enzyme                          | ETH                |
+| MNGO       | Mango Markets                   | SOL                |
+| MRPH       | Morpheus.Network                | ETH                |
+| MTL        | Metal                           | ETH                |
+| MVL        | MVL                             | ETH                |
+| NEXO       | Nexo                            | BNB                |
+| NMR        | Numeraire                       | ETH                |
+| NOIA       | Syntropy                        | ETH                |
+| NU         | NuCypher                        | ETH                |
+| NXM        | NXM                             | ETH                |
+| OCEAN      | Ocean Protocol                  | ETH                |
+| OGN        | Origin Protocol                 | ETH                |
+| OKB        | OKB                             | ETH                |
+| ORBS       | Orbs                            | ETH                |
+| ORC        | Orbit Chain                     | ETH                |
+| ORN        | Orion Protocol                  | ETH                |
+| OXT        | Orchid                          | ETH                |
+| PAXG       | PAX Gold                        | ETH                |
+| PEAK       | PEAKDEFI                        | ETH                |
+| PERP       | Perpetual Protocol              | ETH                |
+| PLA        | PlayDapp                        | ETH                |
+| POLIS      | Star Atlas DAO                  | SOL                |
+| POLS       | Polkastarter                    | ETH                |
+| POLY       | Polymath                        | ETH                |
+| POWR       | Powerledger                     | ETH                |
+| PROM       | Prometeus                       | ETH                |
+| PUNDIX     | Pundi X\[new\]                  | ETH                |
+| QKC        | QuarkChain                      | ETH                |
+| QNT        | Quant                           | ETH                |
+| RARE       | SuperRare                       | ETH                |
+| RAY        | Raydium                         | ETH                |
+| REN        | Ren                             | ETH                |
+| RENBTC     | renBTC                          | ETH                |
+| REP        | Augur                           | ETH                |
+| REQ        | Request                         | ETH                |
+| REV        | Revain                          | ETH                |
+| RGT        | Rari Governance Token           | ETH                |
+| RLC        | iExec RLC                       | ETH                |
+| RPL        | Rocket Pool                     | ETH                |
+| RSR        | Reserve Rights                  | ETH                |
+| RUNE       | THORChain                       | BNB                |
+| SAFEMOON   | SafeMoon                        | BNB                |
+| SAND       | The Sandbox                     | ETH                |
+| SFP        | SafePal                         | BNB                |
+| SHIB       | SHIBA INU                       | ETH                |
+| SKL        | SKALE Network                   | ETH                |
+| SNT        | Status                          | ETH                |
+| SNX        | Synthetix                       | ETH                |
+| STETH      | Lido stETH                      | ETH                |
+| STMX       | StormX                          | ETH                |
+| STORJ      | Storj                           | ETH                |
+| STPT       | Standard Tokenization Protocol  | ETH                |
+| SUSHI      | SushiSwap                       | ETH                |
+| SXP        | Swipe                           | ETH                |
+| TEL        | Telcoin                         | ETH                |
+| TITAN      | TitanSwap                       | ETH                |
+| TKO        | Toko Token                      | BNB                |
+| TLM        | Alien Worlds                    | ETH                |
+| TRAC       | OriginTrail                     | ETH                |
+| TRIBE      | Tribe                           | ETH                |
+| TTT        | The Transfer Token              | ETH                |
+| TUSD       | TrueUSD                         | BNB                |
+| TWT        | Trust Wallet Token              | BNB                |
+| UBT        | Unibright                       | ETH                |
+| UMA        | UMA                             | ETH                |
+| UNI        | Uniswap                         | ETH                |
+| USDC       | USD Coin                        | ETH                |
+| USDN       | Neutrino USD                    | ETH                |
+| USDP       | Pax Dollar                      | ETH                |
+| USDT       | Tether                          | ETH                |
+| vBNB       | Venus BNB                       | BNB                |
+| vBTC       | Venus BTC                       | BNB                |
+| VGX        | Voyager Token                   | ETH                |
+| VRA        | Verasity                        | ETH                |
+| WBNB       | Wrapped BNB                     | BNB                |
+| WBTC       | Wrapped Bitcoin                 | ETH                |
+| WEMIX      | WEMIX                           | KLAY               |
+| WIN        | WINkLink                        | TRX                |
+| WOO        | WOO Network                     | ETH                |
+| WRX        | WazirX                          | BNB                |
+| XDB        | DigitalBits                     | ETH                |
+| XPRT       | Persistence                     | ATOM               |
+| XVS        | Venus                           | BNB                |
+| XYO        | XYO                             | ETH                |
+| YFI        | yearn.finance                   | ETH                |
+| YGG        | Yield Guild Games               | ETH                |
+| YOUC       | yOUcash                         | ETH                |
+| ZRX        | 0x                              | ETH                |
+
 
 #### Internet addresses / URIs
 
