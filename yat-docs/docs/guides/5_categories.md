@@ -59,67 +59,67 @@ Examples:
     0x1003 = bc1q4ywsw6ktuxmnz4qx0h3uh44m324443hv4mn9vc
 
 
-| Class  | Tag    | Type / Size | Description                         |
-|:-------|:-------|:------------|:------------------------------------|
-| `0x10` | `0x01` | 69 bytes    | Monero standard address             |
-| `0x10` | `0x02` | 69 bytes    | Monero sub address                  |
-| `0x10` | `0x03` | 34 bytes    | Bitcoin address                     |
-| `0x10` | `0x04` |             | Ethereum address                    |
-| `0x10` | `0x10` |             | Binance Coin                        |
-| `0x10` | `0x12` |             | Cardano                             |
-| `0x10` | `0x13` |             | Dogecoin                            |
-| `0x10` | `0x14` |             | XRP                                 |
-| `0x10` | `0x15` |             | Polkadot                            |
-| `0x10` | `0x16` |             | Internet Computer                   |
-| `0x10` | `0x17` |             | Bitcoin Cash                        |
-| `0x10` | `0x19` |             | Litecoin                            |
-| `0x10` | `0x1C` |             | Stellar                             |
-| `0x10` | `0x1D` |             | Solana                              |
-| `0x10` | `0x1E` |             | VeChain                             |
-| `0x10` | `0x1F` |             | Ethereum Classic                    |
-| `0x10` | `0x20` |             | EOS                                 |
-| `0x10` | `0x21` |             | THETA                               |
-| `0x10` | `0x23` |             | TRON                                |
-| `0x10` | `0x24` |             | Filecoin                            |
-| `0x10` | `0x27` |             | Neo                                 |
-| `0x10` | `0x29` |             | Polygon                             |
-| `0x10` | `0x2B` |             | Terra                               |
-| `0x10` | `0x2C` |             | Bitcoin SV                          |
-| `0x10` | `0x2F` |             | IOTA                                |
-| `0x10` | `0x30` |             | Tezos                               |
-| `0x10` | `0x31` |             | Klaytn                              |
-| `0x10` | `0x32` |             | Cosmos                              |
-| `0x10` | `0x35` |             | Avalanche                           |
-| `0x10` | `0x36` |             | Kusama                              |
-| `0x10` | `0x38` |             | Algorand                            |
-| `0x10` | `0x3C` |             | Dash                                |
-| `0x10` | `0x3D` |             | Zcash                               |
-| `0x10` | `0x3F` |             | Waves                               |
-| `0x10` | `0x40` |             | Elrond                              |
-| `0x10` | `0x42` |             | NEM                                 |
-| `0x10` | `0x43` |             | Decred                              |
-| `0x10` | `0x49` |             | TerraUSD                            |
-| `0x10` | `0x4B` |             | Zilliqa                             |
-| `0x10` | `0x4D` |             | Nano                                |
-| `0x10` | `0x50` |             | Qtum                                |
-| `0x10` | `0x52` |             | NEAR Protocol                       |
-| `0x10` | `0x54` |             | Stacks                              |
-| `0x10` | `0x56` |             | Ontology                            |
-| `0x10` | `0x59` |             | Bitcoin Gold                        |
-| `0x10` | `0x5A` |             | Theta Fuel                          |
-| `0x10` | `0x5C` |             | DigiByte                            |
-| `0x10` | `0x5D` |             | Fantom                              |
-| `0x10` | `0x5E` |             | Horizen                             |
-| `0x10` | `0x60` |             | Siacoin                             |
-| `0x10` | `0x63` |             | OMG Network                         |
-| `0x10` | `0x64` |             | Helium                              |
-| `0x10` | `0x65` |             | ICON                                |
-| `0x10` | `0x67` |             | Ravencoin                           |
-| `0x10` | `0x6C` |             | Harmony                             |
-| `0x10` | `0x6D` |             | Celo                                |
-| `0x10` | `0x6F` |             | Arweave                             |
-| ...    |        |             |                                     |
-| `0x3f` | `0xff` | 3-8 + 1-128 | Unspecified (Ticker:Address string) |
+| Class  | Tag    | Type / Size | Description                              |
+|:-------|:-------|:------------|:-----------------------------------------|
+| `0x10` | `0x01` | 69 bytes    | Monero standard address                  |
+| `0x10` | `0x02` | 69 bytes    | Monero sub address                       |
+| `0x10` | `0x03` | 34 bytes    | Bitcoin address                          |
+| `0x10` | `0x04` |             | Ethereum address                         |
+| `0x10` | `0x10` |             | Binance Coin                             |
+| `0x10` | `0x12` |             | Cardano                                  |
+| `0x10` | `0x13` |             | Dogecoin                                 |
+| `0x10` | `0x14` |             | XRP                                      |
+| `0x10` | `0x15` |             | Polkadot                                 |
+| `0x10` | `0x16` |             | Internet Computer                        |
+| `0x10` | `0x17` |             | Bitcoin Cash                             |
+| `0x10` | `0x19` |             | Litecoin                                 |
+| `0x10` | `0x1C` |             | Stellar                                  |
+| `0x10` | `0x1D` |             | Solana                                   |
+| `0x10` | `0x1E` |             | VeChain                                  |
+| `0x10` | `0x1F` |             | Ethereum Classic                         |
+| `0x10` | `0x20` |             | EOS                                      |
+| `0x10` | `0x21` |             | THETA                                    |
+| `0x10` | `0x23` |             | TRON                                     |
+| `0x10` | `0x24` |             | Filecoin                                 |
+| `0x10` | `0x27` |             | Neo                                      |
+| `0x10` | `0x29` |             | Polygon                                  |
+| `0x10` | `0x2B` |             | Terra                                    |
+| `0x10` | `0x2C` |             | Bitcoin SV                               |
+| `0x10` | `0x2F` |             | IOTA                                     |
+| `0x10` | `0x30` |             | Tezos                                    |
+| `0x10` | `0x31` |             | Klaytn                                   |
+| `0x10` | `0x32` |             | Cosmos                                   |
+| `0x10` | `0x35` |             | Avalanche                                |
+| `0x10` | `0x36` |             | Kusama                                   |
+| `0x10` | `0x38` |             | Algorand                                 |
+| `0x10` | `0x3C` |             | Dash                                     |
+| `0x10` | `0x3D` |             | Zcash                                    |
+| `0x10` | `0x3F` |             | Waves                                    |
+| `0x10` | `0x40` |             | Elrond                                   |
+| `0x10` | `0x42` |             | NEM                                      |
+| `0x10` | `0x43` |             | Decred                                   |
+| `0x10` | `0x49` |             | TerraUSD                                 |
+| `0x10` | `0x4B` |             | Zilliqa                                  |
+| `0x10` | `0x4D` |             | Nano                                     |
+| `0x10` | `0x50` |             | Qtum                                     |
+| `0x10` | `0x52` |             | NEAR Protocol                            |
+| `0x10` | `0x54` |             | Stacks                                   |
+| `0x10` | `0x56` |             | Ontology                                 |
+| `0x10` | `0x59` |             | Bitcoin Gold                             |
+| `0x10` | `0x5A` |             | Theta Fuel                               |
+| `0x10` | `0x5C` |             | DigiByte                                 |
+| `0x10` | `0x5D` |             | Fantom                                   |
+| `0x10` | `0x5E` |             | Horizen                                  |
+| `0x10` | `0x60` |             | Siacoin                                  |
+| `0x10` | `0x63` |             | OMG Network                              |
+| `0x10` | `0x64` |             | Helium                                   |
+| `0x10` | `0x65` |             | ICON                                     |
+| `0x10` | `0x67` |             | Ravencoin                                |
+| `0x10` | `0x6C` |             | Harmony                                  |
+| `0x10` | `0x6D` |             | Celo                                     |
+| `0x10` | `0x6F` |             | Arweave                                  |
+| ...    |        |             |                                          |
+| `0x3f` | `0xff` | 3-8 + 1-128 | Unspecified (Ticker&#124;Address string) |
 
 #### Crypto Tokens
 
