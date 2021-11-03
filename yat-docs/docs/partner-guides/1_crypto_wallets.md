@@ -38,63 +38,9 @@ With a custodial wallet, the wallet provider controls your private keys. Essenti
 
 <a href="/img/flow1a-lrg.png" target="_blank"><img src="/img/flow1a-sml.png"/></a>
 
-### 1B. Get a Yat (Non-custodial Wallets)
-
-:::note
-Non-custodial crypto wallets give users complete control of their keys and funds. They can be browser-based, software installed on mobile devices or on desktops, or cold-storage wallets like hardware devices, among others.
-:::
-
-<a href="/img/flow1b-lrg.png" target="_blank"><img src="/img/flow1b-sml.png"/></a>
-
-&nbsp;  
-As the first step of the integration for an existing partner app user, the partner app makes a call to the `/process` endpoint to:
-
-1. Create and activate a new Yat user
-2. Allow the user to purchase a Yat
-3. Assign the Yat to the newly created user
-
-**Service URL:** https://y.at/process
-
-**Method:** `POST`
-
-**Headers:**
-
-- `X-Bypass-Token:` Contains an authentication token for the partner. To be delivered to the partner by the Yat team.
-
-**Body:** A JSON object containing the id and password of the user. This pair can later be used to authenticate the user with the Yat API. `alternate_id` is a deterministic public value based on the unique wallet. `password` is a deterministic secret that can be any secret that is signed by the secret key for the wallet.
-
-``` json
-{
-    "alternate_id": "user_id",
-    "password": "user_password"
-}
-```
-
-**Response:** A JSON object that contains the user authentication info (`access_token` and `refresh_token`), user details (Yat user `id`, `alternate_id` that was sent by the partner, and more).
-
-``` json
-{
-    "auth": {
-        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...FZBzoe8Zky9Pl7WCNXwg5KphVO4FNTKxJKX87w9sHW0",
-        "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...8Tr8zLbMLNzleG9KL0zJihBI6cd5V8rXPIOjQjcB_WI",
-        "requires_2fa": null
-    },
-    "user": {
-        "id": "b6b6da81-250e-456e-a61a-5f426ae92a22",
-        "alternate_id": "keith24",
-        "is_active": true,
-        "pubkeys": [
-            "ac7f4164608a0b75a3d97da9bd27dc957c2ee80462875daf5e7ba18bf3dce545"
-        ],
-        "free_limit": 0,
-        "remaining_free_emoji": 0
-    },
-}
-```
-
 ### Redirection of the User to the Yat Web Application
 
-The partner application user needs to get redirected to the Yat website to Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets) & [1B](#1b-get-a-yat-non-custodial-wallets)). A number of query parameters are necessary for the Yat web application to correctly identify the user and link any necessary data to the user's Yat.
+The partner application user needs to get redirected to the Yat website to Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets)). A number of query parameters are necessary for the Yat web application to correctly identify the user and link any necessary data to the user's Yat.
 
 Web App URL: `https://y.at/partner/{partner_path}`
 
@@ -104,9 +50,9 @@ Web App URL: `https://y.at/partner/{partner_path}`
 
 **Query Parameters:**
 
-`refresh_token:` User's refresh token that was received in the response body of redirection to Yat web or as a deep link query parameter in redirection from Yat web in Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets) & [1B](#1b-get-a-yat-non-custodial-wallets)).
+`refresh_token:` User's refresh token that was received in the response body of redirection to Yat web or as a deep link query parameter in redirection from Yat web in Get a Yat (Flow [1A](#1a-get-a-yat-custodial-wallets)).
 
-`eid:` The Yat that the user linked or purchased, received by the partner application as a result of the call to the /process endpoint in Step #2a.
+`eid:` The Yat that the user linked or purchased, received by the partner application as a result of the initial connect call.
 
 `addresses:` A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`.
 Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories, but here's a partial list of cryptocurrency address tags:
@@ -173,7 +119,7 @@ The partner application user needs to get redirected to the Yat website to Conne
 
 `refresh_token`: User's refresh token that was received in the response body of redirection to Yat web or as a deep link query parameter in redirection from Yat web.
 
-`eid`: The Yat that the user linked or purchased, received by the partner application as a result of the call to the /process endpoint in Flow #1.
+`eid`: The Yat that the user linked or purchased, received by the partner application as a result of the initial connect call.
 
 `addresses`: A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`.
 Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
@@ -184,7 +130,7 @@ Partner application’s users can access the Yat dashboard directly from the par
 
 The partner application user needs to get redirected to the Yat website to Manage Yats (Flow 3). A number of query parameters are necessary for the Yat web application to correctly identify the user and link any necessary data to the user's Yat.
 
-**Web App URL:** `http://y.at/partner/CW/manage`
+**Web App URL:** `http://y.at/partner/{partner_path}/manage`
 
 **Query Parameters:**
 
@@ -196,7 +142,7 @@ The partner application user needs to get redirected to the Yat website to Manag
 
 ## 4. Send payment to a Yat
 
-If the user has connected an address with their Yat, addresses are set, any one can send crypto payments and the user will receive it in the correct address. Alice can send BTC to Bob’s Yat (🚀👽) without ever having to paste Bob’s P2PKH address. To top it all off, the partner app can even render a unique visualization associated with 🚀👽 created by Bob himself. Yat supports the top 100 cryptocurrencies as native tags. Additional currencies can be specified with the generic crypto tag.
+If the user has connected an address with their Yat, addresses are set, anyone can send crypto payments and the user will receive it in the correct address. Alice can send BTC to Bob’s Yat (🚀👽) without ever having to paste Bob’s P2PKH address. To top it all off, the partner app can even render a unique visualization associated with 🚀👽 created by Bob himself. Yat supports the top 100 cryptocurrencies as native tags. Additional currencies can be specified with the generic crypto tag.
 
 <a href="/img/flow4a-lrg.png" target="_blank"><img src="/img/flow4a-sml.png"/></a>
 
