@@ -58,7 +58,6 @@ Examples:
     0x1003 = bc1q4ywsw6ktuxmnz4qx0h3uh44m324443hv4mn9vc|My Coffee Collection|OptionalSignature|t
     0x1003 = bc1q4ywsw6ktuxmnz4qx0h3uh44m324443hv4mn9vc
 
-
 | Class  | Tag    | Type / Size | Description                              |
 |:-------|:-------|:------------|:-----------------------------------------|
 | `0x10` | `0x01` | 69 bytes    | Monero standard address                  |
@@ -370,6 +369,18 @@ There is already a TXT DNS record type, but you might not want it returned with 
 |:-------|:-------|:------------|:-----------------------------------------------------------|
 | `0x50` | `0x01` | 255 bytes   | Arbitrary UTF-8 string data                                |
 | `0x50` | `0x10` | 255 bytes   | Arbitrary UTF-8 string data (not returned in TXT requests) |
+
+## Categories allowing for only one record per yat
+
+Some categories have restrictions to prevent multiple records from being created for a given yat and that category. If an additional record is submitted for insertion the old record will be replaced.
+
+These categories include:
+
+- Cryptocurrency categories (class found between `0x10 - 0x3f`)
+- Emoji description (`0x0002`)
+- Redirect (`0x0004`)
+- Emoji nickname (`0x0005`)
+- Emoji preferred form (`0x0006`)
 
 ## How your yats are stored
 

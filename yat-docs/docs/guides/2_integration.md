@@ -1519,6 +1519,10 @@ you to insert and delete records from the emoji id record. Because of how emoji 
 blockchain, _updates_ to records are not possible. However, you can simulate an update by deleting the record and then
 inserting a new one with the updated data.
 
+:::info
+Note: some category types, such as payment addresses, only allow for one record so when these encounter new records they are replaced. Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
+:::
+
 Deleting records requires you to know the hash of the data you're deleting. You can calculate this yourself, using a 256-byte
 Blake2b digest, or simply copy the hash from the result of the `lookup` API function.
 
