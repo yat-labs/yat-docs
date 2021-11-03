@@ -42,6 +42,8 @@ const api = new yat.YatJs();
 // hint: You can specify an alternative API url with the basePath property, e.g.:
 // api.basePath = 'http://localhost:3001';
 
+// Note: on first attempt checkout will fail if registering a user
+// Please login and confirm the email and then rerun the demo
 const email = "tester@y.at";
 const password = "yatster";
 
@@ -50,20 +52,22 @@ const password = "yatster";
  * @returns {Promise<boolean>}
  */
 async function register() {
-    let details = new yat.RegisterUserParameters.constructFromObject({
-        first_name: "Testy",
-        last_name: "McTesty",
-        email,
-        password
-    });
     try {
-        let res = await api.users().createUser(details);
-        console.log("Registered user response:", res);
+        let res = await api.users().createUser({
+            'first_name': "Testy",
+            'last_name': "McTesty",
+            'email': email,
+            'password': password
+        });
+
+        console.log("Registered user")
         return true;
     } catch (err) {
         const alreadyRegistered = err.status === 422 && err.body.fields.email[0].code === "uniqueness";
         if (!alreadyRegistered) {
             console.log(`Could not register an account: ${err.error}`);
+        } else {
+            console.log(`User was already registered, continuing`);
         }
         return alreadyRegistered;
     }
@@ -105,7 +109,7 @@ async function purchaseYat() {
     // Request the set of supported emoji
     const emojiList = await api.emoji().emojiList();
     // Clear the cart
-    await api.cart().clear();
+    await api.cart().clearCart();
     // This is for demo purposes. There are also endpoints for automatically selecting a random yat and applying a
     // promo code.
     const myYat = selectRandomYat(emojiList, 4);
@@ -113,23 +117,33 @@ async function purchaseYat() {
     let opts = {
         'redemptionCode': "FREEYAT" // String | Redemption code
     };
-    const yatInfo = await api.emojiID().search(myYat, opts);
+    const yatInfo = await api.emojiID().searchEmojiID(myYat, opts);
     console.log(yatInfo.result);
     if (!yatInfo.result.available) {
         console.log(`Bad luck :(, ${yat} is not available.`);
     }
+    
     // Add the yat to the cart. This time use the constructor
-    const order = new yat.UpdateCartRequest([
+    const order = new yat.AddItemsCartRequest([
         {
             emoji_id: myYat,
-            redemption_code: "FREEYAT"
         }
     ]);
-    const cart = await api.cart().add(order);
+    const cart = await api.cart().addItems(order);
     console.log("Order added to cart: ", cart);
-    // Checkout..
-    const result = await api.cart().checkout({ method: "Free" });
-    console.log("Checkout succeeded: ", result);
+    // Checkout, currently to add a promo method the cart must be in a pending payment state
+    let checkoutPaidResult = await api.cart().checkout({ method: "Stripe"});
+    console.log("Checkout paid succeeded: ", checkoutPaidResult);
+
+    let promoCodeResult = await api.cart().applyPromoCode({
+        'code': "FREEYAT" // String | Redemption code
+    });
+    console.log("Apply promo code request succeeded: ", promoCodeResult);
+
+    let checkoutFreeResult = await api.cart().checkout({ method: "Free" });
+    console.log("Checkout succeeded: ", checkoutFreeResult);
+    await new Promise(r => setTimeout(r, 5000));
+
     return myYat;
 }
 
@@ -138,7 +152,7 @@ async function purchaseYat() {
  * @returns {Promise<*>}
  */
 async function getMyYats() {
-    let yats = await api.emojiID().list();
+    let yats = await api.emojiID().listEmojiIDs();
     console.log("These are my yats: ", yats);
     return yats;
 }
@@ -155,7 +169,7 @@ async function addYatRecord(yat, url) {
         }]
     };
     try {
-        await api.emojiID().edit(yat, req);
+        await api.emojiID().editEmojiID(yat, req);
         console.log("URL added to yat.");
     } catch (err) {
         console.log("Error Result of adding record request: ", err.body);
@@ -170,7 +184,7 @@ async function addYatRecord(yat, url) {
  */
 async function printYatRecords(yat) {
     try {
-        let records = await api.emojiID().lookup(yat);
+        let records = await api.emojiID().lookupEmojiID(yat);
         console.log(records);
     } catch (err) {
         console.log("Error fetching yat data: ", err.body)
@@ -258,7 +272,7 @@ import YatSDK
     func findAvailableYat(list: [String], completion: @escaping (Result<String, Error>) -> Void) {
         let yat = self.selectRandomYat(list: list, len: 4)
         print("Checking \(yat) availability...")
-        EmojiIDAPI.search(emojiId: yat) { (result) in
+        EmojiIDAPI.searchEmojiID(emojiId: yat) { (result) in
             switch result {
             case .success(let response):
                 if response.result.available {
@@ -276,8 +290,8 @@ import YatSDK
      * Add selected yat to cart
      */
     func addToCart(_ yat: String, completion: @escaping (Result<DisplayOrder, Error>) -> Void) {
-        let item = UpdateCartRequestItems(emojiId: yat, redemptionCode: "FREEYAT")
-        let order = UpdateCartRequest(items: [item])
+        let item = AddItemsCartRequestItems(emojiId: yat, redemptionCode: "FREEYAT")
+        let order = AddItemsCartRequest(items: [item])
 
         CartAPI.addItems(body: order) { (result) in
             switch result {
@@ -382,7 +396,7 @@ import YatSDK
      */
     func runDemo() {
         // Set API base URL.
-        YatSDKAPI.basePath = "https://emojid.me/api"
+        YatSDKAPI.basePath = "https://a.y.at"
 
         register { [weak self] (registerResult) in
             switch registerResult {
@@ -507,7 +521,7 @@ fun purchaseYat(): String {
     // Request the set of supported emoji
     val emojiList = EmojiApi.shared.emojiList()
     // Clear the cart
-    CartApi.shared.clear()
+    CartApi.shared.clearCart()
     // This is for demo purposes. There are also endpoints for
     // automatically selecting a random yat and applying a promo code.
     var yatIsAvailable: Boolean
@@ -523,9 +537,9 @@ fun purchaseYat(): String {
         yatIsAvailable = yatInfo.result.available
     } while (!yatIsAvailable)
     // Add the yat to the cart. This time use the constructor
-    val order = UpdateCartRequest(
+    val order = AddItemsCartRequest(
         items = listOf(
-            UpdateCartRequestItems(
+            AddItemsCartRequestItems(
                 emojiId = myYat,
                 redemptionCode = "FREEYAT"
             )
@@ -632,64 +646,327 @@ This script produces output similar to
 <TabItem value="nodejs">
 
 ```text
-Checking 🏹👗🍬📿 availability...
+User was already registered, continuing
+These are my yats:  []
+Checking 💼🌲🔩🏒 availability...
 SearchResultResult {
   availability: 'Available',
   available: true,
-  discounted_price: 0,
-  emoji_id: '🏹👗🍬📿',
-  price: 3500,
-  views_past_month: 1
+  emoji_id: '💼🌲🔩🏒',
+  length: 4,
+  rhythm_score: 14,
+  stats: [
+    EmojiStatsResponseMetrics {
+      description: 'Number of times emoji was looked up via API',
+      finish_date: 2021-11-03T22:59:02.773Z,
+      key: '💼🌲🔩🏒',
+      metric: 'api_emoji_lookups',
+      start_date: 2021-10-06T22:59:02.773Z,
+      value: 0
+    }
+  ],
+  copy: {
+    description: '<h3>Every Yat is one-of-a-kind, and is pay once, own forever. The price is based on its Rhythm Score (RS), which is a measure of its rarity and uniqueness.</h3>\n' +
+      '\t<p>The RS is determined primarily by a Yat’s <b>length</b>. Other factors include the average <b>popularity</b> of the emojis used in the Yat (based on current worldwide usage) and the Yat’s <b>pattern</b> (i.e. repeating emojis or “bookend” emojis).</p>',
+    features: []
+  },
+  price: 400
 }
 Order added to cart:  DisplayOrder {
-  created_at: 2020-09-25T11:17:30.939Z,
+  amount_overpaid_in_cents: 0,
+  created_at: 2021-11-03T22:58:52.245Z,
   eligible_for_refund: false,
-  id: '4a91db8b-dd2e-4eed-bcb1-f31179a82294',
+  id: 'd0227ddb-0565-42fd-b242-221f9111889a',
   misc_refunded_total_in_cents: 0,
-  order_items: [...],
-  order_number: '79a82294',
+  order_items: [
+    DisplayOrderOrderItems {
+      client_fee_in_cents: 0,
+      company_fee_in_cents: 0,
+      created_at: 2021-11-03T22:59:02.789Z,
+      id: '2609dfda-a9b4-49dc-baf8-4ea751fbf7e8',
+      item_type: 'EmojiId',
+      order_id: 'd0227ddb-0565-42fd-b242-221f9111889a',
+      quantity: 1,
+      refunded_quantity: 0,
+      unit_price_in_cents: 400,
+      updated_at: 2021-11-03T22:59:02.789Z,
+      code_id: null,
+      emoji_id: '💼🌲🔩🏒',
+      marked_invalid_at: null,
+      marked_invalid_at_reason: null,
+      parent_id: null,
+      rhythm_score: 14
+    }
+  ],
+  order_number: '9111889a',
   refunded_total_in_cents: 0,
+  remaining_due_in_cents: 400,
   status: 'Draft',
-  total_in_cents: 0,
-  updated_at: 2020-09-25T11:17:31.152Z,
-  user: DisplayOrderUser {...},
-  user_id: 'bbfaad2c-4478-4387-a569-e93f979a7817',
-  expires_at: 2020-09-25T11:32:31.138Z,
-  organization_id: null,
-  paid_at: null,
-  seconds_until_expiry: 899
-}
-
-Checkout succeeded:  DisplayOrder {
-  created_at: 2020-09-25T11:17:30.939Z,
-  eligible_for_refund: true,
-  id: '4a91db8b-dd2e-4eed-bcb1-f31179a82294',
-  misc_refunded_total_in_cents: 0,
-  order_items: [...],
-  order_number: '79a82294',
-  refunded_total_in_cents: 0,
-  status: 'Paid',
-  total_in_cents: 0,
-  updated_at: 2020-09-25T11:17:31.245Z,
-  user: DisplayOrderUser {...},
-  user_id: 'bbfaad2c-4478-4387-a569-e93f979a7817',
+  total_in_cents: 400,
+  updated_at: 2021-11-03T22:59:02.797Z,
+  user: DisplayOrderUser {
+    created_at: 2021-11-03T22:58:51.787Z,
+    emoji_ids: undefined,
+    free_limit: 1,
+    id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+    is_active: undefined,
+    pubkeys: [
+      '5a947509205e94deb68151977264edafb9a8579d1240469fd90e0713d8c88217'
+    ],
+    remaining_free_emoji: 1,
+    role: 'User',
+    updated_at: 2021-11-03T22:58:52.247Z,
+    alternate_id: null,
+    email: 'nine+anything2@tari.com',
+    first_name: 'Testy',
+    last_name: 'McTesty',
+    source: null,
+    two_factor_auth: null
+  },
+  user_id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
   expires_at: null,
   organization_id: null,
-  paid_at: 2020-09-25T11:17:31.233Z,
+  paid_at: null,
+  seconds_until_expiry: null
+}
+Checkout paid succeeded:  DisplayOrder {
+  amount_overpaid_in_cents: 0,
+  created_at: 2021-11-03T22:58:52.245Z,
+  eligible_for_refund: false,
+  id: 'd0227ddb-0565-42fd-b242-221f9111889a',
+  misc_refunded_total_in_cents: 0,
+  order_items: [
+    DisplayOrderOrderItems {
+      client_fee_in_cents: 0,
+      company_fee_in_cents: 0,
+      created_at: 2021-11-03T22:59:02.789Z,
+      id: '2609dfda-a9b4-49dc-baf8-4ea751fbf7e8',
+      item_type: 'EmojiId',
+      order_id: 'd0227ddb-0565-42fd-b242-221f9111889a',
+      quantity: 1,
+      refunded_quantity: 0,
+      unit_price_in_cents: 400,
+      updated_at: 2021-11-03T22:59:02.789Z,
+      code_id: null,
+      emoji_id: '💼🌲🔩🏒',
+      marked_invalid_at: null,
+      marked_invalid_at_reason: null,
+      parent_id: null,
+      rhythm_score: 14
+    }
+  ],
+  order_number: '9111889a',
+  refunded_total_in_cents: 0,
+  remaining_due_in_cents: 400,
+  status: 'PendingPayment',
+  total_in_cents: 400,
+  updated_at: 2021-11-03T22:59:07.662Z,
+  user: DisplayOrderUser {
+    created_at: 2021-11-03T22:58:51.787Z,
+    emoji_ids: undefined,
+    free_limit: 1,
+    id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+    is_active: undefined,
+    pubkeys: [
+      '5a947509205e94deb68151977264edafb9a8579d1240469fd90e0713d8c88217'
+    ],
+    remaining_free_emoji: 1,
+    role: 'User',
+    updated_at: 2021-11-03T22:58:52.247Z,
+    alternate_id: null,
+    email: 'nine+anything2@tari.com',
+    first_name: 'Testy',
+    last_name: 'McTesty',
+    source: null,
+    two_factor_auth: null
+  },
+  user_id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+  expires_at: 2021-11-03T23:14:02.988Z,
+  organization_id: null,
+  paid_at: null,
+  payment_method_data: DisplayOrderPaymentMethodData {
+    client_secret: 'pi_3JrsQ9E6aCXPXX5q1Xq7IAGQ_secret_rDzIpQCuBlK3AYTkCiQhQRaa0',
+    method: 'Stripe',
+    methods: undefined,
+    payment_intent_id: 'pi_3JrsQ9E6aCXPXX5q1Xq7IAGQ',
+    cancel_url: null,
+    invoice_id: 'in_1JrsQ8E6aCXPXX5q5Ri1Akzl',
+    session_id: null,
+    success_url: null
+  },
+  seconds_until_expiry: 895
+}
+Apply promo code request succeeded:  DisplayOrder {
+  amount_overpaid_in_cents: 0,
+  created_at: 2021-11-03T22:59:07.841Z,
+  eligible_for_refund: false,
+  id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+  misc_refunded_total_in_cents: 0,
+  order_items: [
+    DisplayOrderOrderItems {
+      client_fee_in_cents: 0,
+      company_fee_in_cents: 0,
+      created_at: 2021-11-03T22:59:07.841Z,
+      id: '309d2161-4e7c-40bc-bdea-b691ef271dbb',
+      item_type: 'EmojiId',
+      order_id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+      quantity: 1,
+      refunded_quantity: 0,
+      unit_price_in_cents: 400,
+      updated_at: 2021-11-03T22:59:07.878Z,
+      code_id: 'bc75a81a-c8bf-4a33-994d-92adf65146ac',
+      emoji_id: '💼🌲🔩🏒',
+      marked_invalid_at: null,
+      marked_invalid_at_reason: null,
+      parent_id: null,
+      rhythm_score: 14
+    },
+    DisplayOrderOrderItems {
+      client_fee_in_cents: 0,
+      company_fee_in_cents: 0,
+      created_at: 2021-11-03T22:59:07.841Z,
+      id: '4e8858a6-9b5b-4504-af04-412cdf5b65c2',
+      item_type: 'Discount',
+      order_id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+      quantity: 1,
+      refunded_quantity: 0,
+      unit_price_in_cents: -400,
+      updated_at: 2021-11-03T22:59:07.841Z,
+      code_id: null,
+      emoji_id: null,
+      marked_invalid_at: null,
+      marked_invalid_at_reason: null,
+      parent_id: '309d2161-4e7c-40bc-bdea-b691ef271dbb',
+      rhythm_score: null
+    }
+  ],
+  order_number: '00a6cb79',
+  refunded_total_in_cents: 0,
+  remaining_due_in_cents: 0,
+  status: 'PendingPayment',
+  total_in_cents: 0,
+  updated_at: 2021-11-03T22:59:07.884Z,
+  user: DisplayOrderUser {
+    created_at: 2021-11-03T22:58:51.787Z,
+    emoji_ids: undefined,
+    free_limit: 1,
+    id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+    is_active: undefined,
+    pubkeys: [
+      '5a947509205e94deb68151977264edafb9a8579d1240469fd90e0713d8c88217'
+    ],
+    remaining_free_emoji: 0,
+    role: 'User',
+    updated_at: 2021-11-03T22:59:07.845Z,
+    alternate_id: null,
+    email: 'nine+anything2@tari.com',
+    first_name: 'Testy',
+    last_name: 'McTesty',
+    source: null,
+    two_factor_auth: null
+  },
+  user_id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+  expires_at: 2021-11-03T23:14:02.988Z,
+  organization_id: null,
+  paid_at: null,
+  seconds_until_expiry: 895
+}
+Checkout succeeded:  DisplayOrder {
+  amount_overpaid_in_cents: 0,
+  created_at: 2021-11-03T22:59:07.841Z,
+  eligible_for_refund: true,
+  id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+  misc_refunded_total_in_cents: 0,
+  order_items: [
+    DisplayOrderOrderItems {
+      client_fee_in_cents: 0,
+      company_fee_in_cents: 0,
+      created_at: 2021-11-03T22:59:07.841Z,
+      id: '309d2161-4e7c-40bc-bdea-b691ef271dbb',
+      item_type: 'EmojiId',
+      order_id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+      quantity: 1,
+      refunded_quantity: 0,
+      unit_price_in_cents: 400,
+      updated_at: 2021-11-03T22:59:07.878Z,
+      code_id: 'bc75a81a-c8bf-4a33-994d-92adf65146ac',
+      emoji_id: '💼🌲🔩🏒',
+      marked_invalid_at: null,
+      marked_invalid_at_reason: null,
+      parent_id: null,
+      rhythm_score: 14
+    },
+    DisplayOrderOrderItems {
+      client_fee_in_cents: 0,
+      company_fee_in_cents: 0,
+      created_at: 2021-11-03T22:59:07.841Z,
+      id: '4e8858a6-9b5b-4504-af04-412cdf5b65c2',
+      item_type: 'Discount',
+      order_id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+      quantity: 1,
+      refunded_quantity: 0,
+      unit_price_in_cents: -400,
+      updated_at: 2021-11-03T22:59:07.841Z,
+      code_id: null,
+      emoji_id: null,
+      marked_invalid_at: null,
+      marked_invalid_at_reason: null,
+      parent_id: '309d2161-4e7c-40bc-bdea-b691ef271dbb',
+      rhythm_score: null
+    }
+  ],
+  order_number: '00a6cb79',
+  refunded_total_in_cents: 0,
+  remaining_due_in_cents: 0,
+  status: 'Paid',
+  total_in_cents: 0,
+  updated_at: 2021-11-03T22:59:08.084Z,
+  user: DisplayOrderUser {
+    created_at: 2021-11-03T22:58:51.787Z,
+    emoji_ids: undefined,
+    free_limit: 1,
+    id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+    is_active: undefined,
+    pubkeys: [
+      '5a947509205e94deb68151977264edafb9a8579d1240469fd90e0713d8c88217'
+    ],
+    remaining_free_emoji: 0,
+    role: 'User',
+    updated_at: 2021-11-03T22:59:08.078Z,
+    alternate_id: null,
+    email: 'nine+anything2@tari.com',
+    first_name: 'Testy',
+    last_name: 'McTesty',
+    source: null,
+    two_factor_auth: null
+  },
+  user_id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+  expires_at: null,
+  organization_id: null,
+  paid_at: 2021-11-03T22:59:08.078Z,
   seconds_until_expiry: null
 }
 URL added to yat.
 LookupResponse {
-  status: true,
+  stats: [
+    EmojiStatsResponseMetrics {
+      description: 'Number of times emoji was looked up via API',
+      finish_date: 2021-11-03T22:59:14.544Z,
+      key: '💼🌲🔩🏒',
+      metric: 'api_emoji_lookups',
+      start_date: 2021-10-06T22:59:14.544Z,
+      value: 0
+    }
+  ],
   error: undefined,
   result: [
-    LookupResponseResult {
+    EidResponseResult {
       data: 'http://api-docs.y.at/docs/sdks/nodejs/sdk_nodejs_index',
       hash: 'cdc56f98660c2d684605ada33266918043d7d1935e2b9f13550b32d05191bc7a',
       tag: '0x4001'
-    },
+    }
   ],
-  views_past_month: 16
+  status: true
 }
 Bye!
 ```
@@ -1274,10 +1551,10 @@ This flow is achieved with three consecutive calls to the API:
 ```js {3,12,15}
 async function claimYat(myYat) {
     // Clear the cart
-    await api.cart().clear();
+    await api.cart().clearCart();
   
     // Add the yat to the cart. This time use the constructor
-    const order = new yat.UpdateCartRequest([
+    const order = new yat.AddItemsCartRequest([
         {
             emoji_id: myYat,
             redemption_code: "FREEYAT"
@@ -1299,12 +1576,12 @@ async function claimYat(myYat) {
 ```kotlin {3,14,17}
 fun claimYat(myYat: String): String {
     // Clear the cart
-    CartApi.shared.clear()
+    CartApi.shared.clearCart()
 
     // Add the yat to the cart. This time use the constructor
-    val order = UpdateCartRequest(
+    val order = AddItemsCartRequest(
         items = listOf(
-            UpdateCartRequestItems(
+            AddItemsCartRequestItems(
                 emojiId = myYat,
                 redemptionCode = "FREEYAT"
             )
@@ -1450,7 +1727,7 @@ const API = new yat.YatJs();
 // Log in ...
 
 async function fetchMyYats() {
-    let yats = await API.emojiID().list();
+    let yats = await API.emojiID().listEmojiIDs();
     return yats;
 }
 ```
