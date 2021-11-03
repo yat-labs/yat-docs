@@ -16,8 +16,8 @@ provides a simple way for Yat partners to purchase and link Yats from within the
 
 ## Requirements
 
--   iOS 13.0+
--   Swift 5
+- iOS 13.0+
+- Swift 5
 
 ## Installation
 
@@ -29,19 +29,15 @@ You can use [CocoaPods](http://cocoapods.org/) to install `YatLib` by adding it 
 use_frameworks!
 
 target 'MyApp' do
-    pod 'YatLib', '0.1.8'
+    pod 'YatLib', '~> 0.2.2'
 end
 ```
 
-`YatLib` is open source software. You can view the code, submit bug reports, and offer improvements or features by
-creating new issues or PRs on the [Github repo](https://github.com/yat-labs/yat-lib-ios).
-
-## Usage
+## Setup
 
 1. Create your app, add `YatLib` as a pod dependency as described above, and do a `pod install`.
-2. `YatLib` uses deep links to return from the Yat web application back to the application. URL scheme of the deep link
-   is agreed upon in between the Yat development team and the integration partner. Currently used scheme is
-   `{partner_key}://y.at?{query_params}`. Setup your deep links in your project accordingly.
+
+2. `YatLib` uses deep links to return from the Yat web application back to the application. The URL scheme of the deep link is agreed upon between the Yat development team and the integration partner. Setup your deep links in your project accordingly.
 
     1. Select your project in the project browser.
     2. Select your app target under `Targets`.
@@ -54,139 +50,118 @@ creating new issues or PRs on the [Github repo](https://github.com/yat-labs/yat-
     import UIKit
     import YatLib
 
-    class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
-        func scene(_ scene: UIScene,
-                   willConnectTo session: UISceneSession,
-                   options connectionOptions: UIScene.ConnectionOptions
-        ) {
-            guard let _ = (scene as? UIWindowScene) else { return }
-            self.scene(scene, openURLContexts: connectionOptions.urlContexts)
-        }
+        func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+            Yat.configuration = YatConfiguration(appReturnLink: "{app_return_link}", organizationName: "{organization_name}", organizationKey: "{organization_key}")
+	    }
 
-        internal func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-            if let url = URLContexts.first?.url {
-                YatLib.processDeepLink(url)
-            }
+        func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+            guard let url = URLContexts.first?.url else { return }
+            Yat.integration.handle(deeplink: url)
         }
 
         // ... rest of the implementation ...
 
     }
-    ```
+	```
 
-4. Define and set the app-specific constants, which will be delivered to you by the Yat development team, and define the
-   crypto records to be linked to the Yat.
+    The app return link, organization name, and organization key will be delivered to you by the Yat development team.
 
+    # Usage
+
+    `Yat` is an integration entry point. It contains all tools necessary to configure, style, integrate, and interact with API.
+
+    ## Configuration
+
+    To configure the integration, you need to pass a new configuration to the `Yat.configuration` (please check the Setup section above for more information).
+
+    ## Style
+
+    You can change the style (colors, fonts, etc.) of the UI elements used by the framework by changing values stored in `Yat.style`.
+
+    ## Integration
+
+    `Yat.integration` exposes convenience methods to present a unified UI that allows the user to connect his crypto wallet address to Yat. 
+
+    To show a simple onboarding overlay, you need to:
     ```swift
-    import YatLib
-
-    class MyViewController: UIViewController {
-        /**
-        * These values are provided to the app developer by the Yat development team.
-        */
-        private let yatAppConfig = YatAppConfig(
-            name: "Super Cool Wallet",
-            sourceName: "SCW",
-            pathKey: "scw",
-            pubKey: "{64 character hex public key}",
-            code: "66b6a5aa-11b4-12a9-1c1e-84765ef174ab",
-            authToken: "AppToken84765783"
-        )
-        /**
-        * Sample data that will be attached to the Yat.
-        */
-        private let yatRecords = [
-            YatRecord(
-                type: .ADAAddress,
-                value: "DdzFFzCqrhsgwQmeWNBTsG8VjYunBLK9GNR93GSLTGj1FeMm8kFoby2cTHxEHBEraHQXmgTtFGz7fThjDRNNvwzcaw6fQdkYySBneRas"
-            ),
-            YatRecord(
-                type: .DOTAddress,
-                value: "GC8fuEZG4E5epGf5KGXtcDfvrc6HXE7GJ5YnbiqSpqdQYLg"
-            ),
-            YatRecord(
-                type: .BTCAddress,
-                value: "1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s"
-            ),
-            YatRecord(
-                type: .ETHAddress,
-                value: "108dEFa0272dC118EF03a7993e4fC7A8AcF3a3d1"
-            ),
-            YatRecord(
-                type: .XTRAddress,
-                value: "d2e4db6dac593a9af36987a35676838ede4f69684ba433baeed68bce048e111b".uppercased()
-            ),
-            YatRecord(
-                type: .XMRStandardAddress,
-                value: "4AdUndXHHZ6cfufTMvppY6JwXNouMBzSkbLYfpAV5Usx3skxNgYeYTRj5UzqtReoS44qo9mtmXCqY45DJ852K5Jv2684Rge"
-            )
-        ]
-    }
+	    Yat.integration.showOnboarding(onViewController: hostViewController, records: records)
     ```
+    Where `hostViewController` is a `UIViewController` which will host the modal overlay, and `records` is an array of `YatRecordInput` structures that will be attached to the user's Yat.
 
-5. Implement a delegate for the library:
-
+    To properly handle the response after the success. you simply add:
     ```swift
-    extension ViewController: YatLibDelegate {
+	    Yat.integration.handle(deeplink: url)
+    ```
+    in `SceneDelagate.swift`. Please check the Setup section above for more information.
 
-        func onYatIntegrationComplete(yat: String) {
-            // ... your code ...
+    ## API
+
+    `Yat.api` provides all the convenience methods used to directly communicate with the Yat API. Currently, YatLib provides methods that handle API calls listed below:
+
+    `GET /emoji_id/{yat}/{symbol}`
+
+    Fetch all records associated with Yat for the provided symbol.
+
+    To use this endpoint, you should call one of these methods:
+
+    `fetchRecords(forYat yat: String, symbol: String, result: @escaping (Result<LookupEmojiIDWithSymbolResponse, APIError>) -> Void)`
+
+    #### Example - Regular request:
+    ```swift
+    Yat.api.fetchRecords(forYat: "👒🍥🍬♐🕌", symbol: "XTR") { result in
+        switch result {
+        case let .success(response):
+            // Handle response
+        case let .failure(error):
+            // Handle failure
         }
-
     }
     ```
 
-6. Initialize the library using the values defined in the previous steps:
+    `fetchRecordsPublisher(forYat yat: String, symbol: String) -> AnyPublisher<LookupEmojiIDWithSymbolResponse, APIError>`
 
-    ```swift
-    YatLib.initialize(
-        appConfig: yatAppConfig,
-        /* user id */
-        userId: UUID().uuidString,
-        /* app password */
-        userPassword: UUID().uuidString,
-        colorMode: .dark,
-        delegate: self,
-        records: yatRecords
-    )
+    #### Example - Regular reuqest with Apple's Combine:
+    ```swift       
+    Yat.api.fetchRecordsPublisher(forYat: "👒🍥🍬♐🕌", symbol: "XTR")
+        .sink { completion in
+            // Handle completion/failure
+        } receiveValue: { response in
+            // Handle response
+        }
+        .store(in: &cancelables)
     ```
 
-7. Launch the library with a host view controller that will present the root view controller of the library:
+    `GET /emoji_id/{yat}/json/{key}`
 
+    Fetch the key-value store associated with provided Yat. It returns a different data set depending on the provided `dataType`.
+
+    To use this endpoint, you should call one of these methods:
+
+    `func fetchFromKeyValueStore<T: LoadJsonDataContainer>(forYat yat: String, dataType: T.Type, result: @escaping (Result<LoadJsonResponse<T>, APIError>) -> Void)`
+
+    #### Example - Regular reuqest:
     ```swift
-    YatLib.start(hostViewController: self)
-    ```
-
-8. Library will call its delegate's `onYatIntegrationComplete(yat: String)` function on successful completion, and will
-   exit silently if the user cancels the flow.
-
-## Looking up a Yat
-
-Below is an example call to the `YatLib.lookupYat` function to query for the records linked to a Yat.
-
-```swift
-let yat = "👒🍥🍬♐🕌"
-YatLib.lookupYat(yat: yat) {
-    (lookupResponse) in
-    print("Yat lookup success. Yat has \(lookupResponse.records.count) records.")
-    for (index, yatRecord) in lookupResponse.records.enumerated() {
-        print("Record #\(index + 1): \(yatRecord.type) :: \(yatRecord.value)")
+    Yat.api.fetchFromKeyValueStore(forYat: "👒🍥🍬♐🕌", dataType: VisualizerFileLocations.self) { result in
+        switch result {
+        case let .success(response):
+            // Handle response
+        case let .failure(error):
+            // Handle failure
+        }
     }
-} onError: {
-    (error) in
-    print("Yat lookup error: \(error.localizedDescription)")
-}
-```
+    ```
 
-Program output is as below for a Yat with 4 records:
+    `func fetchFromKeyValueStorePublisher<T: LoadJsonDataContainer>(forYat yat: String, dataType: T.Type) -> AnyPublisher<LoadJsonResponse<T>, APIError>`
 
-```
-Registration ok.
-Activation ok.
-Authentication ok.
-Clear cart ok.
-Message signing ok.
-Random Yat added to cart.
-Yat lookup success. Yat has 6 records.
-```
+    #### Example - Regular reuqest with Apple's Combine:
+    ```swift
+    Yat.api.fetchFromKeyValueStorePublisher(forYat: "👒🍥🍬♐🕌", dataType: VisualizerFileLocations.self)
+        .sink { completion in
+            // Handle completion/failure
+        } receiveValue: { response in
+            // Handle response
+        }
+        .store(in: &cancelables)
+    ```
