@@ -50,8 +50,6 @@ function selectRandomYat(list, len) {
  */
 async function login() {
     try {
-        // If login fails after registration, it may be due to y.at still being in closed Alpha. Each registration must be manually
-        // approved by an admin before you can continue.
         let res = await api.login(alternate_id, password);
     } catch (res) {
         console.log(`Could not log in: ${res.error}`);
@@ -67,7 +65,7 @@ async function purchaseYat() {
     // Request the set of supported emoji
     const emojiList = await api.emoji().emojiList();
     // Clear the cart
-    await api.cart().clear();
+    await api.cart().clearCart();
     // This is for demo purposes. There are also endpoints for automatically selecting a random yat and applying a
     // promo code.
     const myYat = selectRandomYat(emojiList, 4);
@@ -75,13 +73,13 @@ async function purchaseYat() {
     let opts = {
         'redemptionCode': "FREEYAT" // String | Redemption code
     };
-    const yatInfo = await api.emojiID().search(myYat, opts);
+    const yatInfo = await api.emojiID().searchEmojiID(myYat, opts);
     console.log(yatInfo.result);
     if (!yatInfo.result.available) {
         console.log(`Bad luck :(, ${yat} is not available.`);
     }
     // Add the yat to the cart. This time use the constructor
-    const order = new yat.UpdateCartRequest([
+    const order = new yat.AddItemsCartRequest([
         {
             emoji_id: myYat,
             redemption_code: "FREEYAT"
@@ -100,7 +98,7 @@ async function purchaseYat() {
  * @returns {Promise<*>}
  */
 async function getMyYats() {
-    let yats = await api.emojiID().list();
+    let yats = await api.emojiID().listEmojiIDs();
     console.log("These are my yats: ", yats);
     return yats;
 }

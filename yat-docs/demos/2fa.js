@@ -24,31 +24,26 @@
  */
 
 const yat = require('yatjs');
-const { totp } = require('otplib');
+const { authenticator } = require('otplib');
 const api = new yat.YatJs();
+authenticator.options = { encoding: 'hex' };
 
 let alternate_id = 'my-app-user-id-' + Math.random();
-let password = 'secret password';
+let password = 'secret-password';
 let SECRET = '';
-totp.options = {
-    encoding: 'hex'
-};
-
 /**
  * Register a new Yat account
  * @returns {Promise<boolean>}
  */
 async function register() {
-    let details = new yat.RegisterUserParameters.constructFromObject({
-        first_name: "Testy",
-        last_name: "McTesty",
-        source: "My nice app",
-        alternate_id,
-        password,
-
-    });
     try {
-        let res = await api.users().createUser(details);
+        let res = await api.users().createUser({
+            'first_name': "Testy",
+            'last_name': "McTesty",
+            'source': "My nice app",
+            'alternate_id': alternate_id,
+            'password': password,
+        });
         return true;
     } catch (err) {
         const alreadyRegistered = err.status === 422 && err.body.fields.alternate_id && err.body.fields.alternate_id[0].code === "uniqueness";
@@ -69,12 +64,12 @@ async function register_with_2fa() {
             console.log("Account already registered, will try to login");
         }
         await api.login(alternate_id, password);
-        let { secret, qr_code_svg } = await api.users().update2FA({"requires_2fa": "GoogleAuthenticator"});
+        let { ga_secret, ga_qr_code_svg } = await api.users().enable2FA({"provider": "GoogleAuthenticator"});
         // NOTE: qr_code_svg is svg in text which should be shown to user to save in Google Authenticator
         // For the API purposes we will be using secret directly
-        SECRET = secret;
-        let code = totp.generate(SECRET);
-        console.log(`Confirming 2FA with ${code}. Secret ${secret}`);
+        SECRET = ga_secret;
+        let code = authenticator.generate(ga_secret);
+        console.log(`Confirming 2FA with ${code}. Secret ${ga_secret}`);
         await api.users().confirm2FA({code});
         console.log("Confirmed 2FA for user account. Logged out.");
         api.logout();
@@ -93,7 +88,7 @@ async function runDemo() {
     try {
         let res = await api.login(alternate_id, password);
         console.log("Before confirm_2fa: Requires 2FA = ", res.requires_2fa);
-        let code = totp.generate(SECRET);
+        let code = authenticator.generate(SECRET);
         res = await api.confirm_2fa(code);
         console.log("After confirm_2fa: Requires 2FA = ", res.requires_2fa);
         let account = await api.users().getAccount();

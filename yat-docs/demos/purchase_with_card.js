@@ -38,7 +38,7 @@ const password = "yatster";
  * @returns {Promise<*>}
  */
 async function placeNewCart(items) {
-    let request = new yat.UpdateCartRequest(items);
+    let request = new yat.AddItemsCartRequest(items);
     console.log("Sending replace cart request: ", request);
     let cart = await api.cart().replaceItems(request);
     console.log(`Created cart ${cart.id} with items `, cart.order_items.map((rec, i) => `${i+1}. ${rec.emoji_id} - ${rec.unit_price_in_cents}`));
@@ -50,7 +50,7 @@ async function placeNewCart(items) {
  * @returns {Promise<*>}
  */
 async function getMyYats() {
-    let yats = await api.emojiID().list();
+    let yats = await api.emojiID().listEmojiIDs();
     console.log("These are my yats: ", yats);
     return yats;
 }
@@ -62,7 +62,7 @@ async function main() {
         const emojis = await api.emojiID().random();
         console.log("Random emoji suggestions:", emojis.result.map((rec, i) => `${i+1}. ${rec.emoji_id} - ${rec.price}`));
         // Pick 2 yats from the middle and place into the cart
-        let items = emojis.result.map((rec) => new yat.UpdateCartRequestItems(rec.emoji_id)).splice(2, 2);
+        let items = emojis.result.map((rec) => new yat.AddItemsCartRequestItems(rec.emoji_id)).splice(2, 2);
         await placeNewCart(items);
 
         // Checkout via creadit card. We use test token in this case "tok_visa"
@@ -75,7 +75,7 @@ async function main() {
         console.log(`Order is ${result.status}. Total: ${result.total_in_cents}.`);
 
         // Now we have setup Default payment method which can be used. Let's buy 2 more emojis
-        items = emojis.result.map((rec) => new yat.UpdateCartRequestItems(rec.emoji_id)).splice(5, 2);
+        items = emojis.result.map((rec) => new yat.AddItemsCartRequestItems(rec.emoji_id)).splice(5, 2);
         await placeNewCart(items);
         result = await api.cart().checkout({ method: "Default" });
         console.log(`Order is ${result.status}. Total: ${result.total_in_cents}.`);

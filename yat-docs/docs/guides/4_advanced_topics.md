@@ -60,7 +60,7 @@ The code snippet below illustrates how you might implement payments via payment 
  * Create new cart for user
  * @returns {Promise<*>}
  */
-async function placeNewCart(items) {
+ async function placeNewCart(items) {
     let request = new yat.AddItemsCartRequest(items);
     console.log("Sending add items cart request: ", request);
     let cart = await api.cart().addItems(request);
@@ -70,7 +70,7 @@ async function placeNewCart(items) {
 
 async function main() {
     try {
-        await api.login(alternate_id, password);
+        await api.login(email, password);
         // Pick random yats
         const emojis = await api.emojiID().random();
         console.log("Random emoji suggestions:", emojis.result.map((rec, i) => `${i+1}. ${rec.emoji_id} - ${rec.price}`));
@@ -80,8 +80,8 @@ async function main() {
 
         // Checkout via payment intents. The user is given a payment intent ID which may be used to complete the purchase.
         // Yat's Stripe public API key should be used for communication with Stripe
-        let result = await api.cart().checkout({ method: "Provider", provider: "Stripe"});
-        console.log(`Order is ${result.status}. Payment data: ${result.payment_method_data}.`);
+        let result = await api.cart().checkout({ method: "Stripe"});
+        console.log(`Order is ${result.status}. Payment data: ${result.payment_method_data.payment_intent_id}.`);
     } catch(err) {
         console.log("Failed: ", err)
     }
@@ -130,25 +130,25 @@ This script produces output something along the lines of:
 
 ```
 Random emoji suggestions: [
-  '1. 🎭🥔🏯🌰 - 400',
-  '2. 💪🎱🌰💄 - 6500',
-  '3. 🍵💅☸️ - 400',
-  '4. ♑🍁⚙️ - 400',
-  '5. 🍳🛵🚓 - 9000',
-  '6. 🍾🍐❗🎿 - 9000',
-  '7. 🦉🎬⌛ - 7000',
-  '8. 🕌📈🥑 - 400',
-  '9. ⚰️🦌❓📺 - 12500',
-  '10. 🍚🤢🏥 - 8500'
+  '1. ♎😎♏ - 400',
+  '2. 👎🛡️🌰 - 400',
+  '3. 🛍️⚾💳 - 21000',
+  '4. 🏟️🏀🎸🍵 - 400',
+  '5. 😍🗄️✡️ - 500',
+  '6. 🐨💍🐉⚽ - 10000',
+  '7. ⛪🌴🍜⛵ - 9000',
+  '8. 🦉🎏🌮💩 - 800',
+  '9. 💰🦍🎥 - 8500',
+  '10. ⚽🍔🚀👀 - 10500'
 ]
 Sending add items cart request:  AddItemsCartRequest {
   items: [
-    AddItemsCartRequestItems { emoji_id: '🍵💅☸️' },
-    AddItemsCartRequestItems { emoji_id: '♑🍁⚙️' }
+    AddItemsCartRequestItems { emoji_id: '🛍️⚾💳' },
+    AddItemsCartRequestItems { emoji_id: '🏟️🏀🎸🍵' }
   ]
 }
-Created cart ef621c75-0362-4462-83a1-fc73833eeb0b with items  [ '1. 🍵💅☸️ - 9000', '2. ♑🍁⚙️ - 9000' ]
-Order is PendingPayment. Invoice ID: in_1Jrq62E6aCXPXX5qgBC1vqVT. Payment Intent: pi_3Jrq63E6aCXPXX5q04ZiwpFs. Client Secret: pi_3Jrq63E6aCXPXX5q04ZiwpFs_secret_cOYTla7eR3wERqYJ1yzpXvDRI.
+Created cart aed099bd-f932-4e84-86dc-644c5fc13e74 with items  [ '1. 🛍️⚾💳 - 10500', '2. 🏟️🏀🎸🍵 - 400' ]
+Order is PendingPayment. Payment data: pi_3Js9jAE6aCXPXX5q18SRrRQE.
 Bye!
 ```
 

@@ -370,7 +370,7 @@ There is already a TXT DNS record type, but you might not want it returned with 
 | `0x50` | `0x01` | 255 bytes   | Arbitrary UTF-8 string data                                |
 | `0x50` | `0x10` | 255 bytes   | Arbitrary UTF-8 string data (not returned in TXT requests) |
 
-## Categories allowing for only one record per yat
+## Categories allowing for only one record per yat unless bypassed
 
 Some categories have restrictions to prevent multiple records from being created for a given yat and that category. If an additional record is submitted for insertion the old record will be replaced.
 
@@ -381,6 +381,8 @@ These categories include:
 - Redirect (`0x0004`)
 - Emoji nickname (`0x0005`)
 - Emoji preferred form (`0x0006`)
+
+To bypass this restriction include the parameter `bypass_single_restrictions` set to `true` when editing the yat record. When that parameter is present no replacement occurs across the edit action.
 
 ## How your yats are stored
 
