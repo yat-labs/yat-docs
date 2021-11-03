@@ -37,7 +37,7 @@ end
 
 1. Create your app, add `YatLib` as a pod dependency as described above, and do a `pod install`.
 
-2. `YatLib` uses deep links to return from the Yat web application back to the application. URL scheme of the deep link is agreed upon in between the Yat development team and the integration partner. Setup your deep links in your project accordingly.
+2. `YatLib` uses deep links to return from the Yat web application back to the application. The URL scheme of the deep link is agreed upon between the Yat development team and the integration partner. Setup your deep links in your project accordingly.
 
     1. Select your project in the project browser.
     2. Select your app target under `Targets`.
