@@ -66,7 +66,7 @@ end
     }
 	```
 
-    App return link, organization name, and organization key will be delivered to you by the Yat development team.
+    The app return link, organization name, and organization key will be delivered to you by the Yat development team.
 
     # Usage
 
