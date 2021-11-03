@@ -74,7 +74,7 @@ end
 
     ## Configuration
 
-    To configure the integration, you need to pass a new configuration to the `Yat.configuration` (please check the Setup section above for more information). If 
+    To configure the integration, you need to pass a new configuration to the `Yat.configuration` (please check the Setup section above for more information).
 
     ## Style
 
@@ -82,15 +82,15 @@ end
 
     ## Integration
 
-    `Yat.integration` keeps all convenience methods used to show a unified UI that allows the user to connect his crypto wallet address. 
+    `Yat.integration` exposes convenience methods to present a unified UI that allows the user to connect his crypto wallet address to Yat. 
 
     To show a simple onboarding overlay, you need to:
     ```swift
 	    Yat.integration.showOnboarding(onViewController: hostViewController, records: records)
     ```
-    Where `hostViewController` is a `UIViewController` which will host for modal overlay, and `records` is an array of `YatRecordInput` structures that will be attached to the user's Yat.
+    Where `hostViewController` is a `UIViewController` which will host the modal overlay, and `records` is an array of `YatRecordInput` structures that will be attached to the user's Yat.
 
-    To properly handle the response after the success. you need to add a:
+    To properly handle the response after the success. you simply add:
     ```swift
 	    Yat.integration.handle(deeplink: url)
     ```
@@ -98,7 +98,7 @@ end
 
     ## API
 
-    `Yat.api` keeps all convenience methods used to directly communicate with Yat's API. Currently, YatLib provides methods that handle API calls listed below:
+    `Yat.api` provides all the convenience methods used to directly communicate with the Yat API. Currently, YatLib provides methods that handle API calls listed below:
 
     `GET /emoji_id/{yat}/{symbol}`
 
@@ -108,7 +108,7 @@ end
 
     `fetchRecords(forYat yat: String, symbol: String, result: @escaping (Result<LookupEmojiIDWithSymbolResponse, APIError>) -> Void)`
 
-    #### Example - Regular reuqest:
+    #### Example - Regular request:
     ```swift
     Yat.api.fetchRecords(forYat: "👒🍥🍬♐🕌", symbol: "XTR") { result in
         switch result {
