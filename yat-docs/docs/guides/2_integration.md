@@ -909,9 +909,8 @@ There are a few ways to register a new account. The majority of use cases will m
 you just need an `alternate_id` and `password` to create a new account. You can also optionally provide some personal details
 to personalise your profile, such as first and last name.
 
-It is possible to register without supplying a password. If you register with an `email` only, then all logins will
-require you to use the  [magic link](/docs/register#magic-links) feature. Magic links provide a great user experience on
-front-ends, but might not be ideal for pure API access to your yats.
+It is possible to register without supplying a password. If you register with an `email` only, then the initial login will
+require you to click a [magic link](/docs/register#magic-links) emailed to you to complete registration.
 
 More details on user registration is provided in the [Creating a new user](/docs/register) section.
 

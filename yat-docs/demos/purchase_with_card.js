@@ -29,7 +29,6 @@
 const yat = require('yatjs');
 const api = new yat.YatJs();
 api.basePath = 'http://localhost:3001';
-//api.basePath = 'https://emojid.me/api';
 
 const alternate_id = "tester";
 const password = "yatster";

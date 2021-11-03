@@ -29,9 +29,9 @@ To create a new account at y.at, register a user with a `POST` query to the
 
 There are three ways to register a new account on y.at:
 
-* **With an email only**. Login and registration will be via [magic links](#magic-links).
-* **With an email and password**. Registration is immediate. Logins may use either username-password or magic link semantics.
-* **With an "alternate id" and a password**. Affiliates and y.at partners will use this approach. The registration and flow is the same as for email/password. With "alternate id" registrations, logins must _always_ use username-password semantics, since there is no email address to receive magic links.
+* **With an email only**. A [magic link](/docs/register#magic-links) is sent to the user via email to complete their registration. The user's email address is marked confirmed as soon as the user has clicked the magic link provided in their email. After clicking the link the user is asked for a password to complete their registration.
+* **With an email and password**. Registration is immediate. Logins may use either username-password. An initial email confirmation step where the user must click an provided confirmation [magic link](/docs/register#magic-links) is required to allow access to checkout to complete any yat purchases.
+* **With an "alternate id" and a password**. Affiliates and y.at partners will use this approach. The registration and flow is the same as for email/password. With "alternate id" registrations, logins must _always_ use username-password semantics, since there is no email address to receive a magic link.
 
 An example code snippet for registering a new account is given in
 [Integrating Yats - Registering a new account](/docs/integration_general#registering-a-new-account).
@@ -44,7 +44,7 @@ the `source` and `password` fields to be set when registering. To provide a deam
 also typically determined under the hood by applying a hash function to data unique to the user and her device.
 
 When configured this way, users registered via `alternate_id` can only be authenticated via `password`, and from the app
- that carried out the registration (since the user doesn't know their password).
+that carried out the registration (since the user doesn't know their password).
 
 Users can supply their email address in the web interface at any time to complete their profile and enable `email`-based
 authentication.
@@ -590,4 +590,4 @@ Bye
 What the heck are magic links? I'm glad you asked.
 
 A user only requires an email address for registration. An introductory email is sent which includes a “magic link”. The
-calling app can register an intent for the Yat domain, which would trigger an email to the user with a login link to the y.at site.
+calling app can register an intent for the Yat domain, which would trigger an email to the user with a login link to the y.at site. Once the user has associated a password magic links are no longer available for their use and they must use that password going forward. If the user signs up with an email address and password a magic link is sent their way to confirm their email address.
