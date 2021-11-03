@@ -177,9 +177,20 @@ The partner application user needs to get redirected to the Yat website to Conne
 
 `addresses`: A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`.
 Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
+
 ## 3. Manage connected Yats
 
 Partner application’s users can access the Yat dashboard directly from the partner app with the Manage Yats flow. The Yat Dashboard enables users to visualize, mint, transfer their Yat and more.
+
+The partner application user needs to get redirected to the Yat website to Manage Yats (Flow 3). A number of query parameters are necessary for the Yat web application to correctly identify the user and link any necessary data to the user's Yat.
+
+**Web App URL:** `http://y.at/partner/CW/manage`
+
+**Query Parameters:**
+
+`refresh_token`: User's refresh token that was received in the response body of redirection to Yat web.
+
+`addresses` : A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`. Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
 
 <a href="/img/flow3-lrg.png" target="_blank"><img src="/img/flow3-sml.png"/></a>
 
@@ -192,10 +203,6 @@ If the user has connected an address with their Yat, addresses are set, any one 
 ### 4B. Edge Case: Multiple Yats associated with 1 address
 
 <a href="/img/flow4b-lrg.png" target="_blank"><img src="/img/flow4b-sml.png"/></a>
-
-### 4C. Edge Case: Multiple addresses associated with 1 Yat
-
-<a href="/img/flow4c-lrg.png" target="_blank"><img src="/img/flow4c-sml.png"/></a>
 
 ### Looking up a Yat
 
