@@ -36,14 +36,15 @@ let SECRET = '';
  * @returns {Promise<boolean>}
  */
 async function register() {
+    let details = yat.RegisterUserParameters.constructFromObject({
+        first_name: "Testy",
+        last_name: "McTesty",
+        source: "My nice app",
+        alternate_id: alternate_id,
+        password: password,
+    });
     try {
-        let res = await api.users().createUser({
-            'first_name': "Testy",
-            'last_name': "McTesty",
-            'source': "My nice app",
-            'alternate_id': alternate_id,
-            'password': password,
-        });
+        let res = await api.users().createUser(details);
         return true;
     } catch (err) {
         const alreadyRegistered = err.status === 422 && err.body.fields.alternate_id && err.body.fields.alternate_id[0].code === "uniqueness";

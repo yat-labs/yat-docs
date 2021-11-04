@@ -49,7 +49,7 @@ const password = "secret-password";
         console.log("Registered user")
         return true;
     } catch (err) {
-        const alreadyRegistered = err.status === 422 && err.body.fields.email[0].code === "uniqueness";
+        const alreadyRegistered = err.status === 422 && err.body.fields.alternate_id[0].code === "uniqueness";
         if (!alreadyRegistered) {
             console.log(`Could not register an account: ${err.error}`);
         } else {
