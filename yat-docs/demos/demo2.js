@@ -98,10 +98,7 @@ async function login() {
     // promo code.
     const myYat = selectRandomYat(emojiList, 4);
     console.log(`Checking ${myYat} availability...`);
-    let opts = {
-        'redemptionCode': "FREEYAT" // String | Redemption code
-    };
-    const yatInfo = await api.emojiID().searchEmojiID(myYat, opts);
+    const yatInfo = await api.emojiID().searchEmojiID(myYat);
     console.log(yatInfo.result);
     if (!yatInfo.result.available) {
         console.log(`Bad luck :(, ${yat} is not available.`);
