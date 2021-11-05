@@ -29,9 +29,9 @@ To create a new account at y.at, register a user with a `POST` query to the
 
 There are three ways to register a new account on y.at:
 
-* **With an email only**. Login and registration will be via [magic links](#magic-links).
-* **With an email and password**. Registration is immediate. Logins may use either username-password or magic link semantics.
-* **With an "alternate id" and a password**. Affiliates and y.at partners will use this approach. The registration and flow is the same as for email/password. With "alternate id" registrations, logins must _always_ use username-password semantics, since there is no email address to receive magic links.
+* **With an email only**. A [magic link](/docs/register#magic-links) is sent to the user via email to complete their registration. The user's email address is marked confirmed as soon as the user has clicked the magic link provided in their email. After clicking the link the user is asked for a password to complete their registration.
+* **With an email and password**. Registration is immediate. Logins may use either username-password. An initial email confirmation step where the user must click an provided confirmation [magic link](/docs/register#magic-links) is required to allow access to checkout to complete any yat purchases.
+* **With an "alternate id" and a password**. Affiliates and y.at partners will use this approach. The registration and flow is the same as for email/password. With "alternate id" registrations, logins must _always_ use username-password semantics, since there is no email address to receive a magic link.
 
 An example code snippet for registering a new account is given in
 [Integrating Yats - Registering a new account](/docs/integration_general#registering-a-new-account).
@@ -44,7 +44,7 @@ the `source` and `password` fields to be set when registering. To provide a deam
 also typically determined under the hood by applying a hash function to data unique to the user and her device.
 
 When configured this way, users registered via `alternate_id` can only be authenticated via `password`, and from the app
- that carried out the registration (since the user doesn't know their password).
+that carried out the registration (since the user doesn't know their password).
 
 Users can supply their email address in the web interface at any time to complete their profile and enable `email`-based
 authentication.
@@ -108,36 +108,39 @@ The Yat SDK manages most of the flow for you as can be seen from the example bel
 
 ```javascript
 const yat = require('yatjs');
-const { totp } = require('otplib');
+const { authenticator } = require('otplib');
 const api = new yat.YatJs();
+authenticator.options = { encoding: 'hex' };
 
 let alternate_id = 'my-app-user-id-' + Math.random();
-let password = 'secret password';
+let password = 'secret-password';
 let SECRET = '';
-totp.options = { encoding: 'hex' };
-
 /**
  * Register a new Yat account
+ * @returns {Promise<boolean>}
  */
 async function register() {
-    let details = new yat.RegisterUserParameters.constructFromObject({
-        first_name: "Testy",
-        last_name: "McTesty",
-        source: "My nice app",
-        alternate_id,
-        password,
-
-    });
     try {
-        let res = await api.users().createUser(details);
+        let res = await api.users().createUser({
+            'first_name': "Testy",
+            'last_name': "McTesty",
+            'source': "My nice app",
+            'alternate_id': alternate_id,
+            'password': password,
+        });
         return true;
     } catch (err) {
-        return false;
+        const alreadyRegistered = err.status === 422 && err.body.fields.alternate_id && err.body.fields.alternate_id[0].code === "uniqueness";
+        if (!alreadyRegistered) {
+            console.log(`Could not register an account: `, err);
+        }
+        return alreadyRegistered;
     }
 }
 
 /**
  * Setup account with 2FA enabled
+ * @returns {Promise<boolean>}
  */
 async function register_with_2fa() {
     try {
@@ -145,12 +148,12 @@ async function register_with_2fa() {
             console.log("Account already registered, will try to login");
         }
         await api.login(alternate_id, password);
-        let { secret, qr_code_svg } = await api.users().update2FA({"requires_2fa": "GoogleAuthenticator"});
+        let { ga_secret, ga_qr_code_svg } = await api.users().enable2FA({"provider": "GoogleAuthenticator"});
         // NOTE: qr_code_svg is svg in text which should be shown to user to save in Google Authenticator
         // For the API purposes we will be using secret directly
-        SECRET = secret;
-        let code = totp.generate(SECRET);
-        console.log(`Confirming 2FA with ${code}. Secret ${secret}`);
+        SECRET = ga_secret;
+        let code = authenticator.generate(ga_secret);
+        console.log(`Confirming 2FA with ${code}. Secret ${ga_secret}`);
         await api.users().confirm2FA({code});
         console.log("Confirmed 2FA for user account. Logged out.");
         api.logout();
@@ -169,7 +172,7 @@ async function runDemo() {
     try {
         let res = await api.login(alternate_id, password);
         console.log("Before confirm_2fa: Requires 2FA = ", res.requires_2fa);
-        let code = totp.generate(SECRET);
+        let code = authenticator.generate(SECRET);
         res = await api.confirm_2fa(code);
         console.log("After confirm_2fa: Requires 2FA = ", res.requires_2fa);
         let account = await api.users().getAccount();
@@ -500,26 +503,32 @@ The script above would output:
 
 ```text
 Yat API calls will be made to http://localhost:3001
-Confirming 2FA with 792622. Secret 302e35909b7377e939e036d671c827f6139607165e
+Confirming 2FA with 966584. Secret 32JH3WX6T5MX6IAXDRC5TL4NXW5QZQTG
 Confirmed 2FA for user account. Logged out.
 Before confirm_2fa: Requires 2FA =  GoogleAuthenticator
 After confirm_2fa: Requires 2FA =  null
 User profile data: CurrentUserUser {
-  created_at: 2020-10-06T12:28:52.109Z,
+  created_at: 2021-11-04T17:15:12.311Z,
   free_limit: 1,
-  id: '3eed99a2-822b-4025-8ee7-cdbbd10340c8',
-  is_active: true,
+  id: '9959671c-e45b-4a01-9f7a-e90fda28375e',
+  pubkeys: [
+    'ac6eb8980ab34b68ad5894108736fab67b422864d0f5d6c7488202bee671f36e'
+  ],
   remaining_free_emoji: 1,
   role: 'User',
-  updated_at: 2020-10-06T12:28:53.215Z,
-  alternate_id: 'my-app-user-id-0.9967526659657224',
+  two_factor_should_prompt: false,
+  updated_at: 2021-11-04T17:15:12.771Z,
+  alternate_id: 'my-app-user-id-0.3491619342661756',
   email: null,
+  email_verified_at: null,
   first_name: 'Testy',
   last_name: 'McTesty',
   source: 'My nice app',
-  two_factor_auth: 'GoogleAuthenticator'
+  two_factor_auth: [ 'GoogleAuthenticator' ],
+  two_factor_last_prompted_at: null
 }
 Bye
+
 ```
 </TabItem>
 <TabItem value="swift5">
@@ -590,4 +599,4 @@ Bye
 What the heck are magic links? I'm glad you asked.
 
 A user only requires an email address for registration. An introductory email is sent which includes a “magic link”. The
-calling app can register an intent for the Yat domain, which would trigger an email to the user with a login link to the y.at site.
+calling app can register an intent for the Yat domain, which would trigger an email to the user with a login link to the y.at site. Once the user has associated a password magic links are no longer available for their use and they must use that password going forward. If the user signs up with an email address and password a magic link is sent their way to confirm their email address.

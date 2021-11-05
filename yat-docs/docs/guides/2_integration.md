@@ -42,28 +42,34 @@ const api = new yat.YatJs();
 // hint: You can specify an alternative API url with the basePath property, e.g.:
 // api.basePath = 'http://localhost:3001';
 
+// Note: on first attempt checkout will fail if registering a user
+// Please login and confirm the email and then rerun the demo
 const email = "tester@y.at";
-const password = "yatster";
+const password = "yat-secret";
 
 /**
  * Register a new Yat account
  * @returns {Promise<boolean>}
  */
 async function register() {
-    let details = new yat.RegisterUserParameters.constructFromObject({
+    let details = yat.RegisterUserParameters.constructFromObject({
         first_name: "Testy",
         last_name: "McTesty",
-        email,
-        password
+        email: email,
+        password: password,
     });
+
     try {
-        let res = await api.users().createUser(details);
-        console.log("Registered user response:", res);
+        await api.users().createUser(details);
+
+        console.log("Registered user")
         return true;
     } catch (err) {
         const alreadyRegistered = err.status === 422 && err.body.fields.email[0].code === "uniqueness";
         if (!alreadyRegistered) {
             console.log(`Could not register an account: ${err.error}`);
+        } else {
+            console.log(`User was already registered, continuing`);
         }
         return alreadyRegistered;
     }
@@ -88,8 +94,6 @@ function selectRandomYat(list, len) {
  */
 async function login() {
     try {
-        // If login fails after registration, it may be due to y.at still being in closed Beta. Each registration must be manually
-        // approved by an admin before you can continue.
         let res = await api.login(email, password);
     } catch (res) {
         console.log(`Could not log in: ${res.error}`);
@@ -105,7 +109,7 @@ async function purchaseYat() {
     // Request the set of supported emoji
     const emojiList = await api.emoji().emojiList();
     // Clear the cart
-    await api.cart().clear();
+    await api.cart().clearCart();
     // This is for demo purposes. There are also endpoints for automatically selecting a random yat and applying a
     // promo code.
     const myYat = selectRandomYat(emojiList, 4);
@@ -113,23 +117,32 @@ async function purchaseYat() {
     let opts = {
         'redemptionCode': "FREEYAT" // String | Redemption code
     };
-    const yatInfo = await api.emojiID().search(myYat, opts);
+    const yatInfo = await api.emojiID().searchEmojiID(myYat, opts);
     console.log(yatInfo.result);
     if (!yatInfo.result.available) {
         console.log(`Bad luck :(, ${yat} is not available.`);
     }
+    
     // Add the yat to the cart. This time use the constructor
-    const order = new yat.UpdateCartRequest([
+    const order = new yat.AddItemsCartRequest([
         {
             emoji_id: myYat,
-            redemption_code: "FREEYAT"
         }
     ]);
-    const cart = await api.cart().add(order);
+    const cart = await api.cart().addItems(order);
     console.log("Order added to cart: ", cart);
-    // Checkout..
-    const result = await api.cart().checkout({ method: "Free" });
-    console.log("Checkout succeeded: ", result);
+    // Checkout, currently to add a promo method the cart must be in a pending payment state
+    await api.cart().checkout({ method: "Stripe"});
+    
+    let promoCodeResult = await api.cart().applyPromoCode({
+        'code': "FREEYAT" // String | Redemption code
+    });
+    console.log("Apply promo code request succeeded: ", promoCodeResult);
+
+    let checkoutFreeResult = await api.cart().checkout({ method: "Free" });
+    console.log("Checkout succeeded: ", checkoutFreeResult);
+    await new Promise(r => setTimeout(r, 5000));
+
     return myYat;
 }
 
@@ -138,7 +151,7 @@ async function purchaseYat() {
  * @returns {Promise<*>}
  */
 async function getMyYats() {
-    let yats = await api.emojiID().list();
+    let yats = await api.emojiID().listEmojiIDs();
     console.log("These are my yats: ", yats);
     return yats;
 }
@@ -155,7 +168,7 @@ async function addYatRecord(yat, url) {
         }]
     };
     try {
-        await api.emojiID().edit(yat, req);
+        await api.emojiID().editEmojiID(yat, req);
         console.log("URL added to yat.");
     } catch (err) {
         console.log("Error Result of adding record request: ", err.body);
@@ -170,7 +183,7 @@ async function addYatRecord(yat, url) {
  */
 async function printYatRecords(yat) {
     try {
-        let records = await api.emojiID().lookup(yat);
+        let records = await api.emojiID().lookupEmojiID(yat);
         console.log(records);
     } catch (err) {
         console.log("Error fetching yat data: ", err.body)
@@ -226,9 +239,6 @@ import YatSDK
      * Login into the yat API
      */
     func login(completion: @escaping (Result<TokenResponse, Error>) -> Void) {
-         // If login fails after registration, it may be due to y.at still being in
-        // closed Beta. Each registration must be manually approved by an admin
-        // before you can continue.
         let details = LoginRequest(password: password, email: email)
         UserAuthenticationAPI.login(body: details) { (result) in
             switch result {
@@ -258,7 +268,7 @@ import YatSDK
     func findAvailableYat(list: [String], completion: @escaping (Result<String, Error>) -> Void) {
         let yat = self.selectRandomYat(list: list, len: 4)
         print("Checking \(yat) availability...")
-        EmojiIDAPI.search(emojiId: yat) { (result) in
+        EmojiIDAPI.searchEmojiID(emojiId: yat) { (result) in
             switch result {
             case .success(let response):
                 if response.result.available {
@@ -276,8 +286,8 @@ import YatSDK
      * Add selected yat to cart
      */
     func addToCart(_ yat: String, completion: @escaping (Result<DisplayOrder, Error>) -> Void) {
-        let item = UpdateCartRequestItems(emojiId: yat, redemptionCode: "FREEYAT")
-        let order = UpdateCartRequest(items: [item])
+        let item = AddItemsCartRequestItems(emojiId: yat, redemptionCode: "FREEYAT")
+        let order = AddItemsCartRequest(items: [item])
 
         CartAPI.addItems(body: order) { (result) in
             switch result {
@@ -365,7 +375,7 @@ import YatSDK
      * Display all the records associated with the given yat
      */
     func printYatRecords(yat: String, completion: (() -> Void)? = nil) {
-        EmojiIDAPI.lookup(emojiId: yat) { (result) in
+        EmojiIDAPI.lookupEmojiID(emojiId: yat) { (result) in
             switch result {
             case .success(let response):
                 print("Yat Records")
@@ -382,7 +392,7 @@ import YatSDK
      */
     func runDemo() {
         // Set API base URL.
-        YatSDKAPI.basePath = "https://emojid.me/api"
+        YatSDKAPI.basePath = "https://a.y.at"
 
         register { [weak self] (registerResult) in
             switch registerResult {
@@ -485,9 +495,6 @@ fun selectRandomYat(list: List<String>, len: Int): String {
  */
 fun login() {
     try {
-        // If login fails after registration, it may be due to y.at still being in
-        // closed Beta. Each registration must be manually approved by an admin
-        // before you can continue.
         UserAuthenticationApi.shared.login(
             LoginRequest(
                 email = email,
@@ -507,7 +514,7 @@ fun purchaseYat(): String {
     // Request the set of supported emoji
     val emojiList = EmojiApi.shared.emojiList()
     // Clear the cart
-    CartApi.shared.clear()
+    CartApi.shared.clearCart()
     // This is for demo purposes. There are also endpoints for
     // automatically selecting a random yat and applying a promo code.
     var yatIsAvailable: Boolean
@@ -523,9 +530,9 @@ fun purchaseYat(): String {
         yatIsAvailable = yatInfo.result.available
     } while (!yatIsAvailable)
     // Add the yat to the cart. This time use the constructor
-    val order = UpdateCartRequest(
+    val order = AddItemsCartRequest(
         items = listOf(
-            UpdateCartRequestItems(
+            AddItemsCartRequestItems(
                 emojiId = myYat,
                 redemptionCode = "FREEYAT"
             )
@@ -580,7 +587,7 @@ fun addYatRecord(yat: String, url: String) {
  */
 fun printYatRecords(yat: String) {
     try {
-        val records = EmojiIDApi.shared.lookup(yat, tags = null)
+        val records = EmojiIDApi.shared.lookupEmojiID(yat, tags = null)
         println(records)
     } catch (exception: Exception) {
         println("Error fetching yat data: ${exception.message}")
@@ -632,64 +639,167 @@ This script produces output similar to
 <TabItem value="nodejs">
 
 ```text
-Checking 🏹👗🍬📿 availability...
+User was already registered, continuing
+These are my yats:  []
+Checking 💼🌲🔩🏒 availability...
 SearchResultResult {
   availability: 'Available',
   available: true,
-  discounted_price: 0,
-  emoji_id: '🏹👗🍬📿',
-  price: 3500,
-  views_past_month: 1
+  emoji_id: '💼🌲🔩🏒',
+  length: 4,
+  rhythm_score: 14,
+  stats: [
+    EmojiStatsResponseMetrics {
+      description: 'Number of times emoji was looked up via API',
+      finish_date: 2021-11-03T22:59:02.773Z,
+      key: '💼🌲🔩🏒',
+      metric: 'api_emoji_lookups',
+      start_date: 2021-10-06T22:59:02.773Z,
+      value: 0
+    }
+  ],
+  copy: {
+    description: '<h3>Every Yat is one-of-a-kind, and is pay once, own forever. The price is based on its Rhythm Score (RS), which is a measure of its rarity and uniqueness.</h3>\n' +
+      '\t<p>The RS is determined primarily by a Yat’s <b>length</b>. Other factors include the average <b>popularity</b> of the emojis used in the Yat (based on current worldwide usage) and the Yat’s <b>pattern</b> (i.e. repeating emojis or “bookend” emojis).</p>',
+    features: []
+  },
+  price: 400
 }
 Order added to cart:  DisplayOrder {
-  created_at: 2020-09-25T11:17:30.939Z,
+  amount_overpaid_in_cents: 0,
+  created_at: 2021-11-03T22:58:52.245Z,
   eligible_for_refund: false,
-  id: '4a91db8b-dd2e-4eed-bcb1-f31179a82294',
+  id: 'd0227ddb-0565-42fd-b242-221f9111889a',
   misc_refunded_total_in_cents: 0,
-  order_items: [...],
-  order_number: '79a82294',
+  order_items: [..],
+  order_number: '9111889a',
   refunded_total_in_cents: 0,
+  remaining_due_in_cents: 400,
   status: 'Draft',
-  total_in_cents: 0,
-  updated_at: 2020-09-25T11:17:31.152Z,
-  user: DisplayOrderUser {...},
-  user_id: 'bbfaad2c-4478-4387-a569-e93f979a7817',
-  expires_at: 2020-09-25T11:32:31.138Z,
-  organization_id: null,
-  paid_at: null,
-  seconds_until_expiry: 899
-}
-
-Checkout succeeded:  DisplayOrder {
-  created_at: 2020-09-25T11:17:30.939Z,
-  eligible_for_refund: true,
-  id: '4a91db8b-dd2e-4eed-bcb1-f31179a82294',
-  misc_refunded_total_in_cents: 0,
-  order_items: [...],
-  order_number: '79a82294',
-  refunded_total_in_cents: 0,
-  status: 'Paid',
-  total_in_cents: 0,
-  updated_at: 2020-09-25T11:17:31.245Z,
-  user: DisplayOrderUser {...},
-  user_id: 'bbfaad2c-4478-4387-a569-e93f979a7817',
+  total_in_cents: 400,
+  updated_at: 2021-11-03T22:59:02.797Z,
+  user: DisplayOrderUser {
+    created_at: 2021-11-03T22:58:51.787Z,
+    emoji_ids: undefined,
+    free_limit: 1,
+    id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+    is_active: undefined,
+    pubkeys: [
+      '5a947509205e94deb68151977264edafb9a8579d1240469fd90e0713d8c88217'
+    ],
+    remaining_free_emoji: 1,
+    role: 'User',
+    updated_at: 2021-11-03T22:58:52.247Z,
+    alternate_id: null,
+    email: 'tester@y.at',
+    first_name: 'Testy',
+    last_name: 'McTesty',
+    source: null,
+    two_factor_auth: null
+  },
+  user_id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
   expires_at: null,
   organization_id: null,
-  paid_at: 2020-09-25T11:17:31.233Z,
+  paid_at: null,
+  seconds_until_expiry: null
+}
+Apply promo code request succeeded:  DisplayOrder {
+  amount_overpaid_in_cents: 0,
+  created_at: 2021-11-03T22:59:07.841Z,
+  eligible_for_refund: false,
+  id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+  misc_refunded_total_in_cents: 0,
+  order_items: [..],
+  order_number: '00a6cb79',
+  refunded_total_in_cents: 0,
+  remaining_due_in_cents: 0,
+  status: 'PendingPayment',
+  total_in_cents: 0,
+  updated_at: 2021-11-03T22:59:07.884Z,
+  user: DisplayOrderUser {
+    created_at: 2021-11-03T22:58:51.787Z,
+    emoji_ids: undefined,
+    free_limit: 1,
+    id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+    is_active: undefined,
+    pubkeys: [
+      '5a947509205e94deb68151977264edafb9a8579d1240469fd90e0713d8c88217'
+    ],
+    remaining_free_emoji: 0,
+    role: 'User',
+    updated_at: 2021-11-03T22:59:07.845Z,
+    alternate_id: null,
+    email: 'tester@y.at',
+    first_name: 'Testy',
+    last_name: 'McTesty',
+    source: null,
+    two_factor_auth: null
+  },
+  user_id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+  expires_at: 2021-11-03T23:14:02.988Z,
+  organization_id: null,
+  paid_at: null,
+  seconds_until_expiry: 895
+}
+Checkout succeeded:  DisplayOrder {
+  amount_overpaid_in_cents: 0,
+  created_at: 2021-11-03T22:59:07.841Z,
+  eligible_for_refund: true,
+  id: '8131c536-acfd-4b24-acd0-8da100a6cb79',
+  misc_refunded_total_in_cents: 0,
+  order_items: [..],
+  order_number: '00a6cb79',
+  refunded_total_in_cents: 0,
+  remaining_due_in_cents: 0,
+  status: 'Paid',
+  total_in_cents: 0,
+  updated_at: 2021-11-03T22:59:08.084Z,
+  user: DisplayOrderUser {
+    created_at: 2021-11-03T22:58:51.787Z,
+    emoji_ids: undefined,
+    free_limit: 1,
+    id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+    is_active: undefined,
+    pubkeys: [
+      '5a947509205e94deb68151977264edafb9a8579d1240469fd90e0713d8c88217'
+    ],
+    remaining_free_emoji: 0,
+    role: 'User',
+    updated_at: 2021-11-03T22:59:08.078Z,
+    alternate_id: null,
+    email: 'tester@y.at',
+    first_name: 'Testy',
+    last_name: 'McTesty',
+    source: null,
+    two_factor_auth: null
+  },
+  user_id: '9a1b3fca-8f27-4f96-9596-f1b6a9c9894c',
+  expires_at: null,
+  organization_id: null,
+  paid_at: 2021-11-03T22:59:08.078Z,
   seconds_until_expiry: null
 }
 URL added to yat.
 LookupResponse {
-  status: true,
+  stats: [
+    EmojiStatsResponseMetrics {
+      description: 'Number of times emoji was looked up via API',
+      finish_date: 2021-11-03T22:59:14.544Z,
+      key: '💼🌲🔩🏒',
+      metric: 'api_emoji_lookups',
+      start_date: 2021-10-06T22:59:14.544Z,
+      value: 0
+    }
+  ],
   error: undefined,
   result: [
-    LookupResponseResult {
+    EidResponseResult {
       data: 'http://api-docs.y.at/docs/sdks/nodejs/sdk_nodejs_index',
       hash: 'cdc56f98660c2d684605ada33266918043d7d1935e2b9f13550b32d05191bc7a',
       tag: '0x4001'
-    },
+    }
   ],
-  views_past_month: 16
+  status: true
 }
 Bye!
 ```
@@ -900,18 +1010,12 @@ Bye!
 
 ## Registering a new account
 
-:::info Closed beta
-During the closed beta, registrations are not automatically activated. If you are part of the closed beta test group,
-you will need to contact a y.at admin to activate your user account.
-:::
-
 There are a few ways to register a new account. The majority of use cases will make use of y.at's custodial wallet, in which case,
-you just need an `alternate_id` and `password` to create a new account. You can also optionally provide some personal details
+you just need an `alternate_id`, `source`, and `password` to create a new account. You can also optionally provide some personal details
 to personalise your profile, such as first and last name.
 
-It is possible to register without supplying a password. If you register with an `email` only, then all logins will
-require you to use the  [magic link](/docs/register#magic-links) feature. Magic links provide a great user experience on
-front-ends, but might not be ideal for pure API access to your yats.
+It is possible to register without supplying a password. If you register with an `email` only, then the initial login will
+require you to click a [magic link](/docs/register#magic-links) emailed to you to complete registration.
 
 More details on user registration is provided in the [Creating a new user](/docs/register) section.
 
@@ -927,26 +1031,45 @@ More details on user registration is provided in the [Creating a new user](/docs
 
 <TabItem value="nodejs">
 
-```js {2-7,9}
+```js {2-8,10}
 async function register() {
-    let details = new yat.RegisterUserParameters.constructFromObject({
+    let details = yat.RegisterUserParameters.constructFromObject({
         first_name: "Testy",
         last_name: "McTesty",
+        source: 'yat-docs',
         alternate_id,
-        password
+        password,
     });
     try {
-        let res = await api.users().createUser(details);
-        console.log("Registered user response:", res);
+        await api.users().createUser(details);
+
+        console.log(`Registered user`);
         return true;
     } catch (err) {
         const alreadyRegistered = err.status === 422 && err.body.fields.alternate_id[0].code === "uniqueness";
         if (!alreadyRegistered) {
             console.log(`Could not register an account: ${err.error}`);
+        } else {
+            console.log(`User was already registered, continuing`);
         }
         return alreadyRegistered;
     }
 }
+
+async function login() {
+    try {
+        await api.login(alternate_id, password);
+        let res = await api.users().getAccount();
+        console.log(res);
+    } catch (res) {
+        console.log(`Could not log in: ${res.error}`);
+        throw new Error("Could not login");
+    }
+}
+
+register().then(login).then((res) => {
+    console.log("Bye!")
+});
 ````
 
 </TabItem>
@@ -997,23 +1120,22 @@ fun register(): Boolean {
 </TabItem>
 </Tabs>
 
-If the registration request is successful, you'll receive a copy of your User record, including the scopes and permissions
-assign to your user account:
+If the registration request is successful an access token and refresh token are returned.
+The `getAccount` logic referenced by the documentation can then be used to get the user record:
 
 ```json
 {
     "user": {
         "id": "bbfaad2c-4478-4387-a569-e93f979a7817",
-        "email": "tester@y.at",
-        "alternate_id": null,
+        "email": null,
+        "alternate_id": "alternate-id-provided",
         "first_name": "Testy",
         "last_name": "McTesty",
         "role": "User",
         "two_factor_auth": null,
         "free_limit": 1,
         "remaining_free_emoji": 1,
-        "is_active": true,
-        "source": null,
+        "source": "yat-docs",
         "created_at": "2020-09-22T21:26:51.545933Z",
         "updated_at": "2020-09-25T11:17:31.224291Z"
     },
@@ -1021,19 +1143,26 @@ assign to your user account:
     "global_scopes": [
         "cart:show",
         "cart:update",
-        "order:read-self",
-        "organization-list:read",
-        "payment-method:destroy",
-        "payment-method:read",
-        "payment-method:set-default",
-        "user:delete-self",
-        "user-interest:delete",
-        "user-interest:read",
-        "user-interest:write",
-        "user:write-self"
+        "user:createApiKey",
+        "edition:read",
+        "emoji::transfer",
+        "lootbox:use",
+        "order:readSelf",
+        "organizationList:read",
+        "nftSignature:write",
+        "paymentMethod:destroy",
+        "paymentMethod:read",
+        "paymentMethod:setDefault",
+        "userData:update",
+        "user:deleteSelf",
+        "userInterest:delete",
+        "userInterest:read",
+        "userInterest:write",
+        "user:writeSelf"
     ],
     "organization_roles": {},
     "organization_scopes": {},
+    "pending_transfers": [],
     "pubkeys": [
         "d87a65697bfb7b9ffe19007753a7eacf77fec982b2484cc36659959d90d29131"
     ]
@@ -1143,9 +1272,6 @@ We'll describe that flow first, and then talk about how the credit card and cryp
 Before you can add a yat to your cart, you should check whether it is available. This is done using the `search` function
 in the Cart API.
 
-You can optionally provide a promo code to the `search` call options, which will apply any applicable discount to the
-reported price in the result.
-
 <Tabs
   defaultValue="nodejs"
   groupId="operation_code_samples"
@@ -1158,21 +1284,18 @@ reported price in the result.
 
 <TabItem value="nodejs">
 
-```js {8-11}
-const yat = require("yatJs");
-const api = new yat.YatJs();
-
-// ... Login etc
-
+```js {4}
 async function checkYatAvailability(myYat) {
     console.log(`Checking ${myYat} availability...`);
-    let opts = {
-        'redemptionCode': "FREEYAT" // String | Redemption code
-    };
-    const yatInfo = await api.emojiID().search(myYat, opts);
-    console.log(yatInfo.result);
-    if (!yatInfo.result.available) {
-        console.log(`Bad luck :(, ${yat} is not available.`);
+    try {
+        const yatInfo = await api.emojiID().searchEmojiID(myYat);
+        console.log(yatInfo.result);
+        if (!yatInfo.result.available) {
+            console.log(`Bad luck :(, ${yat} is not available.`);
+        }
+    } catch (res) {
+        console.log(`Could not check availability: ${res.error}`);
+        throw new Error("Could not check availability");
     }
 }
 ```
@@ -1190,8 +1313,7 @@ import com.yatlabs.yat.models.*
 fun checkYatAvailability(myYat: String) {
     println("Checking $myYat availability...")
     val yatInfo = EmojiIDApi.shared.search(
-        myYat,
-        redemptionCode = "FREEYAT"
+        myYat
     )
     println(yatInfo.result)
     if (!yatInfo.result.available) {
@@ -1223,29 +1345,61 @@ func checkYatAvailability(myYat: String) {
 </TabItem>
 </Tabs>
 
-A typical successful response to the search function returns the details of the Yat, as well as some suggested alternate
-Yats in case the requested one is not available:
+A typical successful response to the search function returns the details of the Yat:
 
 ```json
 {
-  "alternates": [
-    {
-      "availability": "Available",
-      "available": true,
-      "discounted_price": 0,
-      "emoji_id": "👁️❤️🌴",
-      "price": 9600,
-      "views_past_month": 35
-    }
-  ],
-  "result": {
-    "availability": "Available",
-    "available": true,
-    "discounted_price": 0,
-    "emoji_id": "👁️❤️🏀",
-    "price": 9600,
-    "views_past_month": 543
-  }
+   "result":{
+      "emoji_id":"💎💎💎",
+      "available":true,
+      "availability":"Available",
+      "price":340000,
+      "rhythm_score":99,
+      "length":3,
+      "copy":{
+         "description":"<h3>Every Yat is one-of-a-kind, and is pay once, own forever. The price is based on its Rhythm Score (RS), which is a measure of its rarity and uniqueness.</h3>\n\t<p>The RS is determined primarily by a Yat’s <b>length</b>. Other factors include the average <b>popularity</b> of the emojis used in the Yat (based on current worldwide usage) and the Yat’s <b>pattern</b> (i.e. repeating emojis or “bookend” emojis).</p>",
+         "features":[
+            "With a <b>RS of 99</b>, this Yat is of epic rarity. <b>Only 1 in 15 trillion Yats</b> achieve this incredible score. Owning this Yat is as special as owning your very own tropical island, or perhaps all of Hawaii.",
+            "This Yat is <b>3 emojis in length</b> making it very easy to remember, and wonderful for storytelling. It's the perfect Yat.",
+            "The average popularity of the emojis in your Yat is <b>10.0 out of 10</b>; they are the most beloved emojis on our planet..",
+            "The <b>pattern</b> score for this Yat is <b>8.6</b>. Your Yat has all repeating emojis, making it a truly exceptional Yat."
+         ]
+      },
+      "stats":[
+         {
+            "metric":"api_emoji_lookups",
+            "description":"Number of times emoji was looked up via API",
+            "start_date":"2021-10-07T14:49:16.976726Z",
+            "finish_date":"2021-11-04T14:49:16.976735Z",
+            "key":"💎💎💎",
+            "value":0
+         }
+      ],
+      "generation":1,
+      "short_names":[
+         "diamond",
+         "diamond",
+         "diamond"
+      ],
+      "minted":false,
+      "flippable_emoji":[
+         true,
+         true,
+         true
+      ],
+      "shape":{
+         "shape":"Bookends",
+         "pattern":{
+            "match_indexes":[
+               
+            ],
+            "original":"💎💎💎",
+            "value":"abcdea"
+         }
+      }
+   },
+   "alternates":[
+   ]
 }
 ```
 ### Claiming a Yat with a promo code
@@ -1256,6 +1410,8 @@ a promo code(s) to be applied to the order since it will only succeed if the tot
 The recommended claim process is:
 * Clear the cart
 * Add an item to the cart with the relevant Promo code
+* Checkout with the `Stripe` payment provider to put your cart into a `PendingPayment` state (returns a payment intent on the order that can be ignored).
+* Apply a 100% discount code to the `PendingPayment` order via the `applyPromoCode` method
 * Checkout with the `Free` payment provider.
 
 This flow is achieved with three consecutive calls to the API:
@@ -1272,23 +1428,32 @@ This flow is achieved with three consecutive calls to the API:
 
 <TabItem value="nodejs">
 
-```js {3,12,15}
+```js {3,11,15,17-19,22}
 async function claimYat(myYat) {
     // Clear the cart
-    await api.cart().clear();
-  
+    await api.cart().clearCart();
+    
     // Add the yat to the cart. This time use the constructor
-    const order = new yat.UpdateCartRequest([
+    const order = new yat.AddItemsCartRequest([
         {
             emoji_id: myYat,
-            redemption_code: "FREEYAT"
         }
     ]);
-    const cart = await api.cart().add(order);
+    const cart = await api.cart().addItems(order);
     console.log("Order added to cart: ", cart);
-    // Checkout..
-    const result = await api.cart().checkout({ method: "Free" });
-    console.log("Checkout succeeded: ", result);
+
+    // Checkout, currently to add a promo method the cart must be in a pending payment state
+    await api.cart().checkout({ method: "Stripe"});
+    
+    let promoCodeResult = await api.cart().applyPromoCode({
+        'code': "FREEYAT" // String | Redemption code
+    });
+    console.log("Apply promo code request succeeded: ", promoCodeResult);
+
+    let checkoutFreeResult = await api.cart().checkout({ method: "Free" });
+    console.log("Checkout succeeded: ", checkoutFreeResult);
+    await new Promise(r => setTimeout(r, 5000));
+
     return myYat;
 }
 ```
@@ -1300,12 +1465,12 @@ async function claimYat(myYat) {
 ```kotlin {3,14,17}
 fun claimYat(myYat: String): String {
     // Clear the cart
-    CartApi.shared.clear()
+    CartApi.shared.clearCart()
 
     // Add the yat to the cart. This time use the constructor
-    val order = UpdateCartRequest(
+    val order = AddItemsCartRequest(
         items = listOf(
-            UpdateCartRequestItems(
+            AddItemsCartRequestItems(
                 emojiId = myYat,
                 redemptionCode = "FREEYAT"
             )
@@ -1446,12 +1611,12 @@ very simple using the `emojiID` API.
 
 ```js {7}
 const yat = require("yatJs");
-const API = new yat.YatJs();
+const api = new yat.YatJs();
 
 // Log in ...
 
 async function fetchMyYats() {
-    let yats = await API.emojiID().list();
+    let yats = await api.emojiID().listEmojiIDs();
     return yats;
 }
 ```
@@ -1509,8 +1674,8 @@ Let's start making those yats useful!
 
 It's possible to associate [all kinds of data](/docs/categories) with your Yat.
 
-:::info Closed beta
-Whilst the API does support all these data types, only URL redirects are supported on the [y.at platform](https://y.at) presently,
+:::info beta
+Whilst the API does support all these data types, only a subset of power-ups such as URL redirects are supported on the [y.at platform](https://y.at) presently,
 so this guide will focus on that use case.
 :::
 
@@ -1520,7 +1685,7 @@ blockchain, _updates_ to records are not possible. However, you can simulate an 
 inserting a new one with the updated data.
 
 :::info
-Note: some category types, such as payment addresses, only allow for one record so when these encounter new records they are replaced. Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
+Note: some category types, such as payment addresses, only allow for one record by default so when these encounter new records they are replaced. A parameter to the edit endpoint `bypass_single_restrictions` set to `true` allows this behavior to be suppressed. Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
 :::
 
 Deleting records requires you to know the hash of the data you're deleting. You can calculate this yourself, using a 256-byte
@@ -1544,10 +1709,10 @@ The `edit` endpoint returns the list of yats that were modified as a result of t
 async function addYatRecord(yat, url) {
     try {
         // Delete existing record
-        let updates = { delete: ["cdc56f98660c2d684605ada33266918043d7d1935e2b9f13550b32d05191bc7a"] };
-        await api.emojiID().edit(yat, updates);
+        let updates = { delete: ["3a1bb6cdff154b978e7b1bf294a1e74925b3db80953d0c308a293da93777fd35"] };
+        await api.emojiID().editEmojiID(yat, updates);
         updates = { insert: [{ tag: "0x4001", data: url }] };
-        await api.emojiID().edit(yat, updates);
+        await api.emojiID().editEmojiID(yat, updates);
         console.log("URL added to yat.");
     } catch (err) {
         console.log("Error Result of adding record request: ", err.body);
@@ -1636,7 +1801,7 @@ const api = new yat.YatJs();
 
 async function printYatRecords(yat) {
     try {
-        let records = await api.emojiID().lookup(yat);
+        let records = await api.emojiID().lookupEmojiID(yat);
         console.log(records);
     } catch (err) {
         console.log("Error fetching yat data: ", err.body)
@@ -1656,7 +1821,7 @@ import com.yatlabs.yat.models.*
 
 fun printYatRecords(yat: String) {
     try {
-        val records = EmojiIDApi.shared.lookup(yat, tags = null)
+        val records = EmojiIDApi.shared.lookupEmojiID(yat, tags = null)
         println(records)
     } catch (exception: Exception) {
         println("Error fetching yat data: ${exception.message}")
@@ -1669,7 +1834,7 @@ fun printYatRecords(yat: String) {
 
 ```swift
 func printYatRecords(yat: String, completion: (() -> Void)? = nil) {
-    EmojiIDAPI.lookup(emojiId: yat) { (result) in
+    EmojiIDAPI.lookupEmojiID(emojiId: yat) { (result) in
         switch result {
         case .success(let response):
             print("Yat Records")

@@ -18,7 +18,7 @@ The yat consists of a string of one to six emoji that the user can personalise t
 
 ## Terminology
 
-* **Emoji id** - An emoji id (also known as a _yat_, or _eid_) is a 1-6 character string of emoji that users can own and
+* **Emoji id** - An emoji id (also known as a _yat_, or _eid_) is a 1-5 character string of emoji that users can own and
   associate data with in a public lookup repository.
 * **Yat** - A synonymn for an emoji id. Strictly speaking, Yat is the brand name and emoji id is the technical term, but
   they can be used interchangeably.

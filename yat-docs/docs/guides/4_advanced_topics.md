@@ -26,16 +26,14 @@ Redemption codes are used to claim discounts during the checkout flow at [y.at](
 
 ## Payment methods
 
-There are 4 [payment methods](/docs/sdks/nodejs/sdk_nodejs_index#enum-methodenum) which can be used for cart checkouts:
-1. `Provider` is directly managed by the y.at website to configure  a payment provider, and is either `Stripe` or
+There are 2 [payment methods](/docs/sdks/nodejs/sdk_nodejs_index#enum-methodenum) which can be used for cart checkouts:
+1. `Provider` is directly managed by the y.at website to configure a payment provider, and is either `Stripe` or
    `CoinbaseCommerce`.
-2. `Card` is used with `Stripe` provider and allows users to pay with a credit card.
-3. `Default` uses the payment method that was configured for user account as default.
-4. `Free` was already described in [Claiming a Yat with a promo code](/docs/integration_general#claiming-a-yat-with-a-promo-code)
+2. `Free` was already described in [Claiming a Yat with a promo code](/docs/integration_general#claiming-a-yat-with-a-promo-code)
 
 ## Ordering and cart usage
 
-The code snippet below illustrates how you might implement payments via credit card for users:
+The code snippet below illustrates how you might implement payments via payment intents for users:
 1. The user adds a yat to their cart. In the example below we use
    [a convenience endpoint](/docs/api-ref/#return-random-emoji) that generates a random yat that is available for
    purchase.
@@ -59,54 +57,31 @@ The code snippet below illustrates how you might implement payments via credit c
 
 ```javascript
 /**
- * List the yats the user owns
+ * Create new cart for user
  * @returns {Promise<*>}
  */
-async function placeNewCart(items) {
-    let request = new yat.UpdateCartRequest(items);
-    console.log("Sending replace cart request: ", request);
-    let cart = await api.cart().replaceItems(request);
+ async function placeNewCart(items) {
+    let request = new yat.AddItemsCartRequest(items);
+    console.log("Sending add items cart request: ", request);
+    let cart = await api.cart().addItems(request);
     console.log(`Created cart ${cart.id} with items `, cart.order_items.map((rec, i) => `${i+1}. ${rec.emoji_id} - ${rec.unit_price_in_cents}`));
     return cart;
 }
 
-/**
- * List the yats the user owns
- * @returns {Promise<*>}
- */
-async function getMyYats() {
-    let yats = await api.emojiID().list();
-    console.log("These are my yats: ", yats);
-    return yats;
-}
-
 async function main() {
     try {
-        await api.login(alternate_id, password);
+        await api.login(email, password);
         // Pick random yats
         const emojis = await api.emojiID().random();
         console.log("Random emoji suggestions:", emojis.result.map((rec, i) => `${i+1}. ${rec.emoji_id} - ${rec.price}`));
         // Pick 2 yats from the middle and place into the cart
-        let items = emojis.result.map((rec) => new yat.UpdateCartRequestItems(rec.emoji_id)).splice(2, 2);
+        let items = emojis.result.map((rec) => new yat.AddItemsCartRequestItems(rec.emoji_id)).splice(2, 2);
         await placeNewCart(items);
 
-        // Checkout via credit card. We use test token in this case "tok_visa"
-        // For actual payment Stripe token shall be acquired as described https://stripe.com/docs/api/tokens/create_card
+        // Checkout via payment intents. The user is given a payment intent ID which may be used to complete the purchase.
         // Yat's Stripe public API key should be used for communication with Stripe
-        let result = await api.cart().checkout({ method: "Card", provider: "Stripe", token: "tok_visa", save_payment_method: true, set_default: true });
-        if (result.status == "Paid") {
-            console.log("Congratulations!");
-        }
-        console.log(`Order is ${result.status}. Total: ${result.total_in_cents}.`);
-
-        // Now we have setup the Default payment method. Let's buy 2 more emojis
-        items = emojis.result.map((rec) => new yat.UpdateCartRequestItems(rec.emoji_id)).splice(5, 2);
-        await placeNewCart(items);
-        result = await api.cart().checkout({ method: "Default" });
-        console.log(`Order is ${result.status}. Total: ${result.total_in_cents}.`);
-
-        // List all emojis for the user, including the ones we've just purchased!
-        await getMyYats();
+        let result = await api.cart().checkout({ method: "Stripe"});
+        console.log(`Order is ${result.status}. Payment data: ${result.payment_method_data.payment_intent_id}.`);
     } catch(err) {
         console.log("Failed: ", err)
     }
@@ -155,41 +130,25 @@ This script produces output something along the lines of:
 
 ```
 Random emoji suggestions: [
-  '1. ⛓️♎🦎🔩 - 4800',
-  '2. ❗🍯👗🖍️ - 4800',
-  '3. 🤡🐵🍤 - 9600',
-  '4. 👢☦️🙏🎼 - 4800',
-  '5. 👟🚬🤳 - 9600',
-  '6. 🍍👗🛶🍍 - 4800',
-  '7. 🥒🐣🐮🏓 - 4800',
-  '8. 🏥🐞🐭 - 9600',
-  '9. 🐌🐮🤳🍥 - 4800',
-  '10. 🦇🕷️😇 - 9600'
+  '1. ♎😎♏ - 400',
+  '2. 👎🛡️🌰 - 400',
+  '3. 🛍️⚾💳 - 21000',
+  '4. 🏟️🏀🎸🍵 - 400',
+  '5. 😍🗄️✡️ - 500',
+  '6. 🐨💍🐉⚽ - 10000',
+  '7. ⛪🌴🍜⛵ - 9000',
+  '8. 🦉🎏🌮💩 - 800',
+  '9. 💰🦍🎥 - 8500',
+  '10. ⚽🍔🚀👀 - 10500'
 ]
-Sending replace cart request:  UpdateCartRequest {
+Sending add items cart request:  AddItemsCartRequest {
   items: [
-    UpdateCartRequestItems { emoji_id: '🤡🐵🍤' },
-    UpdateCartRequestItems { emoji_id: '👢☦️🙏🎼' }
+    AddItemsCartRequestItems { emoji_id: '🛍️⚾💳' },
+    AddItemsCartRequestItems { emoji_id: '🏟️🏀🎸🍵' }
   ]
 }
-Created cart fbddfa1e-ade9-4811-9377-a55ccd2bfa78 with items  [ '1. 🤡🐵🍤 - 9600', '2. 👢☦️🙏🎼 - 4800' ]
-Congratulations!
-Order is Paid. Total: 14400.
-Sending replace cart request:  UpdateCartRequest {
-  items: [
-    UpdateCartRequestItems { emoji_id: '🍍👗🛶🍍' },
-    UpdateCartRequestItems { emoji_id: '🥒🐣🐮🏓' }
-  ]
-}
-Created cart 6bfbffa2-81bf-4f0d-b24c-cb7b05be2eb1 with items  [ '1. 🍍👗🛶🍍 - 4800', '2. 🥒🐣🐮🏓 - 4800' ]
-Order is Paid. Total: 9600.
-These are my yats:  [
-  '🌙👛🚪🔋', '💩🏹👟🚲',
-  '💋❓🎉🦀',  '🔑🎯🐷👾',
-  '⌚🥝🎻',    '🛵🐚🐨😶',
-  '🤡🐵🍤',   '👢☦️🙏🎼',
-  '🍍👗🛶🍍', '🥒🐣🐮🏓'
-]
+Created cart aed099bd-f932-4e84-86dc-644c5fc13e74 with items  [ '1. 🛍️⚾💳 - 10500', '2. 🏟️🏀🎸🍵 - 400' ]
+Order is PendingPayment. Payment data: pi_3Js9jAE6aCXPXX5q18SRrRQE.
 Bye!
 ```
 
@@ -216,10 +175,7 @@ Bye!
 Yat uses [Stripe](https://stripe.com/) as a payment provider for handling credit card payments. Stripe manages and stores
 all credit card and personally identifying information (PII), none of which is stored on y.at's servers.
 
-To integrate card payments into a third-party application you need to obtain a Stripe API public key from the Yat integration
-team.
-
-For a testing purposes there is pre-registered token `"tok_visa"`. This key is only available on the y.at [test environment](https://emojid.me/).
+To integrate card payments into a third-party application you need to obtain a Stripe API public key from the Yat integration team.
 
 The following is a list of suggested resources for reading about using Stripe for payments:
 - Development quickstart [https://stripe.com/docs/development](https://stripe.com/docs/development)

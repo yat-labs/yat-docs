@@ -122,7 +122,7 @@ end
 
     `fetchRecordsPublisher(forYat yat: String, symbol: String) -> AnyPublisher<LookupEmojiIDWithSymbolResponse, APIError>`
 
-    #### Example - Regular reuqest with Apple's Combine:
+    #### Example - Regular request with Apple's Combine:
     ```swift       
     Yat.api.fetchRecordsPublisher(forYat: "👒🍥🍬♐🕌", symbol: "XTR")
         .sink { completion in
@@ -141,7 +141,7 @@ end
 
     `func fetchFromKeyValueStore<T: LoadJsonDataContainer>(forYat yat: String, dataType: T.Type, result: @escaping (Result<LoadJsonResponse<T>, APIError>) -> Void)`
 
-    #### Example - Regular reuqest:
+    #### Example - Regular request:
     ```swift
     Yat.api.fetchFromKeyValueStore(forYat: "👒🍥🍬♐🕌", dataType: VisualizerFileLocations.self) { result in
         switch result {
@@ -155,7 +155,7 @@ end
 
     `func fetchFromKeyValueStorePublisher<T: LoadJsonDataContainer>(forYat yat: String, dataType: T.Type) -> AnyPublisher<LoadJsonResponse<T>, APIError>`
 
-    #### Example - Regular reuqest with Apple's Combine:
+    #### Example - Regular request with Apple's Combine:
     ```swift
     Yat.api.fetchFromKeyValueStorePublisher(forYat: "👒🍥🍬♐🕌", dataType: VisualizerFileLocations.self)
         .sink { completion in
