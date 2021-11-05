@@ -5,7 +5,7 @@ const fs = require('fs');
 module.exports = {
     title: 'Yat Developer Documentation',
     tagline: 'Helping you build awesome stuff with 🖖',
-    url: 'https://docs.y.at',
+    url: 'https://api-docs.y.at',
     baseUrl: '/',
     onBrokenLinks: 'warn',
     favicon: 'img/favicon.png',
