@@ -17,11 +17,6 @@ provides a simple way for Yat partners to purchase and link Yats from within the
 The [Android framework repository](https://github.com/yat-labs/yat-lib-android) contains an example app module named
 `yat-lib-example` that illustrates the steps below.
 
-The `YatAppConfig` instance in the `MainActivity` of the sample app needs to be edited for the app to function correctly.
-
-`YatLib` is open source software. You can view the code, submit bug reports, and offer improvements or features by
-creating new issues or PRs.
-
 ## Requirements
 
 - Android OS 7.0+
@@ -34,7 +29,7 @@ creating new issues or PRs.
     allprojects {
         repositories {
             // ...
-            maven { url 'https://jitpack.io' }
+            maven { url "https://jitpack.io" }
         }
     }
     ```
@@ -43,14 +38,15 @@ creating new issues or PRs.
 
     ```gradle
     dependencies {
-        implementation 'com.github.yat-labs:yat-lib-android:0.1.2'
+        implementation "com.github.yat-labs:yat-lib-android$lastVersion"
     }
+    ```
 
-## Usage
+    You can find the version you need on [Jitpack repository](https://jitpack.io/#yat-labs/yat-lib-android)
 
-1. This library uses deep links to return from the Yat web application back to the partner application. URL scheme of
-   the deep link is agreed upon in between the Yat development team and the integration partner. Currently used scheme
-   is `{partner_key}://y.at?{query_params}`. Add deep link support to your activity using an intent filter.
+## Setup
+
+1. `YatIntegration` uses deep links to return from the Yat web application back to the application. The URL scheme of the deep link is agreed upon between the Yat development team and the integration partner. Setup your deep links in your project accordingly.
 
     ```xml
     <intent-filter>
@@ -59,22 +55,18 @@ creating new issues or PRs.
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
 
-        <!--
-            this example illustrates support for a deep link in the format
-            myapp://y.at?{query_params}
-        -->
         <data
-            android:host="y.at"
-            android:scheme="myapp" />
+            android:host="your host here"
+            android:scheme="your scheme here" />
+
     </intent-filter>
+
     ```
 
-2. Implement the Yat library delegate in your activity.
+2. Implement the Yat library delegate in your project.
 
     ```kotlin
-    class MainActivity :
-        AppCompatActivity(),
-        YatLib.Delegate {
+    class MainActivity : AppCompatActivity(), YatIntegration.Delegate {
 
         // ...
 
@@ -84,7 +76,7 @@ creating new issues or PRs.
             */
         }
 
-        override fun onYatIntegrationFailed(failureType: YatLib.FailureType) {
+        override fun onYatIntegrationFailed(failureType: YatIntegration.FailureType) {
             /*
             * Code to run when the integration has failed.
             */
@@ -95,76 +87,33 @@ creating new issues or PRs.
     }
     ```
 
-3. Implement a function that initializes the library with the app-specific constants, user information and Yat records
-   that should be linked to the Yat.
+3. Implement a function that initializes the library with the app-specific constants.  The app return link, organization name, and organization key will be delivered to you by the Yat development team.
 
     ```kotlin
-    class MainActivity :
-        AppCompatActivity(),
-        YatLib.Delegate {
+    class MainActivity : AppCompatActivity(), YatIntegration.Delegate {
 
         // ...
 
         private fun initializeYatLib() {
             // library configuration
-            val config = YatAppConfig(
-                name = "Super Cool Wallet",
-                sourceName = "SCW",
-                // used in partner-specific URLs
-                pathKey = "scw",
-                // app-specific public key
-                pubKey = "{64 character hex public key}",
-                // app-specific access code
-                code = "66b6a5aa-11b4-12a9-1c1e-84765ef174ab",
-                // app-specific authentication token
-                authToken = "AppToken84765783"
+            val config = YatConfiguration(
+                organizationName = "your organization name",
+                organizationKey = "your organization key",
+                appReturnLink = "your return link"
             )
-            // Yat records
-            val yatRecords = listOf(
-                YatRecord(
-                    YatRecordType.ADA_ADDRESS,
-                    "DdzFFzCqrhsgwQmeWNBTsG8VjYunBLK9GNR93GSLTGj1FeMm8kFoby2cTHxEHBEraHQXmgTtFGz7fThjDRNNvwzcaw6fQdkYySBneRas"
-                ),
-                YatRecord(
-                    YatRecordType.DOT_ADDRESS,
-                    "GC8fuEZG4E5epGf5KGXtcDfvrc6HXE7GJ5YnbiqSpqdQYLg"
-                ),
-                YatRecord(
-                    YatRecordType.BTC_ADDRESS,
-                    "1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s"
-                ),
-                YatRecord(
-                    YatRecordType.ETH_ADDRESS,
-                    "108dEFa0272dC118EF03a7993e4fC7A8AcF3a3d1"
-                ),
-                YatRecord(
-                    YatRecordType.XTR_ADDRESS,
-                    "d2e4db6dac593a9af36987a35676838ede4f69684ba433baeed68bce048e111b"
-                ),
-                YatRecord(
-                    YatRecordType.XMR_STANDARD_ADDRESS,
-                    "4AdUndXHHZ6cfufTMvppY6JwXNouMBzSkbLYfpAV5Usx3skxNgYeYTRj5UzqtReoS44qo9mtmXCqY45DJ852K5Jv2684Rge"
-                )
-            )
-            // initialize the library
-            YatLib.initialize(
+ 
+            // setup the library
+            YatIntegration.setup(
                 config = config,
                 /*
-                * User information below is utilized to link the partner application user
-                * to the Yat user.
+                * YatIntegration.ColorMode.LIGHT for light mode,
+                * YatIntegration.ColorMode.DARK for dark mode,
                 */
-                userId = "partner_app_user_identifier",
-                userPassword = "partner_app_user_password",
-                /*
-                * YatLib.ColorMode.LIGHT for light mode,
-                * YatLib.ColorMode.DARK for dark mode,
-                */
-                colorMode = YatLib.ColorMode.LIGHT,
+                colorMode = YatIntegration.ColorMode.LIGHT,
                 /*
                 * Delegate interface is described below.
                 */
-                delegate = this,
-                yatRecords = yatRecords
+                delegate = this
             )
         }
 
@@ -176,17 +125,13 @@ creating new issues or PRs.
 4. Add the code that handles deep links.
 
     ```kotlin
-    class MainActivity :
-        AppCompatActivity(),
-        YatLib.Delegate {
+    class MainActivity : AppCompatActivity(), YatIntegration.Delegate {
 
         // ...
 
         override fun onNewIntent(intent: Intent) {
             super.onNewIntent(intent)
-            intent.data?.let { deepLink ->
-                YatLib.processDeepLink(deepLink)
-            }
+            intent.data?.let { deepLink -> YatIntegration.processDeepLink(deepLink) }
         }
 
         // ...
@@ -194,55 +139,46 @@ creating new issues or PRs.
     }
     ```
 
-4. Start the library.
+# Usage
 
-    ```kotlin
-    class MainActivity :
-            AppCompatActivity(),
-            YatLib.Delegate {
+Yat is an integration entry point. It contains all tools necessary to configure, style, integrate, and interact with the Yat API.
 
-        // ...
+## Configuration
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            ui = ActivityMainBinding.inflate(layoutInflater)
-            setContentView(ui.root)
-            initializeYatLib()
-            ui.getAYatButton.setOnClickListener {
-                YatLib.start(this@MainActivity)
-            }
-        }
+To configure the integration, you need to pass a new configuration to the `YatIntegration.setup` method (please check the Setup section above for more information).
 
-        // ...
+## Style
 
-    }
-    ```
+You can change the style (colors, fonts, etc.) of the UI elements used by the framework by overriding Android resources. 
 
-## Looking up a Yat
+## Integration
 
-Below is an example call to the `YatLib.lookupYat` function to query for the records linked to a Yat and print them.
+`YaIntegration` exposes convenience methods to present a unified UI that allows the user to connect his crypto wallet address to Yat. 
+
+To show a simple onboarding overlay, you need to:
+```kotlin
+    YatIntegration.showOnboarding(context: Context, records: List<YatRecord>)
+```
+Where `records` is a list of `YatRecord` structures that will be attached to the user's Yat.
+
+To properly handle the response after the success. you should implement YatIntegration.Delegate. Please check the Setup section above for more information.
+
+## API
+
+`YatIntegration.yatApi` provides all the convenience methods used to directly communicate with the Yat API. Currently, YatIntegration provides methods that handle API calls listed below:
+
+####`GET /emoji_id/{yat}/{symbol}`
+
+Fetch all records associated with Yat for the provided symbol.
+
+```
+suspend fun lookupEmojiIdWithSymbol(yat: String, symbol: String): LookupEmojiIdWithSymbolResponse
+```
+
+####`GET /emoji_id/{yat}/json/{key}`
+
+Fetch the key-value store associated with provided Yat. It returns a different data set depending on the provided `dataType`.
 
 ```kotlin
-private fun lookupYat(yat: String) {
-    YatLib.lookupYat(
-        yat,
-        onSuccess = { processLookupResponse(it) },
-        onError = { _, _ ->
-            val errorMessage = resources.getString(R.string.error_yat_lookup)
-            displayErrorDialog(errorMessage)
-        }
-    )
-}
-
-private fun processLookupResponse(lookupResponse: YatLookupResponse) {
-    for (record in lookupResponse.yatRecords) {
-        val shortAddress =
-            record.data.substring(0, 4) +
-                    "..." +
-                    record.data.substring(record.data.length - 4, record.data.length)
-        println("${record.type} : $shortAddress")
-    }
-    ui.yatRecordsTitleTextView.visibility = View.VISIBLE
-    ui.yatRecordsTextView.text = records
-}
+suspend fun loadValueFromKeyValueStore(yat: String, key: EmojiStoreKey): Response<LoadValueFromKeyValueStoreResponse>
 ```
