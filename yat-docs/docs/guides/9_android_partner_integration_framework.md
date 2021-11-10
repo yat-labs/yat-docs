@@ -141,11 +141,11 @@ The [Android framework repository](https://github.com/yat-labs/yat-lib-android) 
 
 # Usage
 
-Yat is an integration entry point. It contains all tools necessary to configure, style, integrate, and interact with API.
+Yat is an integration entry point. It contains all tools necessary to configure, style, integrate, and interact with the Yat API.
 
 ## Configuration
 
-To configure the integration, you need to pass a new configuration to the `YatIntegration.setup` (please check the Setup section above for more information).
+To configure the integration, you need to pass a new configuration to the `YatIntegration.setup` method (please check the Setup section above for more information).
 
 ## Style
 
