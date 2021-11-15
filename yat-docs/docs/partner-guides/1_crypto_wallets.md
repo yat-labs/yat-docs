@@ -54,7 +54,7 @@ Web App URL: `https://y.at/partner/{partner_path}`
 
 `eid:` The Yat that the user linked or purchased, received by the partner application as a result of the initial connect call.
 
-`addresses:` A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`.
+`addresses:` A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `YAT_TAG_1=ADDRESS_1|YAT_TAG_2=ADDRESS_2|...|YAT_TAG_N=ADDRESS_N`.
 Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories, but here's a partial list of cryptocurrency address tags:
 
 - `0x1001` Monero standard address
@@ -79,6 +79,25 @@ And here's an imaginary URL for a partner app with the path parameter (e.g. cool
 https://y.at/partner/coolwalletapp?eid=🗞️💉⛸️🆓🔮&addresses=0x1003%3D1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s%7C0x1004%3D108dEFa0272dC118EF03a7993e4fC7A8AcF3a3d1&refresh_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiNmI2ZGE4MS0yNTBlLTQ1NmUtYTYxYS01ZjQyNmFlOTJhMjIiLCJpc3MiOiJlbW9qaS1pZC10b2tlbi1pc3N1ZXIiLCJleHAiOjE2MjAzNzczMjgsInNjb3BlcyI6WyJjYXJ0OnNob3ciLCJjYXJ0OnVwZGF0ZSIsInVzZXI6Y3JlYXRlQXBpS2V5IiwiZWRpdGlvbjpyZWFkIiwiZW1vamk6OnRyYW5zZmVyIiwibG9vdGJveDp1c2UiLCJvcmRlcjpyZWFkU2VsZiIsIm9yZ2FuaXphdGlvbkxpc3Q6cmVhZCIsInBheW1lbnRNZXRob2Q6ZGVzdHJveSIsInBheW1lbnRNZXRob2Q6cmVhZCIsInBheW1lbnRNZXRob2Q6c2V0RGVmYXVsdCIsInVzZXI6ZGVsZXRlU2VsZiIsInVzZXJJbnRlcmVzdDpkZWxldGUiLCJ1c2VySW50ZXJlc3Q6cmVhZCIsInVzZXJJbnRlcmVzdDp3cml0ZSIsInVzZXI6d3JpdGVTZWxmIl0sImlzc3VlZCI6MTYyMDM3NjQyOCwiYWN0aXZlMmZhIjowfQ.FZBzoe8Zky9Pl7WCNXwg5KphVO4FNTKxJKX87w9sHW0
 ```
 
+`address_json:` A Base64-encoded array of tag records to be linked to the Yat in the following format:
+`[{YAT_TAG: ADDRESS_DATA}]`
+
+`ADDRESS_DATA` contains the wallet address and name, separated by pipe (|) in the format `WALLET_ADDRESS|WALLET_NAME`
+
+Making the entire format
+```
+[{YAT_TAG: WALLET_ADDRESS|WALLET_NAME}]
+```
+
+Here's an address_json parameter value that defines an ETH address before Base64-encoding:
+```
+[{0x1004:"108dEFa0272dC118EF03a7993e4fC7A8AcF3a3d1|Cool Wallet"}]
+```
+
+Here's the same parameter value after Base64-encoding:
+```
+W3siNDEwMCI6IjEwOGRFRmEwMjcyZEMxMThFRjAzYTc5OTNlNGZDN0E4QWNGM2EzZDF8Q29vbCBXYWxsZXQifV0
+```
 
 ### Redirection of the User from Yat Web Flow to the Partner Application
 
@@ -121,7 +140,7 @@ The partner application user needs to get redirected to the Yat website to Conne
 
 `eid`: The Yat that the user linked or purchased, received by the partner application as a result of the initial connect call.
 
-`addresses`: A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`.
+`addresses`: A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `YAT_TAG_1=ADDRESS_1|YAT_TAG_2=ADDRESS_2|...|YAT_TAG_N=ADDRESS_N`.
 Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
 
 ## 3. Manage connected Yats
@@ -136,7 +155,7 @@ The partner application user needs to get redirected to the Yat website to Manag
 
 `refresh_token`: User's refresh token that was received in the response body of redirection to Yat web.
 
-`addresses` : A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `{YAT_TAG_1}={ADDRESS_1}|{YAT_TAG_2}={ADDRESS_2}|...|{YAT_TAG_N}={ADDRESS_N}`. Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
+`addresses` : A percent-encoded series of cryptocurrency addresses to be linked to the Yat separated by pipes in the format `YAT_TAG_1=ADDRESS_1|YAT_TAG_2=ADDRESS_2|...|YAT_TAG_N=ADDRESS_N`. Please refer to the [Yat record categories](https://api-docs.y.at/docs/categories) for detailed information on record categories.
 
 <a href="/img/flow3-lrg.png" target="_blank"><img src="/img/flow3-sml.png"/></a>
 
