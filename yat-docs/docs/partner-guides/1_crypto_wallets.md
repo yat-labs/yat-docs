@@ -81,10 +81,7 @@ https://y.at/partner/coolwalletapp?eid=🗞️💉⛸️🆓🔮&addresses=0x100
 
 `address_json:` A Base64-encoded array of tag records to be linked to the Yat in the following format:
 `[{YAT_TAG: ADDRESS_DATA}]`
-<<<<<<< HEAD
-=======
 
->>>>>>> 6d668c63aeba962535f46012c68d975b0985f841
 `ADDRESS_DATA` contains the wallet address and name, separated by pipe (|) in the format `WALLET_ADDRESS|WALLET_NAME`
 
 Making the entire format
