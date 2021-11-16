@@ -81,7 +81,10 @@ https://y.at/partner/coolwalletapp?eid=🗞️💉⛸️🆓🔮&addresses=0x100
 
 `address_json:` A Base64-encoded array of tag records to be linked to the Yat in the following format:
 `[{YAT_TAG: ADDRESS_DATA}]`
+<<<<<<< HEAD
+=======
 
+>>>>>>> 6d668c63aeba962535f46012c68d975b0985f841
 `ADDRESS_DATA` contains the wallet address and name, separated by pipe (|) in the format `WALLET_ADDRESS|WALLET_NAME`
 
 Making the entire format
@@ -164,10 +167,6 @@ The partner application user needs to get redirected to the Yat website to Manag
 If the user has connected an address with their Yat, addresses are set, anyone can send crypto payments and the user will receive it in the correct address. Alice can send BTC to Bob’s Yat (🚀👽) without ever having to paste Bob’s P2PKH address. To top it all off, the partner app can even render a unique visualization associated with 🚀👽 created by Bob himself. Yat supports the top 100 cryptocurrencies as native tags. Additional currencies can be specified with the generic crypto tag.
 
 <a href="/img/flow4a-lrg.png" target="_blank"><img src="/img/flow4a-sml.png"/></a>
-
-### 4B. Edge Case: Multiple Yats associated with 1 address
-
-<a href="/img/flow4b-lrg.png" target="_blank"><img src="/img/flow4b-sml.png"/></a>
 
 ### Looking up a Yat
 
