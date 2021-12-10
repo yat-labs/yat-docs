@@ -17,8 +17,10 @@ fun main() {
         """
 {{=data.bodyParameter.exampleValues.json}}
         """.toRequestBody("application/json; charset=utf-8".toMediaType()){{?}}
+
     val request = Request.Builder()
-        .url("$apiBaseURL{{=data.url}}{{=data.requiredQueryString}}")
+        .url("$apiBaseURL{{=data.url}}{{=data.requiredQueryString}}"){{~data.allHeaders :p:index}}
+        .addHeader("{{=p.name}}", {{=p.exampleValues.json.replaceAll("'", '"')}}{{?index < data.allHeaders.length-1}}){{?}}{{~}})
         .{{=data.methodUpper.toLowerCase()}}({{?data.bodyParameter.present}}requestBody{{?}})
         .build()
     httpClient.newCall(request).enqueue(object : Callback {
