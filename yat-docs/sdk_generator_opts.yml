@@ -210,7 +210,7 @@ swift5:
   #prependFormOrBodyParameters:
 
   # Project name in Xcode
-  projectName: YatSDK
+  projectName: YatLib
 
   # Make properties readonly (default: false)
   readonlyProperties: false
@@ -226,3 +226,5 @@ swift5:
 
   # Flag to make all the API classes inner-class of {{projectName}}API
   #swiftUseApiNamespace:
+
+  additionalGeneratorOptions: --reserved-words-mappings get=get,default=\`default\` --global-property models,apis,supportingFiles=README.md
