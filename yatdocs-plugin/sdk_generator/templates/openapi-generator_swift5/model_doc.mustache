@@ -1,11 +1,13 @@
-{{#models}}{{#model}}# {{classname}}
+{{#models}}
+{{#model}}
+# {{classname}}
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-{{#vars}}**{{name}}** | {{#isPrimitiveType}}**{{{dataType}}}**{{/isPrimitiveType}}{{^isPrimitiveType}}{{^isContainer}}[**{{dataType}}**]({{complexType}}.md){{/isContainer}}{{#isContainer}}{{{dataType}}}{{/isContainer}}{{/isPrimitiveType}} | {{description}} | {{^required}}[optional] {{/required}}{{#isReadOnly}}[readonly] {{/isReadOnly}}{{#defaultValue}}[default to {{{.}}}]{{/defaultValue}}
+{{#vars}}**{{name}}** | {{#isPrimitiveType}}**{{{dataType}}}{{^required}}?{{/required}}**{{/isPrimitiveType}}{{^isPrimitiveType}}{{^isContainer}}[**{{dataType}}**]{{^required}}?{{/required}}({{complexType}}.md){{/isContainer}}{{#isContainer}}{{{dataType}}}{{^required}}?{{/required}}{{/isContainer}}{{/isPrimitiveType}} | {{description}} | {{^required}}[optional] {{/required}}{{#isReadOnly}}[readonly] {{/isReadOnly}}{{#defaultValue}}[default to {{{.}}}]{{/defaultValue}}
 {{/vars}}
 
 [[Back to Model list]](../index.md#documentation-for-models) [[Back to API list]](../index.md#documentation-for-api-endpoints) [[Back to Index]](../index.md)
-
-{{/model}}{{/models}}
+{{/model}}
+{{/models}}

@@ -82,10 +82,12 @@ async function runOpenAPIGenerator(config, spec, lang, out_dir) {
     const script_dir = path.resolve(__dirname, '../sdk_generator');
     // Build command
     debug(`${os.platform()} detected`);
+    const additionalGeneratorOptions = langConfig['additionalGeneratorOptions'] ?? '';
     const cmd = os.platform() === "win32" ?
-        `oag.bat ${langConfigFile} ${generator} ${specUri} ${output} ${templates}` :
-        `./oag.sh generate -c ${langConfigFile} -g ${generator} -i ${specUri} -o ${output} -t ${templates}`;
+        `oag.bat ${langConfigFile} ${generator} ${specUri} ${output} ${templates} ${additionalGeneratorOptions}` :
+        `./oag.sh generate -c ${langConfigFile} -g ${generator} -i ${specUri} -o ${output} -t ${templates} ${additionalGeneratorOptions}`;
     try {
+        console.log(cmd);
         const {stdout, stderr} = await exec(cmd, {cwd: script_dir, maxBuffer: 1024 * 1024 * 5});
         debug(stdout);
         debug(stderr);
