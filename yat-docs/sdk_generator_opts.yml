@@ -66,6 +66,7 @@ nodejs:
   useInheritance: true
   # use Promises as return values from the client API, instead of superagent callbacks (Default: false)
   usePromises: true
+  additionalGeneratorOptions: --skip-validate-spec
 kotlin:
   # suffix for api classes (Default: Api)
   apiSuffix: Api
@@ -130,6 +131,7 @@ kotlin:
   # Whether to use the RxJava3 adapter with the retrofit2 library. (Default: false)
   useRxJava3: false
   disableHtmlEscaping: true
+  additionalGeneratorOptions: --skip-validate-spec
 swift5:
   # boolean, toggles whether unicode identifiers are allowed in names or not, default is false (Default: false)
   allowUnicodeIdentifiers: true
@@ -227,4 +229,4 @@ swift5:
   # Flag to make all the API classes inner-class of {{projectName}}API
   #swiftUseApiNamespace:
 
-  additionalGeneratorOptions: --reserved-words-mappings get=get,default=\`default\` --global-property models,apis,supportingFiles=README.md
+  additionalGeneratorOptions: --skip-validate-spec --reserved-words-mappings get=get,default=\`default\` --global-property models,apis,supportingFiles=README.md
