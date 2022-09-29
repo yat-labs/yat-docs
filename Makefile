@@ -16,7 +16,7 @@ generate:
 	cd $(DOCS) && npm run generate-docs
 
 build: clean-all generate
-	cd $(DOCS) && yarn run build
+	cd $(DOCS) && yarn run generate-sdk && yarn run build
 
 $(NODE_SRC)/package.json: build
 
